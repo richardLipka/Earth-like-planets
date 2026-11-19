@@ -5,6 +5,7 @@ import SystemInspector from './components/hud/SystemInspector.jsx';
 import RouteComputerPanel from './components/hud/RouteComputerPanel.jsx';
 import TimelineAndMinkowskiStudio from './components/timeline/TimelineAndMinkowskiStudio.jsx';
 import DataSourcesModal from './components/hud/DataSourcesModal.jsx';
+import SciFiVoyagesModal from './components/hud/SciFiVoyagesModal.jsx';
 import Footer from './components/hud/Footer.jsx';
 import { planMultiStopVoyage } from './engine/voyagePlanner.js';
 import { computeFlightProfile } from './engine/relativity.js';
@@ -26,6 +27,7 @@ import {
   PanelLeft,
   PanelRight,
   ChevronDown,
+  BookMarked,
   X,
 } from 'lucide-react';
 
@@ -93,6 +95,8 @@ export default function App() {
   const { lang, setLang, t } = useLanguage();
   const [catalog, setCatalog] = useState(null);
   const [scifiData, setScifiData] = useState({ meta: {}, bySystemId: {} });
+  const [voyagesLibrary, setVoyagesLibrary] = useState([]);
+  const [activeVoyagePreset, setActiveVoyagePreset] = useState(null);
   const [loading, setLoading] = useState(true);
 
   // Filters & 3D Map Viewport state
@@ -118,6 +122,7 @@ export default function App() {
   const [isRightDockOpen, setIsRightDockOpen] = useState(true);
   const [isTimelineOpen, setIsTimelineOpen] = useState(false);
   const [isDataSourcesOpen, setIsDataSourcesOpen] = useState(false);
+  const [isVoyagesModalOpen, setIsVoyagesModalOpen] = useState(false);
 
   const [selectedSystemId, setSelectedSystemId] = useState('sol');
   const [focusRequest, setFocusRequest] = useState(null);
@@ -148,16 +153,21 @@ export default function App() {
     return () => document.removeEventListener('pointerdown', onDocDown);
   }, [isFiltersOpen]);
 
-  // Load 3D stellar/exoplanet catalogue and Sci-Fi literature sweep index in parallel
+  // Load 3D stellar/exoplanet catalogue, Sci-Fi literature index, and Sci-Fi voyages library in parallel
   useEffect(() => {
     const base = import.meta.env.BASE_URL || './';
+    const prefix = base.replace(/\/$/, '');
     Promise.all([
-      fetch(`${base.replace(/\/$/, '')}/data/astrometrics_catalog.json`).then((res) => res.json()),
+      fetch(`${prefix}/data/astrometrics_catalog.json`).then((res) => res.json()),
       loadSciFiDataset(),
+      fetch(`${prefix}/data/scifi_voyages.json`)
+        .then((res) => (res.ok ? res.json() : { voyages: [] }))
+        .catch(() => ({ voyages: [] })),
     ])
-      .then(([catData, sfData]) => {
+      .then(([catData, sfData, voyData]) => {
         setCatalog(catData);
         setScifiData(sfData || { meta: {}, bySystemId: {} });
+        setVoyagesLibrary(voyData?.voyages || []);
         setLoading(false);
       })
       .catch((err) => {
@@ -407,11 +417,15 @@ export default function App() {
         ? Math.max(...shipsWithVoyages.map((s) => s.voyage.arrivalYear + 2))
         : 2175;
 
+    // Adaptive playback rate: completes any voyage span smoothly in ~18 seconds
+    const span = Math.max(10, maxY - minY);
+    const yearsPerSec = Math.max(1.2, span / 18);
+
     const tick = (now) => {
       const dt = (now - last) / 1000;
       last = now;
       setMasterClockYear((prev) => {
-        const next = prev + dt * 1.8;
+        const next = prev + dt * yearsPerSec;
         return next > maxY ? minY : next;
       });
       rafId = requestAnimationFrame(tick);
@@ -514,6 +528,34 @@ export default function App() {
     setShips((prev) => [...prev, copy]);
     setActiveShipId(newId);
   };
+
+  const handleLoadVoyagePreset = useCallback((preset, autoPlay = true) => {
+    if (!preset || !Array.isArray(preset.ships) || preset.ships.length === 0) return;
+    const clonedShips = preset.ships.map((sh) => ({
+      ...sh,
+      driveConfig: { ...sh.driveConfig },
+      waypoints: sh.waypoints.map((w) => ({ ...w })),
+    }));
+    const clonedEvents = (preset.storyEvents || []).map((ev) => ({ ...ev }));
+    setShips(clonedShips);
+    setActiveShipId(clonedShips[0].id);
+    setStoryEvents(clonedEvents);
+    setActiveVoyagePreset(preset);
+    setEpochOffsetYears(0);
+
+    const startClock =
+      Number.isFinite(preset.recommendedClockStart)
+        ? preset.recommendedClockStart
+        : Math.min(...clonedShips.map((s) => s.departureYear));
+    setMasterClockYear(startClock);
+    setIsLeftDockOpen(true);
+    setIsTimelineOpen(true);
+    setIsPlayingTimeline(Boolean(autoPlay));
+
+    const focusId = preset.focusSystemId || clonedShips[0].waypoints[0]?.systemId || 'sol';
+    setSelectedSystemId(focusId);
+    setFocusRequest({ systemId: focusId, ts: Date.now() });
+  }, []);
 
   const handleDeleteShip = () => {
     if (ships.length <= 1) return;
@@ -915,6 +957,16 @@ export default function App() {
 
           <button
             type="button"
+            className="hud-btn compact-btn voyage-lib-btn"
+            onClick={() => setIsVoyagesModalOpen(true)}
+            title={t('btnVoyageLibraryFull')}
+          >
+            <BookMarked size={14} />
+            <span className="btn-label-md">{t('btnVoyageLibrary')}</span>
+          </button>
+
+          <button
+            type="button"
             className="hud-btn compact-btn secondary-btn"
             onClick={() => setIsDataSourcesOpen(true)}
             title={t('btnDataSources')}
@@ -952,6 +1004,8 @@ export default function App() {
             lightConeConfig={lightConeConfig}
             onUpdateLightConeConfig={setLightConeConfig}
             onSelectSystem={(id) => handleSelectSystem(id, true)}
+            activeVoyagePreset={activeVoyagePreset}
+            onOpenVoyageLibrary={() => setIsVoyagesModalOpen(true)}
             onClose={() => setIsLeftDockOpen(false)}
           />
         )}
@@ -1113,6 +1167,15 @@ export default function App() {
 
       {/* Compact Academic Footer Strip (KIV ZČU & Author Homepage) */}
       <Footer />
+
+      {/* Sci-Fi Voyages & Character Paths Library Modal */}
+      <SciFiVoyagesModal
+        isOpen={isVoyagesModalOpen}
+        onClose={() => setIsVoyagesModalOpen(false)}
+        voyages={voyagesLibrary}
+        activeVoyagePresetId={activeVoyagePreset?.id || null}
+        onLoadVoyage={handleLoadVoyagePreset}
+      />
 
       {/* Data Sources & Attribution Modal */}
       <DataSourcesModal

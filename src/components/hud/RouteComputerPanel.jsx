@@ -16,6 +16,7 @@ import {
   Clock,
   Activity,
   Copy,
+  BookMarked,
   X,
 } from 'lucide-react';
 
@@ -34,6 +35,8 @@ export default function RouteComputerPanel({
   lightConeConfig,
   onUpdateLightConeConfig,
   onSelectSystem,
+  activeVoyagePreset,
+  onOpenVoyageLibrary,
   onClose,
 }) {
   const { lang, t } = useLanguage();
@@ -183,6 +186,16 @@ export default function RouteComputerPanel({
           ))}
         </div>
         <div className="ship-roster-actions">
+          {onOpenVoyageLibrary && (
+            <button
+              type="button"
+              className="mini-hud-btn scifi-mini-btn"
+              onClick={onOpenVoyageLibrary}
+              title={t('btnVoyageLibraryFull')}
+            >
+              <BookMarked size={12} />
+            </button>
+          )}
           <button type="button" className="mini-hud-btn" onClick={onAddShip} title={t('btnAddShip')}>
             <Plus size={12} />
           </button>
@@ -196,6 +209,20 @@ export default function RouteComputerPanel({
           )}
         </div>
       </div>
+
+      {/* Active Canonical Sci-Fi Scenario Banner (when loaded from Voyage Library) */}
+      {activeVoyagePreset && (
+        <div className="active-preset-strip">
+          <span className="aps-title" title={activeVoyagePreset.title?.[lang] || activeVoyagePreset.title?.en}>
+            ★ {activeVoyagePreset.universe}: {activeVoyagePreset.title?.[lang] || activeVoyagePreset.title?.en}
+          </span>
+          {onOpenVoyageLibrary && (
+            <button type="button" className="text-link-btn" onClick={onOpenVoyageLibrary}>
+              {t('btnVoyageLibrary')}
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Compact Sticky Voyage KPI Strip (always visible across tabs) */}
       {activeVoyage && activeVoyage.legs.length > 0 && (

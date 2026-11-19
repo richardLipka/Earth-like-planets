@@ -373,5 +373,44 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
     expect(tau.notableWorks.some((w) => w.title.includes('Project Hail Mary'))).toBe(true);
     expect(tau.wikiWorks.length).toBeGreaterThan(10);
   });
+
+  it('has valid Sci-Fi Voyages Library with verified real catalogue star IDs and relativistic physics profiles', () => {
+    const voyagesDoc = JSON.parse(fs.readFileSync('public/data/scifi_voyages.json', 'utf8'));
+    const systemsById = new Map(catalog.systems.map((s) => [s.id, s]));
+    const voyages = voyagesDoc.voyages || [];
+
+    expect(voyages.length).toBeGreaterThanOrEqual(10);
+    // Ensure Nevil Clavain (Revelation Space), Rama, Project Hail Mary, and Bobiverse are present
+    const ids = new Set(voyages.map((v) => v.id));
+    expect(ids.has('revelation-space-clavain-inhibitor')).toBe(true);
+    expect(ids.has('revelation-space-exodus-chasm-city')).toBe(true);
+    expect(ids.has('clarke-rama-odyssey')).toBe(true);
+    expect(ids.has('project-hail-mary')).toBe(true);
+    expect(ids.has('bobiverse-expansion')).toBe(true);
+
+    for (const vp of voyages) {
+      expect(vp.title?.en).toBeTruthy();
+      expect(vp.title?.cs).toBeTruthy();
+      expect(vp.ships.length).toBeGreaterThan(0);
+      for (const sh of vp.ships) {
+        expect(sh.waypoints.length).toBeGreaterThanOrEqual(2);
+        for (const wp of sh.waypoints) {
+          expect(systemsById.has(wp.systemId), `Invalid star ${wp.systemId} in ${vp.id}`).toBe(true);
+        }
+        const plan = planMultiStopVoyage({
+          waypoints: sh.waypoints,
+          systemsById,
+          departureYear: sh.departureYear,
+          crewStartAge: sh.crewStartAge,
+          driveConfig: sh.driveConfig,
+        });
+        expect(plan.totalDistanceLy).toBeGreaterThan(0);
+        expect(plan.totalCoordTimeYears).toBeGreaterThanOrEqual(plan.totalProperTimeYears);
+      }
+      for (const ev of vp.storyEvents || []) {
+        expect(systemsById.has(ev.systemId)).toBe(true);
+      }
+    }
+  });
 });
 

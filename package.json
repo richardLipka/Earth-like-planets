@@ -9,9 +9,10 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "data": "node scripts/buildAstrometricsData.mjs && node scripts/buildSciFiSweep.mjs",
-    "data:refresh": "node scripts/buildAstrometricsData.mjs --refresh && node scripts/buildSciFiSweep.mjs --refresh",
-    "scifi": "node scripts/buildSciFiSweep.mjs"
+    "data": "node scripts/buildAstrometricsData.mjs && node scripts/buildSciFiSweep.mjs && node scripts/buildSciFiVoyages.mjs",
+    "data:refresh": "node scripts/buildAstrometricsData.mjs --refresh && node scripts/buildSciFiSweep.mjs --refresh && node scripts/buildSciFiVoyages.mjs",
+    "scifi": "node scripts/buildSciFiSweep.mjs",
+    "voyages": "node scripts/buildSciFiVoyages.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.57.0",
