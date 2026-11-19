@@ -103,7 +103,15 @@ export default function TimelineAndMinkowskiStudio({
       ctx.font = '10px "JetBrains Mono", monospace';
       ctx.fillStyle = '#64748b';
 
-      const distStep = maxDistLy <= 20 ? 2 : maxDistLy <= 50 ? 5 : 10;
+      const niceStep = (span, targetTicks = 6) => {
+        const raw = Math.max(1e-6, span / targetTicks);
+        const mag = 10 ** Math.floor(Math.log10(raw));
+        const norm = raw / mag;
+        const mult = norm <= 1.2 ? 1 : norm <= 2.5 ? 2 : norm <= 6 ? 5 : 10;
+        return mult * mag;
+      };
+
+      const distStep = niceStep(maxDistLy, 7);
       for (let d = 0; d <= maxDistLy; d += distStep) {
         const x = toX(d);
         ctx.beginPath();
@@ -111,11 +119,11 @@ export default function TimelineAndMinkowskiStudio({
         ctx.lineTo(x, PAD.top + plotH);
         ctx.stroke();
         ctx.textAlign = 'center';
-        ctx.fillText(`${d} ly`, x, PAD.top + plotH + 16);
+        ctx.fillText(`${Math.round(d)} ly`, x, PAD.top + plotH + 16);
       }
 
       const timeSpan = maxYear - minYear;
-      const tStep = timeSpan <= 20 ? 2 : timeSpan <= 50 ? 5 : 10;
+      const tStep = niceStep(timeSpan, 6);
       for (let tYr = Math.ceil(minYear / tStep) * tStep; tYr <= maxYear; tYr += tStep) {
         const y = toY(tYr);
         ctx.beginPath();
@@ -123,7 +131,7 @@ export default function TimelineAndMinkowskiStudio({
         ctx.lineTo(PAD.left + plotW, y);
         ctx.stroke();
         ctx.textAlign = 'right';
-        ctx.fillText(`${tYr}`, PAD.left - 8, y + 3);
+        ctx.fillText(`${Math.round(tYr)}`, PAD.left - 8, y + 3);
       }
 
       // Map each stop's systemId to its cumulative route x-coordinate on the active ship
@@ -158,7 +166,9 @@ export default function TimelineAndMinkowskiStudio({
 
       // Bidirectional 45° Light-Cone rays from story events on the active route (c = 1 ly/yr)
       // plus exact 3D interception markers on the active ship's worldline!
-      storyEvents.forEach((ev) => {
+      const drawnEventLabels = [];
+      const sortedEvents = [...storyEvents].sort((a, b) => a.year - b.year);
+      sortedEvents.forEach((ev) => {
         const isOnActiveRoute = stopDistById.has(ev.systemId);
         if (isOnActiveRoute) {
           const evDist = stopDistById.get(ev.systemId);
@@ -189,10 +199,24 @@ export default function TimelineAndMinkowskiStudio({
             }
             ctx.setLineDash([]);
 
+            // Draw event origin marker dot
             ctx.fillStyle = '#facc15';
-            ctx.textAlign = 'left';
-            const evLabel = ev.title && typeof ev.title === 'object' ? ev.title[lang] || ev.title.en : ev.title;
-            ctx.fillText(`⚡ ${evLabel} (${ev.year})`, x0 + 6, y0 - 4);
+            ctx.beginPath();
+            ctx.arc(x0, y0, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Collision-free event text label (prevents vertical overlap on wide millennia spans)
+            const labelY = Math.max(PAD.top + 11, Math.min(PAD.top + plotH - 4, y0 - 4));
+            const collides = drawnEventLabels.some(
+              (pt) => Math.abs(pt.x - x0) < 260 && Math.abs(pt.y - labelY) < 13
+            );
+            if (!collides) {
+              drawnEventLabels.push({ x: x0, y: labelY });
+              ctx.textAlign = 'left';
+              const rawLbl = ev.title && typeof ev.title === 'object' ? ev.title[lang] || ev.title.en : ev.title;
+              const shortLbl = rawLbl.length > 44 ? `${rawLbl.slice(0, 43)}…` : rawLbl;
+              ctx.fillText(`⚡ ${shortLbl} (${ev.year})`, x0 + 6, labelY);
+            }
           }
         }
 
@@ -246,9 +270,13 @@ export default function TimelineAndMinkowskiStudio({
           ctx.beginPath();
           ctx.arc(mx, my, 4.5, 0, Math.PI * 2);
           ctx.fill();
-          ctx.fillStyle = '#e2e8f0';
-          ctx.textAlign = 'left';
-          ctx.fillText(`${sh.name} (τ=${nowState.properTimeYears.toFixed(1)}y)`, mx + 8, my + 3);
+          if (sh.id === activeShipId) {
+            ctx.fillStyle = '#e2e8f0';
+            ctx.textAlign = 'left';
+            const shortShip = sh.name.includes(' · ') ? sh.name.split(' · ')[0] : sh.name;
+            const shipLblY = Math.max(PAD.top + 12, Math.min(PAD.top + plotH - 6, my - 6));
+            ctx.fillText(`${shortShip} (τ=${nowState.properTimeYears.toFixed(1)}${t('unitYrShort')})`, mx + 8, shipLblY);
+          }
         }
       });
 

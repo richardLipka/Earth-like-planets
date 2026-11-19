@@ -733,6 +733,7 @@ const CURATED_HIGHLIGHTS = [
       { title: 'Babylon 5', author: 'J. Michael Straczynski', year: 1993, universe: 'Babylon 5', world: 'Epsilon III (orbiting Babylon 5 station)', medium: 'tv', wiki: 'Babylon_5' },
       { title: 'Halo: The Fall of Reach', author: 'Eric Nylund', year: 2001, universe: 'Halo', world: 'Reach (UNSC fortress world) & Tribute', medium: 'novel', wiki: 'Halo:_The_Fall_of_Reach' },
       { title: 'We Are Legion (We Are Bob)', author: 'Dennis E. Taylor', year: 2016, universe: 'Bobiverse', world: 'Ragnarok (first Bobiverse colony system)', medium: 'novel', wiki: 'Dennis_E._Taylor' },
+      { title: 'Vacuum Diagrams (Xeelee Sequence)', author: 'Stephen Baxter', year: 1997, universe: 'Xeelee Sequence', world: 'Early First Expansion GUTship colony system', medium: 'novel', wiki: 'Xeelee_Sequence' },
       { title: 'World of Ptavvs / Known Space', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Early human colony world', medium: 'novel', wiki: 'Known_Space' },
     ],
   },
@@ -821,6 +822,7 @@ const CURATED_HIGHLIGHTS = [
       { title: 'Planeta tří sluncí / Oceánem světelných roků', author: 'Vladimír Babula', year: 1954, universe: 'Eastern Bloc SF', world: 'Kvarten (Planet of Three Suns) — destination of the Czechoslovak starship Paprsek', medium: 'novel', wiki: 'Vladimír_Babula' },
       { title: 'The Three-Body Problem', author: 'Liu Cixin', year: 2008, universe: 'Three-Body', world: 'Trisolaris (chaotic three-body world)', medium: 'novel', wiki: 'The_Three-Body_Problem_(novel)' },
       { title: 'Avatar', author: 'James Cameron', year: 2009, universe: 'Avatar', world: 'Pandora (moon of Polyphemus around Alpha Cen A, reached by ISV Venture Star at 0.70c)', medium: 'film', wiki: 'Avatar_(2009_film)' },
+      { title: 'Starfall (Xeelee Sequence)', author: 'Stephen Baxter', year: 2009, universe: 'Xeelee Sequence', world: 'Alpha Centauri rebel stronghold of Flood challenging Empress Shira’s Solar Empire (AD 4820)', medium: 'novel', wiki: 'Xeelee_Sequence' },
       { title: 'Proxima', author: 'Stephen Baxter', year: 2013, universe: 'Proxima', world: 'Per Ardua (tidally locked Proxima Centauri colony)', medium: 'novel', wiki: 'Proxima_(novel)' },
       { title: 'The Songs of Distant Earth', author: 'Arthur C. Clarke', year: 1986, universe: 'Arthur C. Clarke', world: 'Pasadena / early relativistic colony transit', medium: 'novel', wiki: 'The_Songs_of_Distant_Earth' },
       { title: 'Known Space (Wunderland)', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Wunderland (first human slowboat colony around Alpha Centauri)', medium: 'novel', wiki: 'Known_Space' },
@@ -840,6 +842,7 @@ const CURATED_HIGHLIGHTS = [
       { title: 'Downbelow Station', author: 'C. J. Cherryh', year: 1981, universe: 'Alliance-Union', world: "Pell's World (Downbelow)", medium: 'novel', wiki: 'Downbelow_Station' },
       { title: 'The Robots of Dawn', author: 'Isaac Asimov', year: 1983, universe: 'Foundation / Robots', world: 'Aurora (first Spacer world)', medium: 'novel', wiki: 'The_Robots_of_Dawn' },
       { title: 'The Legacy of Heorot', author: 'Larry Niven, Jerry Pournelle & Steven Barnes', year: 1987, universe: 'Heorot', world: 'Avalon', medium: 'novel', wiki: 'The_Legacy_of_Heorot' },
+      { title: 'Ring / Vacuum Diagrams (Xeelee Sequence)', author: 'Stephen Baxter', year: 1994, universe: 'Xeelee Sequence', world: 'Early human sleeper-ship & First Expansion GUTdrive colony target', medium: 'novel', wiki: 'Ring_(Baxter_novel)' },
     ],
   },
   {
@@ -868,6 +871,7 @@ const CURATED_HIGHLIGHTS = [
       { title: 'The Garden of Rama', author: 'Arthur C. Clarke & Gentry Lee', year: 1991, universe: 'Rama', world: 'Rama Node (deep-space hub)', medium: 'novel', wiki: 'The_Garden_of_Rama' },
       { title: "The Hitchhiker's Guide to the Galaxy", author: 'Douglas Adams', year: 1979, universe: "Hitchhiker's Guide", world: 'Interstellar waystation', medium: 'novel', wiki: "The_Hitchhiker's_Guide_to_the_Galaxy" },
       { title: 'Downbelow Station / Alliance-Union', author: 'C. J. Cherryh', year: 1981, universe: 'Alliance-Union', world: "Barnard's Station", medium: 'novel', wiki: 'Alliance–Union_universe' },
+      { title: 'Vacuum Diagrams (Xeelee Sequence)', author: 'Stephen Baxter', year: 1997, universe: 'Xeelee Sequence', world: 'Early First Expansion interstellar probe & colony stepping stone', medium: 'novel', wiki: 'Vacuum_Diagrams' },
     ],
   },
   {
@@ -880,6 +884,7 @@ const CURATED_HIGHLIGHTS = [
       { title: 'Foundation / Galactic Empire', author: 'Isaac Asimov', year: 1951, universe: 'Foundation / Robots', world: 'Sirius Sector', medium: 'novel', wiki: 'Foundation_(Asimov_novel)' },
       { title: 'V', author: 'Kenneth Johnson', year: 1983, universe: 'V', world: 'Sirius IV (homeworld of the Visitors)', medium: 'tv', wiki: 'V_(1983_miniseries)' },
       { title: 'Known Space (Flatlander)', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Jinx & runaway slowboat Lazy Eight II', medium: 'novel', wiki: 'Known_Space' },
+      { title: 'Vacuum Diagrams / Resplendent (Xeelee Sequence)', author: 'Stephen Baxter', year: 1997, universe: 'Xeelee Sequence', world: 'Early First Expansion & post-Qax Coalition core star system', medium: 'novel', wiki: 'Xeelee_Sequence' },
     ],
   },
   {

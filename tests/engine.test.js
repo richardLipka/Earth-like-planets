@@ -383,6 +383,13 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       expect(e.universes).toContain('Bobiverse');
     }
 
+    // Verify Xeelee Sequence stars in scifi_literature.json
+    for (const id of ['hip-71683', 'hip-8102', 'hip-32349', 'hip-16537', 'hip-87937']) {
+      const e = scifi.bySystemId[id];
+      expect(e, `Missing Xeelee Sequence system ${id}`).toBeDefined();
+      expect(e.universes).toContain('Xeelee Sequence');
+    }
+
     // Verify Groombridge 1618 alias on GJ 380, Alien on Zeta Reticuli, and Tau Ceti Wikipedia hits
     expect(scifi.bySystemId['hip-49908'].aliases).toContain('Groombridge 1618');
     expect(scifi.bySystemId['hip-15371'].universes).toContain('Alien');
@@ -396,8 +403,8 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
     const systemsById = new Map(catalog.systems.map((s) => [s.id, s]));
     const voyages = voyagesDoc.voyages || [];
 
-    expect(voyages.length).toBeGreaterThanOrEqual(23);
-    // Ensure Revelation Space, 4-part Bobiverse, Eastern Bloc (Lem, Yefremov, Strugatsky, Martynov, Babula), and Classic/Modern sublight SF are present
+    expect(voyages.length).toBeGreaterThanOrEqual(26);
+    // Ensure Revelation Space, 4-part Bobiverse, 3-part Xeelee Sequence, Eastern Bloc (Lem, Yefremov, Strugatsky, Martynov, Babula), and Classic/Modern sublight SF are present
     const ids = new Set(voyages.map((v) => v.id));
     for (const requiredId of [
       'revelation-space-clavain-inhibitor',
@@ -406,6 +413,9 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       'bobiverse-exodus-colonies',
       'bobiverse-others-war',
       'bobiverse-heavens-river',
+      'xeelee-timelike-infinity',
+      'xeelee-mayflower-redemption',
+      'xeelee-raft-flux-ring',
       'lem-return-from-the-stars',
       'lem-magellanic-cloud',
       'yefremov-andromeda-nebula',

@@ -1,11 +1,11 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
-    "generatedAtIso": "2026-11-19T17:29:35.364Z",
+    "generatedAtIso": "2026-11-19T17:50:28.891Z",
     "catalogueSystemsSwept": 3494,
     "uniqueAliasesIndexed": 9352,
     "systemsWithFictionCount": 214,
-    "curatedHighlightsCount": 496,
+    "curatedHighlightsCount": 501,
     "wikipediaCategoryWorksCount": 227,
     "universes": [
       {
@@ -66,6 +66,10 @@
       },
       {
         "name": "Eastern Bloc SF",
+        "count": 5
+      },
+      {
+        "name": "Xeelee Sequence",
         "count": 5
       },
       {
@@ -264,7 +268,8 @@
         "Proxima",
         "Stanisław Lem",
         "Star Trek",
-        "Three-Body"
+        "Three-Body",
+        "Xeelee Sequence"
       ],
       "sfeUrl": "https://sf-encyclopedia.com/entry/alpha_centauri",
       "wikiCategories": [
@@ -316,6 +321,16 @@
           "world": "Pandora (moon of Polyphemus around Alpha Cen A, reached by ISV Venture Star at 0.70c)",
           "medium": "film",
           "url": "https://en.wikipedia.org/wiki/Avatar_(2009_film)",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Starfall (Xeelee Sequence)",
+          "author": "Stephen Baxter",
+          "year": 2009,
+          "universe": "Xeelee Sequence",
+          "world": "Alpha Centauri rebel stronghold of Flood challenging Empress Shira’s Solar Empire (AD 4820)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Xeelee_Sequence",
           "source": "Curated Hard SF"
         },
         {
@@ -801,7 +816,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 83
+      "totalCount": 84
     },
     "hip-87937": {
       "systemId": "hip-87937",
@@ -820,7 +835,8 @@
         "Hitchhiker's Guide",
         "Hyperion Cantos",
         "Rama",
-        "Star Trek"
+        "Star Trek",
+        "Xeelee Sequence"
       ],
       "sfeUrl": null,
       "wikiCategories": [
@@ -888,6 +904,16 @@
           "world": "Barnard's Station",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Alliance%E2%80%93Union_universe",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Vacuum Diagrams (Xeelee Sequence)",
+          "author": "Stephen Baxter",
+          "year": 1997,
+          "universe": "Xeelee Sequence",
+          "world": "Early First Expansion interstellar probe & colony stepping stone",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Vacuum_Diagrams",
           "source": "Curated Hard SF"
         },
         {
@@ -983,7 +1009,7 @@
           "source": "Wikipedia Category"
         }
       ],
-      "totalCount": 20
+      "totalCount": 21
     },
     "hyg-118720": {
       "systemId": "hyg-118720",
@@ -1236,7 +1262,8 @@
         "Hitchhiker's Guide",
         "Known Space",
         "Star Trek",
-        "V"
+        "V",
+        "Xeelee Sequence"
       ],
       "sfeUrl": "https://sf-encyclopedia.com/entry/sirius",
       "wikiCategories": [
@@ -1304,6 +1331,16 @@
           "world": "Jinx & runaway slowboat Lazy Eight II",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Known_Space",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Vacuum Diagrams / Resplendent (Xeelee Sequence)",
+          "author": "Stephen Baxter",
+          "year": 1997,
+          "universe": "Xeelee Sequence",
+          "world": "Early First Expansion & post-Qax Coalition core star system",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Xeelee_Sequence",
           "source": "Curated Hard SF"
         },
         {
@@ -1439,7 +1476,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 29
+      "totalCount": 30
     },
     "hip-92403": {
       "systemId": "hip-92403",
@@ -1554,7 +1591,8 @@
         "Honorverse",
         "Known Space",
         "Revelation Space",
-        "Star Trek"
+        "Star Trek",
+        "Xeelee Sequence"
       ],
       "sfeUrl": null,
       "wikiCategories": [
@@ -1602,6 +1640,16 @@
           "world": "Ragnarok (first Bobiverse colony system)",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Dennis_E._Taylor",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Vacuum Diagrams (Xeelee Sequence)",
+          "author": "Stephen Baxter",
+          "year": 1997,
+          "universe": "Xeelee Sequence",
+          "world": "Early First Expansion GUTship colony system",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Xeelee_Sequence",
           "source": "Curated Hard SF"
         },
         {
@@ -1797,7 +1845,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 29
+      "totalCount": 30
     },
     "hip-114046": {
       "systemId": "hip-114046",
@@ -2433,7 +2481,8 @@
         "Kim Stanley Robinson",
         "Known Space",
         "Project Hail Mary",
-        "Star Trek"
+        "Star Trek",
+        "Xeelee Sequence"
       ],
       "sfeUrl": "https://sf-encyclopedia.com/entry/tau_ceti",
       "wikiCategories": [
@@ -2521,6 +2570,16 @@
           "world": "Avalon",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/The_Legacy_of_Heorot",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Ring / Vacuum Diagrams (Xeelee Sequence)",
+          "author": "Stephen Baxter",
+          "year": 1994,
+          "universe": "Xeelee Sequence",
+          "world": "Early human sleeper-ship & First Expansion GUTdrive colony target",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Ring_(Baxter_novel)",
           "source": "Curated Hard SF"
         },
         {
@@ -2846,7 +2905,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 61
+      "totalCount": 62
     },
     "hip-36208": {
       "systemId": "hip-36208",

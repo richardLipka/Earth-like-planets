@@ -1,10 +1,10 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
-    "generatedAtIso": "2026-11-19T17:29:35.539Z",
-    "voyageCount": 23,
+    "generatedAtIso": "2026-11-19T17:50:29.096Z",
+    "voyageCount": 26,
     "customVoyagesCount": 0,
-    "totalShipsCount": 60
+    "totalShipsCount": 71
   },
   "voyages": [
     {
@@ -1923,6 +1923,784 @@
           "totalProperTimeYears": 55.79,
           "peakSpeedC": 0.9998,
           "peakGamma": 45.04
+        }
+      ]
+    },
+    {
+      "id": "xeelee-timelike-infinity",
+      "category": "xeelee",
+      "universe": "Xeelee Sequence",
+      "universeCs": "Série Xeelee",
+      "author": "Stephen Baxter",
+      "year": 1992,
+      "books": {
+        "en": "Timelike Infinity · Ring · Starfall · Vacuum Diagrams (Lieserl, Blue Shift)",
+        "cs": "Timelike Infinity · Ring (Prstenec) · Starfall · Vakuové diagramy"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Timelike_Infinity",
+      "sourceLabel": {
+        "en": "Wikipedia & Xeelee Sequence Official Chronology (AD 3717–5774)",
+        "cs": "Wikipedie a oficiální chronologie série Xeelee (3717–5774 n. l.)"
+      },
+      "title": {
+        "en": "Xeelee I — Timelike Infinity: GUTship Cauchy, Starfall & Qax Interface (3717–5771)",
+        "cs": "Xeelee I — Timelike Infinity: GUTloď Cauchy, Starfall a rozhraní Qaxů (3717–5771)"
+      },
+      "subtitle": {
+        "en": "Michael Poole’s Interface Project launches GUTship Cauchy (Miriam Berg) in AD 3717 towing a wormhole mouth on a 1,557-year relativistic loop returning in AD 5274 with only ~112 yr elapsed on board — opening a time-travel bridge back to AD 3829! Also tracks Great Northern’s AD 3953 Ring departure, Flood’s Alpha Centauri rebellion (Starfall, AD 4820), and Ambassador Jasoft Parz’s 500-year Qax Second Interface loop.",
+        "cs": "Projekt Rozhraní Michaela Poola vypouští r. 3717 GUTloď Cauchy (Miriam Bergová) s jedním ústím červí díry na 1 557letou relativistickou smyčku s návratem r. 5274 při pouhých ~112 letech palubního času — čímž otevírá časový most zpět do r. 3829! Zachycuje i start Great Northern (Ring, r. 3953), povstání Flooda z Alfy Centauri (Starfall, 4820) a 500letou druhou smyčku Qaxů."
+      },
+      "physicsNote": {
+        "en": "Exact wormhole-clock relativity: Cauchy’s deep-space ~1,541 ly circuit (mapped across real boundary stars from Sagittarius Core marker Alnasl) runs at 1g / 0.99905c from AD 3717.0 → 5274.1 (Δt = 1,557.1 yr, Δτ = 112.0 yr), anchoring the wormhole mouth to AD 3717 + 112 = AD 3829 — the EXACT canon year of the Qax time-travel invasion! Great Northern departs in flyby mode toward HD 142415 (2.2° from the real Great Attractor) on its 5-million-year / 1,000-yr-proper-time Ring odyssey.",
+        "cs": "Přesná relativita hodin červí díry: smyčka Cauchy (~1 541 ly po reálných okrajových hvězdách od Alnaslu ve směru jádra Galaxie) při 1g / 0,99905c letí 3717,0 → 5274,1 (Δt = 1 557,1 r., Δτ = 112,0 r.), takže ústí červí díry ukazuje přesně do r. 3717 + 112 = 3829 — kanonického roku invaze Qaxů! Great Northern odlétá v průletovém režimu směrem k HD 142415 (2,2° od Velkého atraktoru) na svou 5milionletou cestu (1 000 r. na palubě)."
+      },
+      "recommendedClockStart": 3717,
+      "focusSystemId": "sol",
+      "ships": [
+        {
+          "id": "xel-cauchy",
+          "name": "GUTship Cauchy · Miriam Berg (Interface B, 1g / 0.999c)",
+          "nameCs": "GUTloď Cauchy · Miriam Bergová (Rozhraní B, 1g / 0,999c)",
+          "color": "#00f0ff",
+          "departureYear": 3717,
+          "crewStartAge": 28,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.99905,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-88635",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-28185",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-141399",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-213240",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-bd-08-2823",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-8673",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-110067",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-great-northern",
+          "name": "GUTship Great Northern · Ring Launch (1g / 0.9999c Flyby)",
+          "nameCs": "GUTloď Great Northern · Start Ring (1g / 0,9999c průlet)",
+          "color": "#c084fc",
+          "departureYear": 3953,
+          "crewStartAge": 25,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 1,
+            "cruiseC": 0.9999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-142415",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-starfall-flood",
+          "name": "Flood’s Rebel Fleet · Starfall (1g GUTdrive)",
+          "nameCs": "Floodova povstalecká flotila · Starfall (1g GUTpohon)",
+          "color": "#fb7185",
+          "departureYear": 4820,
+          "crewStartAge": 34,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-qax-interface2",
+          "name": "Qax 2nd Interface · Jasoft Parz (500y Loop, 6g)",
+          "nameCs": "Druhé rozhraní Qaxů · Jasoft Parz (500letá smyčka, 6g)",
+          "color": "#f59e0b",
+          "departureYear": 5274,
+          "crewStartAge": 45,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 6,
+            "cruiseC": 0.9999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-213240",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-k2-18",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "xel1-ev-1",
+          "title": {
+            "en": "Launch of GUTship Cauchy & Michael Poole’s Interface Project (Sol)",
+            "cs": "Start GUTlodi Cauchy a projektu Rozhraní Michaela Poola (Sol)"
+          },
+          "systemId": "sol",
+          "year": 3717
+        },
+        {
+          "id": "xel1-ev-2",
+          "title": {
+            "en": "Qax Wormhole Time-Invasion & Poole’s Hermit Crab Ramming (Sol)",
+            "cs": "Časová invaze Qaxů červí dírou a Poolův náraz lodí Hermit Crab (Sol)"
+          },
+          "systemId": "sol",
+          "year": 3829
+        },
+        {
+          "id": "xel1-ev-3",
+          "title": {
+            "en": "AI Lieserl Enters the Sun — Discovery of Photino Birds (Sol)",
+            "cs": "AI Lieserl vstupuje do Slunce — objev fotinových ptáků (Sol)"
+          },
+          "systemId": "sol",
+          "year": 3951
+        },
+        {
+          "id": "xel1-ev-4",
+          "title": {
+            "en": "Launch of Generation GUTship Great Northern on 5-Myr Loop (Sol)",
+            "cs": "Start generační GUTlodi Great Northern na 5milionletou smyčku (Sol)"
+          },
+          "systemId": "sol",
+          "year": 3953
+        },
+        {
+          "id": "xel1-ev-5",
+          "title": {
+            "en": "Starfall — Flood’s Alpha Centauri Fleet Collapses Solar Empire",
+            "cs": "Starfall — Floodova flotila z Alfy Centauri svrhává Sluneční říši"
+          },
+          "systemId": "hip-71683",
+          "year": 4820
+        },
+        {
+          "id": "xel1-ev-6",
+          "title": {
+            "en": "Squeem Conquest (4874) & Qax Occupation of Humanity (5088, Sol)",
+            "cs": "Dobytí Squeemy (4874) a okupace lidstva Qaxy (5088, Sol)"
+          },
+          "systemId": "sol",
+          "year": 5088
+        },
+        {
+          "id": "xel1-ev-7",
+          "title": {
+            "en": "Return of Cauchy — 1,445-Year Temporal Wormhole Opens to AD 3829 (Sol)",
+            "cs": "Návrat Cauchy — otevírá se 1 445letý časový most do r. 3829 (Sol)"
+          },
+          "systemId": "sol",
+          "year": 5274.1
+        },
+        {
+          "id": "xel1-ev-8",
+          "title": {
+            "en": "Blue Shift — Jim Bolder Triggers Qax Nova; End of Qax Occupation (Sol)",
+            "cs": "Blue Shift — Jim Bolder vyvolává novu Qaxů; konec okupace (Sol)"
+          },
+          "systemId": "sol",
+          "year": 5407
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "xel-cauchy",
+          "name": "GUTship Cauchy · Miriam Berg (Interface B, 1g / 0.999c)",
+          "nameCs": "GUTloď Cauchy · Miriam Bergová (Rozhraní B, 1g / 0,999c)",
+          "routeNames": [
+            "Sol",
+            "Alnasl",
+            "HD 28185",
+            "HD 141399",
+            "HD 213240",
+            "BD-08 2823",
+            "HD 8673",
+            "HD 110067",
+            "Sol"
+          ],
+          "totalDistanceLy": 1540.84,
+          "totalCoordTimeYears": 1557.14,
+          "totalProperTimeYears": 111.67,
+          "peakSpeedC": 0.999,
+          "peakGamma": 22.95
+        },
+        {
+          "id": "xel-great-northern",
+          "name": "GUTship Great Northern · Ring Launch (1g / 0.9999c Flyby)",
+          "nameCs": "GUTloď Great Northern · Start Ring (1g / 0,9999c průlet)",
+          "routeNames": [
+            "Sol",
+            "HD 142415"
+          ],
+          "totalDistanceLy": 115.89,
+          "totalCoordTimeYears": 116.86,
+          "totalProperTimeYears": 5.48,
+          "peakSpeedC": 0.9999,
+          "peakGamma": 70.71
+        },
+        {
+          "id": "xel-starfall-flood",
+          "name": "Flood’s Rebel Fleet · Starfall (1g GUTdrive)",
+          "nameCs": "Floodova povstalecká flotila · Starfall (1g GUTpohon)",
+          "routeNames": [
+            "Alpha Centauri",
+            "Sol"
+          ],
+          "totalDistanceLy": 4.32,
+          "totalCoordTimeYears": 5.95,
+          "totalProperTimeYears": 3.57,
+          "peakSpeedC": 0.9509,
+          "peakGamma": 3.23
+        },
+        {
+          "id": "xel-qax-interface2",
+          "name": "Qax 2nd Interface · Jasoft Parz (500y Loop, 6g)",
+          "nameCs": "Druhé rozhraní Qaxů · Jasoft Parz (500letá smyčka, 6g)",
+          "routeNames": [
+            "Sol",
+            "HD 213240",
+            "K2-18",
+            "Sol"
+          ],
+          "totalDistanceLy": 496.23,
+          "totalCoordTimeYears": 497.2,
+          "totalProperTimeYears": 6.67,
+          "peakSpeedC": 1,
+          "peakGamma": 740.86
+        }
+      ]
+    },
+    {
+      "id": "xeelee-mayflower-redemption",
+      "category": "xeelee",
+      "universe": "Xeelee Sequence",
+      "universeCs": "Série Xeelee",
+      "author": "Stephen Baxter",
+      "year": 2004,
+      "books": {
+        "en": "Mayflower II · Reality Dust · Silver Ghost · On the Orion Line · Xeelee: Redemption",
+        "cs": "Mayflower II · Reality Dust · Silver Ghost · Na linii Orionu · Xeelee: Redemption"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Xeelee_Sequence",
+      "sourceLabel": {
+        "en": "Wikipedia — Xeelee Sequence (Resplendent & Redemption Timeline)",
+        "cs": "Wikipedie — Série Xeelee (časová osa Resplendent a Redemption)"
+      },
+      "title": {
+        "en": "Xeelee II — Mayflower II Halo Escape, Redemption & Orion Line (4106–6454)",
+        "cs": "Xeelee II — Únik Mayflower II do hala, Redemption a linie Orionu (4106–6454)"
+      },
+      "subtitle": {
+        "en": "Compare four iconic sublight trajectories across Stephen Baxter’s Resurgence & alternate Redemption timelines: Michael Poole’s AD 4106 near-c expedition straight toward the Galactic Core (Chandra / Sagittarius A*), the post-Qax Third Expansion (Reality Dust, AD 5408), generation ship Mayflower II fleeing Port Sol perpendicular out of the Milky Way disk (AD 5420 → 24,974), and the Coalition’s advance toward the Silver Ghosts & Orion Line.",
+        "cs": "Srovnejte čtyři ikonické podsvětelné trasy období Obrody a alternativní linie Redemption: Poolovu téměř světelnou výpravu z r. 4106 přímo k jádru Galaxie (Chandra / Sagittarius A*), třetí expanzi po pádu Qaxů (Reality Dust, 5408), generační loď Mayflower II prchající kolmo z disku Mléčné dráhy (5420 → 24 974) a průzkum Koalice směrem ke Stříbrným duchům a linii Orionu."
+      },
+      "physicsNote": {
+        "en": "True 3D Galactic geometry: Poole’s Redemption fleet exits along Alnasl → HD 169830 (4.6° from Sagittarius A*, 26,000 ly away — only ~20 yr ship time at 1g!), whereas Mayflower II escapes perpendicular to the Galactic plane (+Z North Galactic Pole via HD 110067, 7.6° off-axis) at 0.12c — taking 875 yr just to cross our 105 ly sphere before its 19,554-year halo diaspora ends with Coalition retrieval in AD 24,974 (right after Exultant’s Core conquest in AD 24,973).",
+        "cs": "Reálná 3D galaktická geometrie: Poolova flotila Redemption míří přes Alnasl → HD 169830 (4,6° od Sagittarius A* ve vzdálenosti 26 000 ly — při 1g jen ~20 r. vlastního času!), zatímco Mayflower II uniká kolmo nad galaktickou rovinu (+Z severní galaktický pól přes HD 110067) rychlostí 0,12c — 875 let jen k opuštění naší 105 ly sféry před 19 554letou diasporou do roku 24 974 (těsně po dobytí jádra v Exultant r. 24 973)."
+      },
+      "recommendedClockStart": 4106,
+      "focusSystemId": "nea-hd-110067",
+      "ships": [
+        {
+          "id": "xel-redemption-poole",
+          "name": "Michael Poole · Redemption Core Fleet (1g / 0.9999c Flyby)",
+          "nameCs": "Michael Poole · Výprava k jádru Redemption (1g / 0,9999c průlet)",
+          "color": "#00f0ff",
+          "departureYear": 4106,
+          "crewStartAge": 35,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 1,
+            "cruiseC": 0.9999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-88635",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-169830",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-reality-dust",
+          "name": "Coalition Resurgence · Reality Dust Scout (3g)",
+          "nameCs": "Obroda Koalice · Průzkum Reality Dust (3g)",
+          "color": "#38bdf8",
+          "departureYear": 5408,
+          "crewStartAge": 29,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "hip-32349",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "hip-37279",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-mayflower-ii",
+          "name": "Mayflower II · Rusel’s Generation Ship (0.12c Halo Flyby)",
+          "nameCs": "Mayflower II · Ruselova generační loď (0,12c únik do hala)",
+          "color": "#00ff88",
+          "departureYear": 5420,
+          "crewStartAge": 32,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 0.05,
+            "cruiseC": 0.12,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-110067",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-orion-line",
+          "name": "Silver Ghost & Orion Line Survey (1.5g GUTdrive)",
+          "nameCs": "Průzkum Stříbrných duchů a linie Orionu (1,5g GUT)",
+          "color": "#f59e0b",
+          "departureYear": 5499,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "hip-22449",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "xel2-ev-1",
+          "title": {
+            "en": "Xeelee: Redemption — Michael Poole Launches Toward Galactic Core (Sol)",
+            "cs": "Xeelee: Redemption — Michael Poole startuje k jádru Galaxie (Sol)"
+          },
+          "systemId": "sol",
+          "year": 4106
+        },
+        {
+          "id": "xel2-ev-2",
+          "title": {
+            "en": "Reality Dust — Third Expansion Begins Under Coalition Government (Sol)",
+            "cs": "Reality Dust — začíná Třetí expanze pod vládou Koalice (Sol)"
+          },
+          "systemId": "sol",
+          "year": 5408
+        },
+        {
+          "id": "xel2-ev-3",
+          "title": {
+            "en": "Launch of Generation Starship Mayflower II from Port Sol (+Z Halo)",
+            "cs": "Start generačního hvězdoletu Mayflower II z Port Sol (+Z halo)"
+          },
+          "systemId": "sol",
+          "year": 5420
+        },
+        {
+          "id": "xel2-ev-4",
+          "title": {
+            "en": "First Contact with the Silver Ghosts (Orion Arm / Tabit)",
+            "cs": "První kontakt se Stříbrnými duchy (rameno Orionu / Tabit)"
+          },
+          "systemId": "hip-22449",
+          "year": 5499
+        },
+        {
+          "id": "xel2-ev-5",
+          "title": {
+            "en": "On the Orion Line — Height of the Ghost Wars (Orion Arm)",
+            "cs": "Na linii Orionu — vrchol válek se Stříbrnými duchy (rameno Orionu)"
+          },
+          "systemId": "hip-22449",
+          "year": 6454
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "xel-redemption-poole",
+          "name": "Michael Poole · Redemption Core Fleet (1g / 0.9999c Flyby)",
+          "nameCs": "Michael Poole · Výprava k jádru Redemption (1g / 0,9999c průlet)",
+          "routeNames": [
+            "Sol",
+            "Alnasl",
+            "HD 169830"
+          ],
+          "totalDistanceLy": 124.22,
+          "totalCoordTimeYears": 127.09,
+          "totalProperTimeYears": 12.9,
+          "peakSpeedC": 0.9998,
+          "peakGamma": 51
+        },
+        {
+          "id": "xel-reality-dust",
+          "name": "Coalition Resurgence · Reality Dust Scout (3g)",
+          "nameCs": "Obroda Koalice · Průzkum Reality Dust (3g)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri",
+            "Sirius",
+            "Procyon",
+            "Sol"
+          ],
+          "totalDistanceLy": 30.56,
+          "totalCoordTimeYears": 34.53,
+          "totalProperTimeYears": 9.7,
+          "peakSpeedC": 0.9986,
+          "peakGamma": 18.75
+        },
+        {
+          "id": "xel-mayflower-ii",
+          "name": "Mayflower II · Rusel’s Generation Ship (0.12c Halo Flyby)",
+          "nameCs": "Mayflower II · Ruselova generační loď (0,12c únik do hala)",
+          "routeNames": [
+            "Sol",
+            "HD 110067"
+          ],
+          "totalDistanceLy": 104.89,
+          "totalCoordTimeYears": 875.23,
+          "totalProperTimeYears": 868.91,
+          "peakSpeedC": 0.12,
+          "peakGamma": 1.01
+        },
+        {
+          "id": "xel-orion-line",
+          "name": "Silver Ghost & Orion Line Survey (1.5g GUTdrive)",
+          "nameCs": "Průzkum Stříbrných duchů a linie Orionu (1,5g GUT)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri",
+            "Tau Ceti",
+            "Epsilon Eridani",
+            "Tabit"
+          ],
+          "totalDistanceLy": 40.7,
+          "totalCoordTimeYears": 46.99,
+          "totalProperTimeYears": 15.68,
+          "peakSpeedC": 0.9976,
+          "peakGamma": 14.48
+        }
+      ]
+    },
+    {
+      "id": "xeelee-raft-flux-ring",
+      "category": "xeelee",
+      "universe": "Xeelee Sequence",
+      "universeCs": "Série Xeelee",
+      "author": "Stephen Baxter",
+      "year": 1991,
+      "books": {
+        "en": "Raft (1991) · Stowaway · Flux (1993) · Ring (1994) · Gravity Dreams",
+        "cs": "Vor (Raft, 1991) · Stowaway · Flux (1993) · Ring (1994) · Gravity Dreams"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Raft_(novel)",
+      "sourceLabel": {
+        "en": "Wikipedia — Raft, Flux & Ring (War to End Wars Chronology)",
+        "cs": "Wikipedie — Vor (Raft), Flux a Ring (chronologie Války k ukončení válek)"
+      },
+      "title": {
+        "en": "Xeelee III — Raft, Flux & Bolder’s Ring: Constancy of Purpose (AD 104,350+)",
+        "cs": "Xeelee III — Vor (Raft), Flux a Bolderův prstenec: Constancy of Purpose (104 350+)"
+      },
+      "subtitle": {
+        "en": "During humanity’s War to End Wars (c. AD 100,000+), the massive GUT-warship Constancy of Purpose chases a Xeelee nightfighter outward along the Great Attractor vector toward Bolder’s Ring — blundering through a spacetime portal into Universe Beta (gravity 10⁹× stronger!), where its wreckage becomes the Raft (AD 104,858, ~500 yr later). Contrasted with a slow heavy relativistic payload analog representing the Flux rogue neutron-star missile.",
+        "cs": "Během Války k ukončení válek (kolem r. 100 000+) pronásleduje obří lidská válečná loď Constancy of Purpose xeeleeské noční stíhače směrem k Velkému atraktoru a Bolderovu prstenci — a omylem vletí portálem do Vesmíru Beta (gravitace 10⁹× silnější!), kde se z jejího vraku stane Vor (Raft, r. 104 858, o ~500 let později). Doplněno těžkou relativistickou dráhou analogickou neutronové střele z románu Flux."
+      },
+      "physicsNote": {
+        "en": "Universe Beta (Raft) lies outside our Milky Way’s physics (G = 10⁹ G₀; stars 1.6 km wide!), so this simulation tracks Constancy of Purpose’s canonical origin flight in our universe: straight along Sol → Alpha Centauri → HD 142415 (only 2.2° from the real Norma Cluster / Great Attractor where Bolder’s Ring sits!). Timeline milestones span from Raft (AD 104,858) toward Exaltation of the Integrality (AD 168,349), Flux (AD 193,700), Gravity Dreams reconnection (AD 978,225), and Great Northern’s Ring escape (AD 5,000,000).",
+        "cs": "Vesmír Beta (Vor/Raft) leží mimo fyziku naší Galaxie (G = 10⁹ G₀; hvězdy o průměru 1,6 km!), proto modelujeme kanonický startovní let lodi Constancy of Purpose v našem vesmíru: po ose Sol → Alfa Centauri → HD 142415 (pouhých 2,2° od reálné kupy Norma / Velkého atraktoru, kde leží Bolderův prstenec!). Časová linie navazuje od Voru (104 858) ke střele Flux (193 700), znovunavázání kontaktu v Gravity Dreams (978 225) a úniku Great Northern v Ringu (5 000 000)."
+      },
+      "recommendedClockStart": 104350,
+      "focusSystemId": "nea-hd-142415",
+      "ships": [
+        {
+          "id": "xel-nightfighter-quarry",
+          "name": "Xeelee Nightfighter · Ring Escape Vector (6g / 0.9999c Flyby)",
+          "nameCs": "Xeeleeský noční stíhač · Vektor k Prstenci (6g / 0,9999c průlet)",
+          "color": "#c084fc",
+          "departureYear": 104350,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 6,
+            "cruiseC": 0.9999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-142415",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-constancy-raft",
+          "name": "Constancy of Purpose · Raft Warship (2g / 0.999c Flyby)",
+          "nameCs": "Constancy of Purpose · Válečná loď z Voru (2g / 0,999c průlet)",
+          "color": "#00f0ff",
+          "departureYear": 104352,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 2,
+            "cruiseC": 0.999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-142415",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "xel-flux-neutron-analog",
+          "name": "Heavy Ring-Buster Payload · Flux Analog (0.25g / 0.85c Flyby)",
+          "nameCs": "Těžká střela na Prstenec · Analog Flux (0,25g / 0,85c průlet)",
+          "color": "#f59e0b",
+          "departureYear": 104400,
+          "crewStartAge": 25,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 0.25,
+            "cruiseC": 0.85,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "nea-hd-142415",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "xel3-ev-1",
+          "title": {
+            "en": "Constancy of Purpose Pursues Xeelee Nightfighter Toward Bolder’s Ring (Sol)",
+            "cs": "Constancy of Purpose pronásleduje xeeleeský stíhač k Bolderovu prstenci (Sol)"
+          },
+          "systemId": "sol",
+          "year": 104352
+        },
+        {
+          "id": "xel3-ev-2",
+          "title": {
+            "en": "Pursuit Passes Alpha Centauri Staging Sector Along Great Attractor Axis",
+            "cs": "Pronásledování míjí sektor Alfy Centauri po ose Velkého atraktoru"
+          },
+          "systemId": "hip-71683",
+          "year": 104357
+        },
+        {
+          "id": "xel3-ev-3",
+          "title": {
+            "en": "Portal Breach into High-G Universe Beta (G = 10⁹ G₀, Norma Vector)",
+            "cs": "Průnik portálem do vysoko-gravitačního Vesmíru Beta (G = 10⁹ G₀)"
+          },
+          "systemId": "nea-hd-142415",
+          "year": 104470
+        },
+        {
+          "id": "xel3-ev-4",
+          "title": {
+            "en": "Raft & Stowaway — Rees & Descendants Survive on Wreckage of Constancy of Purpose",
+            "cs": "Vor (Raft) a Stowaway — Rees a potomci přežívají na vraku Constancy of Purpose"
+          },
+          "systemId": "nea-hd-142415",
+          "year": 104858
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "xel-nightfighter-quarry",
+          "name": "Xeelee Nightfighter · Ring Escape Vector (6g / 0.9999c Flyby)",
+          "nameCs": "Xeeleeský noční stíhač · Vektor k Prstenci (6g / 0,9999c průlet)",
+          "routeNames": [
+            "Sol",
+            "HD 142415"
+          ],
+          "totalDistanceLy": 115.89,
+          "totalCoordTimeYears": 116.06,
+          "totalProperTimeYears": 2.28,
+          "peakSpeedC": 0.9999,
+          "peakGamma": 70.71
+        },
+        {
+          "id": "xel-constancy-raft",
+          "name": "Constancy of Purpose · Raft Warship (2g / 0.999c Flyby)",
+          "nameCs": "Constancy of Purpose · Válečná loď z Voru (2g / 0,999c průlet)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri",
+            "HD 142415"
+          ],
+          "totalDistanceLy": 115.95,
+          "totalCoordTimeYears": 117.41,
+          "totalProperTimeYears": 8.68,
+          "peakSpeedC": 0.999,
+          "peakGamma": 22.37
+        },
+        {
+          "id": "xel-flux-neutron-analog",
+          "name": "Heavy Ring-Buster Payload · Flux Analog (0.25g / 0.85c Flyby)",
+          "nameCs": "Těžká střela na Prstenec · Analog Flux (0,25g / 0,85c průlet)",
+          "routeNames": [
+            "Sol",
+            "HD 142415"
+          ],
+          "totalDistanceLy": 115.89,
+          "totalCoordTimeYears": 138.5,
+          "totalProperTimeYears": 74.53,
+          "peakSpeedC": 0.85,
+          "peakGamma": 1.9
         }
       ]
     },
