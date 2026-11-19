@@ -520,8 +520,34 @@ export default function App() {
       if (!sysId) return;
       setSelectedSystemId(sysId);
       setIsLeftDockOpen(true);
-      setShips((prev) =>
-        prev.map((sh) => {
+      setShips((prev) => {
+        if (prev.length === 0) {
+          const newId = `ship-${Date.now()}`;
+          const fresh = {
+            id: newId,
+            name: 'ISV Vessel 1',
+            color: SHIP_COLORS[0],
+            departureYear: 2150.0,
+            crewStartAge: 30.0,
+            driveConfig: {
+              mode: 'flip',
+              accelG: 1.0,
+              cruiseC: 0.85,
+              driveType: 'non-reactive',
+              exhaustVelC: 0.33,
+            },
+            waypoints:
+              sysId === 'sol'
+                ? [{ systemId: 'sol', stayYears: 0 }]
+                : [
+                    { systemId: 'sol', stayYears: 0 },
+                    { systemId: sysId, stayYears: 0 },
+                  ],
+          };
+          setActiveShipId(newId);
+          return [fresh];
+        }
+        return prev.map((sh) => {
           if (sh.id !== activeShipId) return sh;
           const last = sh.waypoints[sh.waypoints.length - 1];
           if (last && last.systemId === sysId) return sh;
@@ -529,8 +555,8 @@ export default function App() {
             ...sh,
             waypoints: [...sh.waypoints, { systemId: sysId, stayYears: 0 }],
           };
-        })
-      );
+        });
+      });
     },
     [activeShipId]
   );
@@ -539,16 +565,36 @@ export default function App() {
     (sysId) => {
       if (!sysId) return;
       setIsLeftDockOpen(true);
-      setShips((prev) =>
-        prev.map((sh) => {
+      setShips((prev) => {
+        if (prev.length === 0) {
+          const newId = `ship-${Date.now()}`;
+          const fresh = {
+            id: newId,
+            name: 'ISV Vessel 1',
+            color: SHIP_COLORS[0],
+            departureYear: 2150.0,
+            crewStartAge: 30.0,
+            driveConfig: {
+              mode: 'flip',
+              accelG: 1.0,
+              cruiseC: 0.85,
+              driveType: 'non-reactive',
+              exhaustVelC: 0.33,
+            },
+            waypoints: [{ systemId: sysId, stayYears: 0 }],
+          };
+          setActiveShipId(newId);
+          return [fresh];
+        }
+        return prev.map((sh) => {
           if (sh.id !== activeShipId) return sh;
           const rest = sh.waypoints.slice(1);
           return {
             ...sh,
             waypoints: [{ systemId: sysId, stayYears: 0 }, ...rest],
           };
-        })
-      );
+        });
+      });
     },
     [activeShipId]
   );
@@ -706,8 +752,11 @@ export default function App() {
       setEpochOffsetYears(0);
 
       const minDep = Math.min(...nextShips.map((s) => s.departureYear));
-      if (replaceExisting || !Number.isFinite(masterClockYear)) {
+      if (replaceExisting || baseShips.length === 0 || !Number.isFinite(masterClockYear)) {
         setMasterClockYear(minDep);
+      }
+      if ((replaceExisting || baseShips.length === 0) && nextShips.length > 0) {
+        setActiveShipId(nextShips[0].id);
       }
       setIsLeftDockOpen(true);
       setIsTimelineOpen(true);
@@ -733,11 +782,27 @@ export default function App() {
   }, [lang]);
 
   const handleDeleteShip = () => {
-    if (ships.length <= 1) return;
+    if (ships.length === 0) return;
     const next = ships.filter((s) => s.id !== activeShipId);
     setShips(next);
-    setActiveShipId(next[0].id);
+    setActiveShipId(next[0]?.id || null);
+    if (next.length === 0) {
+      setActiveVoyagePreset(null);
+      setMergedVoyagePresetIds([]);
+      setIsPlayingTimeline(false);
+      setLightConeConfig((prev) => ({ ...prev, enabled: false }));
+    }
   };
+
+  const handleClearAllVoyages = useCallback(() => {
+    setShips([]);
+    setActiveShipId(null);
+    setStoryEvents([]);
+    setActiveVoyagePreset(null);
+    setMergedVoyagePresetIds([]);
+    setIsPlayingTimeline(false);
+    setLightConeConfig((prev) => ({ ...prev, enabled: false }));
+  }, []);
 
   const handleExportJson = () => {
     const payload = {
@@ -1238,6 +1303,7 @@ export default function App() {
             onAddShip={handleAddShip}
             onDuplicateShip={handleDuplicateShip}
             onDeleteShip={handleDeleteShip}
+            onClearAllVoyages={handleClearAllVoyages}
             onUpdateActiveShip={handleUpdateActiveShip}
             activeVoyage={activeShipWithVoyage?.voyage}
             selectedSystem={selectedSystem}
@@ -1505,6 +1571,7 @@ export default function App() {
         epochOffsetYears={epochOffsetYears}
         onExportJson={handleExportJson}
         onImportJson={handleImportJson}
+        onClearAllVoyages={handleClearAllVoyages}
       />
 
       {/* Compact Academic Footer Strip (KIV ZČU & Author Homepage) */}
@@ -1520,6 +1587,7 @@ export default function App() {
         currentShipCount={ships.length}
         onLoadVoyage={handleLoadVoyagePreset}
         onMergeVoyages={handleMergeVoyagePresets}
+        onClearAllVoyages={handleClearAllVoyages}
       />
 
       {/* Data Sources & Attribution Modal */}

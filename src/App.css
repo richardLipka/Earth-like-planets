@@ -3718,6 +3718,235 @@ a.scifi-work-title:hover {
   background: rgba(56, 189, 248, 0.28);
 }
 
+/* Clear All Voyages & Empty Fleet State */
+.ship-roster-clear-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding-top: 2px;
+}
+
+.roster-count-note {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.clear-all-voyages-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(251, 113, 133, 0.45);
+  color: #fda4af;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.clear-all-voyages-btn:hover {
+  background: rgba(244, 63, 94, 0.25);
+  border-color: rgba(251, 113, 133, 0.8);
+  color: #fff;
+}
+
+.hud-btn.clear-all-modal-btn {
+  background: rgba(244, 63, 94, 0.15);
+  border: 1px solid rgba(251, 113, 133, 0.5);
+  color: #fecdd3;
+}
+.hud-btn.clear-all-modal-btn:hover {
+  background: rgba(244, 63, 94, 0.28);
+  border-color: #fb7185;
+  color: #fff;
+}
+
+.empty-fleet-card {
+  margin: 12px;
+  padding: 14px 12px;
+  background: rgba(6, 14, 30, 0.85);
+  border: 1px dashed rgba(0, 240, 255, 0.35);
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.empty-fleet-desc {
+  margin: 0;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
+
+.empty-fleet-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gantt-empty-notice {
+  padding: 16px 14px;
+  margin-top: 8px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  background: rgba(6, 14, 30, 0.65);
+  border: 1px dashed rgba(0, 240, 255, 0.25);
+  border-radius: 5px;
+}
+
+/* Stellar Spectral Classification, Visible Absorption Bar & Planck Energy Output */
+.spectral-analysis-section {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.spectral-class-pill {
+  margin-left: auto;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 233, 176, 0.55);
+  background: rgba(6, 12, 26, 0.85);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.spectral-class-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: #f1f5f9;
+}
+
+.spectral-lum-sub {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.spectrum-strip-box {
+  background: rgba(3, 7, 18, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.22);
+  border-radius: 5px;
+  padding: 5px 7px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.spectrum-lines-labels {
+  position: relative;
+  height: 13px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+}
+
+.spec-line-tag {
+  position: absolute;
+  transform: translateX(-50%);
+  color: #cbd5e1;
+  white-space: nowrap;
+}
+
+.spec-line-tag.emission {
+  color: #fda4af;
+  font-weight: 700;
+}
+
+.spectrum-bar-canvas {
+  width: 100%;
+  height: 36px;
+  display: block;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.spectrum-axis-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: var(--text-muted);
+}
+
+.planck-bands-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: rgba(5, 11, 24, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 4px;
+  padding: 6px 7px;
+}
+
+.planck-bands-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.planck-peak-chip {
+  color: var(--holo-cyan);
+  font-weight: 600;
+}
+
+.planck-bands-bar {
+  display: flex;
+  height: 7px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.9);
+}
+
+.pb-seg.uv {
+  background: linear-gradient(90deg, #6366f1, #a855f7);
+}
+.pb-seg.vis {
+  background: linear-gradient(90deg, #38bdf8, #4ade80, #fde047, #fb923c);
+}
+.pb-seg.ir {
+  background: linear-gradient(90deg, #ef4444, #991b1b);
+}
+
+.planck-bands-legend {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+}
+
+.pb-lbl.uv { color: #c4b5fd; }
+.pb-lbl.vis { color: #fde68a; }
+.pb-lbl.ir { color: #fca5a5; }
+
+.spectral-features-note {
+  font-family: var(--font-mono);
+  font-size: 9.8px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  padding: 5px 7px;
+  background: rgba(5, 11, 24, 0.72);
+  border-left: 2px solid rgba(0, 240, 255, 0.45);
+  border-radius: 3px;
+}
+.spectral-features-note strong {
+  color: #e2e8f0;
+  font-weight: 500;
+}
+
+
 
 
 

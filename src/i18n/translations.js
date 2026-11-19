@@ -343,6 +343,22 @@ export const translations = {
     tidalPossibleShort: 'Possible',
     tidalFreeShort: 'Free',
     spectraTooltip: 'Published atmospheric spectra in NASA Exoplanet Archive (click to open overview)',
+    // Clear All Voyages & Empty Fleet State
+    btnClearAllVoyages: 'Clear All Voyages',
+    btnClearAllVoyagesTooltip: 'Remove all ships, routes, and story events from the map and timeline',
+    emptyFleetTitle: 'No Active Voyages',
+    emptyFleetShort: 'All voyages cleared — click Load or + Merge to add ships.',
+    emptyFleetDesc: 'All voyages and story events have been cleared. Click “+ New Ship”, open the Voyages Library, or select any star and press “+ Add to Route” (or Shift+Click in 3D) to begin.',
+    // Stellar Spectral Classification & Planck Spectrum
+    spectralSectionTitle: 'SPECTRAL ANALYSIS & BLACKBODY',
+    spectralEmissionNote: 'Hα emission lines',
+    spectralEnergyDistLabel: 'Bolometric Energy Output (Planck)',
+    spectralBandVis: 'Vis',
+    spectralBandIr: 'IR',
+    spectralPeakLabel: 'Wien Peak (λmax)',
+    spectralBvLabel: 'Color Index (B−V)',
+    spectralLogGLabel: 'Surface Gravity (log g)',
+    spectralLinesLabel: 'Key Spectral Lines',
   },
   cs: {
     appTitle: 'ASTROMETRIE // 3D',
@@ -681,6 +697,22 @@ export const translations = {
     tidalPossibleShort: 'Možná',
     tidalFreeShort: 'Volná',
     spectraTooltip: 'Publikovaná atmosférická spektra v NASA Exoplanet Archive (kliknutím otevřete přehled)',
+    // Clear All Voyages & Empty Fleet State
+    btnClearAllVoyages: 'Vymazat všechny výpravy',
+    btnClearAllVoyagesTooltip: 'Odstranit všechny lodě, trasy i události příběhu z 3D mapy a časové osy',
+    emptyFleetTitle: 'Žádné aktivní výpravy',
+    emptyFleetShort: 'Všechny výpravy vymazány — kliknutím na Načíst nebo + Sloučit přidejte lodě.',
+    emptyFleetDesc: 'Všechny výpravy i události byly vymazány. Klikněte na „+ Nová loď“, otevřete Knihovnu výprav, nebo vyberte hvězdu a klikněte na „+ Přidat do trasy“ (či Shift+Klik v 3D mapě).',
+    // Stellar Spectral Classification & Planck Spectrum
+    spectralSectionTitle: 'SPEKTRÁLNÍ ANALÝZA A ZÁŘENÍ',
+    spectralEmissionNote: 'emisní čáry Hα',
+    spectralEnergyDistLabel: 'Rozdělení zářivé energie (Planck)',
+    spectralBandVis: 'Vid.',
+    spectralBandIr: 'IR',
+    spectralPeakLabel: 'Wienovo maximum (λmax)',
+    spectralBvLabel: 'Barevný index (B−V)',
+    spectralLogGLabel: 'Povrch. gravitace (log g)',
+    spectralLinesLabel: 'Klíčové spektrální čáry',
   },
 };
 

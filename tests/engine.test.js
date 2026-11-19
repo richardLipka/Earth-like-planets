@@ -31,6 +31,7 @@ import {
   getBroadcastEraForYear,
 } from '../src/data/broadcastChronicle.js';
 import { computeESI, computeTidalLocking } from '../src/engine/exoplanetMetrics.js';
+import { analyzeStarSpectrum, computeBolometricBands } from '../src/engine/stellarSpectra.js';
 import { systemPosAtEpoch, distanceBetweenSystems } from '../src/engine/stellarMotion.js';
 import { getSystemSourceLinks, getSkyCutoutSources } from '../src/utils/catalogLinks.js';
 import { translations } from '../src/i18n/translations.js';
@@ -700,6 +701,48 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
     const earth = sol.planets.find((p) => p.name === 'Earth');
     expect(earth.esi).toBe(1);
     expect(earth.tidalLockStatus).toBe('free');
+  });
+
+  it('computes accurate MK spectral classification, Wien peak, Planck UV/Vis/IR energy bands, and surface gravity log g', () => {
+    // 1. Sun (G2V, 5772 K): lambda_max = 502 nm (Visible), log g = 4.44, UV ~10%, Vis ~44%, IR ~46%
+    const sun = analyzeStarSpectrum({
+      spect: 'G2V',
+      cls: 'G',
+      lumClass: 'V',
+      teff: 5772,
+      mass: 1.0,
+      radius: 1.0,
+      bv: 0.65,
+      absmag: 4.83,
+    });
+    expect(sun.peakNm).toBe(502);
+    expect(sun.peakBand.id).toBe('vis');
+    expect(sun.logG).toBeCloseTo(4.44, 2);
+    expect(sun.bands.uvPct + sun.bands.visPct + sun.bands.irPct).toBeCloseTo(100, 1);
+    expect(sun.bands.visPct).toBeGreaterThan(40);
+    expect(sun.bands.visPct).toBeLessThan(48);
+
+    // 2. Sirius A (A1V, 9940 K): peaks in UV (<380 nm), UV > 40%
+    const sirius = analyzeStarSpectrum({ spect: 'A1V', cls: 'A', lumClass: 'V', teff: 9940, mass: 2.06, radius: 1.71 });
+    expect(sirius.peakNm).toBeLessThan(310);
+    expect(sirius.peakBand.id).toBe('uv');
+    expect(sirius.bands.uvPct).toBeGreaterThan(40);
+
+    // 3. Proxima Centauri (M5Ve, 3042 K): peaks in Near-IR (~953 nm), IR > 80%, H-alpha emission detected
+    const proxima = analyzeStarSpectrum({ spect: 'M5Ve', cls: 'M', lumClass: 'V', teff: 3042, mass: 0.122, radius: 0.154 });
+    expect(proxima.peakBand.id).toBe('nir');
+    expect(proxima.bands.irPct).toBeGreaterThan(80);
+    expect(proxima.hasEmissionLines).toBe(true);
+    expect(proxima.lines.some((l) => l.label === 'Hα' && l.depth < 0)).toBe(true);
+    expect(proxima.logG).toBeGreaterThan(5.0);
+
+    // 4. WISE 0855-0714 (Y4, 250 K): peaks in Mid-IR (~11.6 um), ~100% IR
+    const wise = analyzeStarSpectrum({ spect: 'Y4', cls: 'Y', lumClass: 'BD', teff: 250, mass: 0.015, radius: 0.095 });
+    expect(wise.peakNm).toBeGreaterThan(10000);
+    expect(wise.peakBand.id).toBe('mir');
+    expect(wise.bands.irPct).toBe(100);
+    const bSum = computeBolometricBands(250);
+    expect(bSum.uvPct + bSum.visPct + bSum.irPct).toBeCloseTo(100, 1);
   });
 });
 

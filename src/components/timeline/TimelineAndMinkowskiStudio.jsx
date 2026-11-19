@@ -36,6 +36,7 @@ export default function TimelineAndMinkowskiStudio({
   epochOffsetYears,
   onExportJson,
   onImportJson,
+  onClearAllVoyages,
 }) {
   const { lang, t } = useLanguage();
   const [activeTab, setActiveTab] = useState('gantt'); // 'gantt' | 'minkowski' | 'export'
@@ -400,6 +401,16 @@ export default function TimelineAndMinkowskiStudio({
             onChange={(e) => onChangeMasterClockYear(Number(e.target.value))}
           />
           <strong className="clock-readout">{formatNum(masterClockYear, 2, lang)}</strong>
+          {shipsWithVoyages.length > 0 && typeof onClearAllVoyages === 'function' && (
+            <button
+              type="button"
+              className="mini-hud-btn warn"
+              onClick={onClearAllVoyages}
+              title={t('btnClearAllVoyagesTooltip')}
+            >
+              <Trash2 size={12} />
+            </button>
+          )}
           <button type="button" className="icon-btn close-studio-btn" onClick={onClose}>
             <X size={15} />
           </button>
@@ -424,6 +435,9 @@ export default function TimelineAndMinkowskiStudio({
               </div>
 
               {/* Multi-Ship Dual-Frame Tracks */}
+              {shipsWithVoyages.length === 0 && (
+                <div className="gantt-empty-notice">{t('emptyFleetDesc')}</div>
+              )}
               {shipsWithVoyages.map((sh) => {
                 const v = sh.voyage;
                 const live = evaluateVoyageAtCoordYear(v, masterClockYear);

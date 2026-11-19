@@ -13,6 +13,7 @@ import {
   Layers,
   Plus,
   Check,
+  Trash2,
 } from 'lucide-react';
 
 export default function SciFiVoyagesModal({
@@ -24,6 +25,7 @@ export default function SciFiVoyagesModal({
   currentShipCount = 0,
   onLoadVoyage,
   onMergeVoyages,
+  onClearAllVoyages,
 }) {
   const { lang, t } = useLanguage();
   const [category, setCategory] = useState('all');
@@ -110,40 +112,55 @@ export default function SciFiVoyagesModal({
             <div className="voyage-merge-status">
               <Layers size={13} className="section-icon" />
               <span>
-                {mergedSet.size > 1
-                  ? `${t('voyageMergedActiveLabel')}: ${mergedSet.size} ${t('voyagePresetsUnit')} · ${currentShipCount} ${t('voyageShipsUnit')}`
-                  : t('voyageMergeHint')}
+                {currentShipCount === 0
+                  ? t('emptyFleetShort')
+                  : mergedSet.size > 1
+                    ? `${t('voyageMergedActiveLabel')}: ${mergedSet.size} ${t('voyagePresetsUnit')} · ${currentShipCount} ${t('voyageShipsUnit')}`
+                    : t('voyageMergeHint')}
               </span>
             </div>
 
-            {canMergeCategory && (
-              <div className="voyage-merge-cat-actions">
+            <div className="voyage-merge-cat-actions">
+              {canMergeCategory && (
+                <>
+                  <button
+                    type="button"
+                    className="hud-btn primary-btn compact-btn"
+                    onClick={() => {
+                      onMergeVoyages(filtered, { replaceExisting: true, autoPlay: false });
+                      onClose();
+                    }}
+                  >
+                    <Layers size={12} />
+                    <span>
+                      {t('voyageMergeAllInTab')} ({filtered.length} · {categoryTotalShips} {t('voyageShipsUnit')})
+                    </span>
+                  </button>
+                  <button
+                    type="button"
+                    className="hud-btn secondary-btn compact-btn"
+                    onClick={() => {
+                      onMergeVoyages(filtered, { replaceExisting: false, autoPlay: false });
+                    }}
+                    title={t('voyageAppendAllInTabTooltip')}
+                  >
+                    <Plus size={12} />
+                    <span>{t('voyageAppendAllInTab')}</span>
+                  </button>
+                </>
+              )}
+              {currentShipCount > 0 && typeof onClearAllVoyages === 'function' && (
                 <button
                   type="button"
-                  className="hud-btn primary-btn compact-btn"
-                  onClick={() => {
-                    onMergeVoyages(filtered, { replaceExisting: true, autoPlay: false });
-                    onClose();
-                  }}
+                  className="hud-btn compact-btn clear-all-modal-btn"
+                  onClick={onClearAllVoyages}
+                  title={t('btnClearAllVoyagesTooltip')}
                 >
-                  <Layers size={12} />
-                  <span>
-                    {t('voyageMergeAllInTab')} ({filtered.length} · {categoryTotalShips} {t('voyageShipsUnit')})
-                  </span>
+                  <Trash2 size={12} />
+                  <span>{t('btnClearAllVoyages')}</span>
                 </button>
-                <button
-                  type="button"
-                  className="hud-btn secondary-btn compact-btn"
-                  onClick={() => {
-                    onMergeVoyages(filtered, { replaceExisting: false, autoPlay: false });
-                  }}
-                  title={t('voyageAppendAllInTabTooltip')}
-                >
-                  <Plus size={12} />
-                  <span>{t('voyageAppendAllInTab')}</span>
-                </button>
-              </div>
-            )}
+              )}
+            </div>
           </div>
 
           {/* 2-Column Voyage Cards Grid */}

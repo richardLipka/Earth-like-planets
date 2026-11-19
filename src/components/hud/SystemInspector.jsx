@@ -4,6 +4,7 @@ import { getSystemSourceLinks, getSkyCutoutSources } from '../../utils/catalogLi
 import { sweepStarSciFiLive } from '../../services/scifiService.js';
 import { formatNum, formatDurationYears, temperatureToHex, SPECTRAL_COLORS } from '../../utils/format.js';
 import { distanceBetweenSystems } from '../../engine/stellarMotion.js';
+import StellarSpectrumCard from './StellarSpectrumCard.jsx';
 import {
   Orbit,
   ExternalLink,
@@ -436,6 +437,9 @@ export default function SystemInspector({
                 </div>
               </div>
             </div>
+
+            {/* Spectral Classification, Visible Absorption Spectrum & Planck Energy Partition */}
+            <StellarSpectrumCard star={activeStar} />
 
             {/* Habitable Zone & Confirmed Planetary Architecture (Kopparapu et al. 2014) */}
             <div className="section-block">

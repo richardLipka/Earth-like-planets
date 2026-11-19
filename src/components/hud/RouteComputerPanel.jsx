@@ -34,6 +34,7 @@ export default function RouteComputerPanel({
   onAddShip,
   onDuplicateShip,
   onDeleteShip,
+  onClearAllVoyages,
   onUpdateActiveShip,
   activeVoyage,
   selectedSystem,
@@ -194,7 +195,42 @@ export default function RouteComputerPanel({
     }
   }, [activeVoyage?.totalCoordTimeYears]);
 
-  if (!activeShip) return null;
+  if (!activeShip) {
+    return (
+      <aside className="hud-panel left-route-dock">
+        <div className="panel-header panel-header-flex">
+          <div>
+            <div className="panel-kicker">{t('routePanelTitle')}</div>
+            <h2 className="panel-main-title">
+              <Rocket size={15} className="title-icon" />
+              <span>{t('emptyFleetTitle')}</span>
+            </h2>
+          </div>
+          {onClose && (
+            <button type="button" className="icon-btn panel-close-btn" onClick={onClose} title={t('hidePanelTooltip')}>
+              <X size={15} />
+            </button>
+          )}
+        </div>
+
+        <div className="empty-fleet-card">
+          <p className="empty-fleet-desc">{t('emptyFleetDesc')}</p>
+          <div className="empty-fleet-actions">
+            <button type="button" className="hud-btn primary-btn full-width" onClick={onAddShip}>
+              <Plus size={13} />
+              <span>{t('btnAddShip')}</span>
+            </button>
+            {onOpenVoyageLibrary && (
+              <button type="button" className="hud-btn secondary-btn full-width" onClick={onOpenVoyageLibrary}>
+                <BookMarked size={13} />
+                <span>{t('btnVoyageLibraryFull')}</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </aside>
+    );
+  }
 
   const { driveConfig, waypoints } = activeShip;
 
@@ -285,13 +321,28 @@ export default function RouteComputerPanel({
             <button type="button" className="mini-hud-btn" onClick={onDuplicateShip} title={t('btnDuplicateShip')}>
               <Copy size={12} />
             </button>
-            {ships.length > 1 && (
-              <button type="button" className="mini-hud-btn warn" onClick={onDeleteShip} title={t('btnDeleteShip')}>
-                <Trash2 size={12} />
-              </button>
-            )}
+            <button type="button" className="mini-hud-btn warn" onClick={onDeleteShip} title={t('btnDeleteShip')}>
+              <Trash2 size={12} />
+            </button>
           </div>
         </div>
+
+        {onClearAllVoyages && (
+          <div className="ship-roster-clear-row">
+            <span className="roster-count-note">
+              {ships.length} {t('voyageShipsUnit')}
+            </span>
+            <button
+              type="button"
+              className="clear-all-voyages-btn"
+              onClick={onClearAllVoyages}
+              title={t('btnClearAllVoyagesTooltip')}
+            >
+              <Trash2 size={11} />
+              <span>{t('btnClearAllVoyages')}</span>
+            </button>
+          </div>
+        )}
 
         {ships.length > 1 && (
           <div className="ship-pills">
