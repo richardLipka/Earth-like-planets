@@ -366,6 +366,23 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       expect(e.universes).toContain('Revelation Space');
     }
 
+    // Verify Bobiverse outer & core star network coverage (Books 1-4)
+    for (const id of [
+      'hip-16537',  // Epsilon Eridani (Bill's Skunk Works)
+      'hip-17378',  // Delta Eridani / Rana (Eden / Deltans)
+      'hip-19849',  // 40 Eridani (Vulcan & Romulus)
+      'hip-15510',  // 82 G. Eridani (Asgard & Takamagahara)
+      'hip-3821',   // Eta Cassiopeiae / Achird (Poseidon)
+      'hip-108870', // Epsilon Indi (Big Top / KKP)
+      'hip-113229', // GJ 877 (Others Homeworld & Dyson Sphere)
+      'hip-27072',  // Gamma Leporis (Bender's trail)
+      'hip-28103',  // Eta Leporis (Quin & Heaven's River)
+    ]) {
+      const e = scifi.bySystemId[id];
+      expect(e, `Missing Bobiverse system ${id}`).toBeDefined();
+      expect(e.universes).toContain('Bobiverse');
+    }
+
     // Verify Groombridge 1618 alias on GJ 380, Alien on Zeta Reticuli, and Tau Ceti Wikipedia hits
     expect(scifi.bySystemId['hip-49908'].aliases).toContain('Groombridge 1618');
     expect(scifi.bySystemId['hip-15371'].universes).toContain('Alien');
@@ -379,12 +396,16 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
     const systemsById = new Map(catalog.systems.map((s) => [s.id, s]));
     const voyages = voyagesDoc.voyages || [];
 
-    expect(voyages.length).toBeGreaterThanOrEqual(20);
-    // Ensure Revelation Space, Eastern Bloc (Lem, Yefremov, Strugatsky, Martynov, Babula), and Classic/Modern sublight SF are present
+    expect(voyages.length).toBeGreaterThanOrEqual(23);
+    // Ensure Revelation Space, 4-part Bobiverse, Eastern Bloc (Lem, Yefremov, Strugatsky, Martynov, Babula), and Classic/Modern sublight SF are present
     const ids = new Set(voyages.map((v) => v.id));
     for (const requiredId of [
       'revelation-space-clavain-inhibitor',
       'revelation-space-exodus-chasm-city',
+      'bobiverse-expansion',
+      'bobiverse-exodus-colonies',
+      'bobiverse-others-war',
+      'bobiverse-heavens-river',
       'lem-return-from-the-stars',
       'lem-magellanic-cloud',
       'yefremov-andromeda-nebula',
@@ -398,7 +419,6 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       'clarke-rama-odyssey',
       'cameron-avatar-venture-star',
       'project-hail-mary',
-      'bobiverse-expansion',
     ]) {
       expect(ids.has(requiredId), `Missing voyage ${requiredId}`).toBe(true);
     }

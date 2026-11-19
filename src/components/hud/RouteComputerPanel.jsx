@@ -341,14 +341,14 @@ export default function RouteComputerPanel({
                   <input
                     type="range"
                     min="0.02"
-                    max="3.0"
+                    max="6.0"
                     step="0.02"
                     className="hud-range"
                     value={driveConfig.accelG}
                     onChange={(e) => updateDrive({ accelG: Number(e.target.value) })}
                   />
                   <div className="preset-chips-row">
-                    {[0.05, 0.1, 0.3, 0.5, 1.0, 1.5, 2.0].map((gVal) => (
+                    {[0.1, 0.3, 0.5, 1.0, 1.5, 3.0, 6.0].map((gVal) => (
                       <button
                         key={gVal}
                         type="button"

@@ -933,9 +933,15 @@ export default function AstrometricsMap3D({
           shipGroup.add(marker);
 
           const lblEl = document.createElement('div');
-          lblEl.className = 'map3d-ship-label';
+          lblEl.className = `map3d-ship-label${ship.isActive ? ' active-ship' : ''}`;
           lblEl.style.borderColor = ship.color || '#00ff88';
-          lblEl.textContent = `${ship.name} (${(st.speedC * 100).toFixed(1)}% c · τ=${st.properTimeYears.toFixed(1)}y)`;
+          const shortName = ship.name.includes(' · ') ? ship.name.split(' · ')[0] : ship.name;
+          lblEl.textContent = ship.isActive
+            ? `${shortName} (${(st.speedC * 100).toFixed(1)}%c · τ=${st.properTimeYears.toFixed(1)}y)`
+            : `${shortName} (${(st.speedC * 100).toFixed(0)}%c)`;
+          if (!ship.isActive) {
+            lblEl.style.opacity = '0.84';
+          }
           const lblObj = new CSS2DObject(lblEl);
           lblObj.center.set(0.5, 1.3);
           lblObj.position.copy(sp);

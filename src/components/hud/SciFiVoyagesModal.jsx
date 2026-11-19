@@ -18,6 +18,7 @@ export default function SciFiVoyagesModal({
     return {
       all: list.length,
       'revelation-space': list.filter((v) => v.category === 'revelation-space').length,
+      bobiverse: list.filter((v) => v.category === 'bobiverse').length,
       'eastern-bloc': list.filter((v) => v.category === 'eastern-bloc').length,
       'classic-sf': list.filter((v) => v.category === 'classic-sf').length,
       'modern-sf': list.filter((v) => v.category === 'modern-sf').length,
@@ -53,6 +54,7 @@ export default function SciFiVoyagesModal({
             {[
               { id: 'all', label: `${t('voyageCatAll')} (${counts.all})` },
               { id: 'revelation-space', label: `★ ${t('voyageCatRevSpace')} (${counts['revelation-space']})` },
+              { id: 'bobiverse', label: `★ ${t('voyageCatBobiverse')} (${counts.bobiverse})` },
               { id: 'eastern-bloc', label: `${t('voyageCatEasternBloc')} (${counts['eastern-bloc']})` },
               { id: 'classic-sf', label: `${t('voyageCatClassic')} (${counts['classic-sf']})` },
               { id: 'modern-sf', label: `${t('voyageCatModern')} (${counts['modern-sf']})` },

@@ -945,6 +945,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-2021', // Beta Hydri
     works: [
+      { title: 'We Are Legion / For We Are Many (Bobiverse)', author: 'Dennis E. Taylor', year: 2016, universe: 'Bobiverse', world: 'Beta Hydri (metal-stripped dead system where Mario finds first evidence of The Others)', medium: 'novel', wiki: 'Beta_Hydri' },
       { title: 'Time for the Stars', author: 'Robert A. Heinlein', year: 1956, universe: 'Classic Hard SF', world: 'Ammonia-ocean world "Inferno" surveyed by the 1g torchship Lewis and Clark', medium: 'novel', wiki: 'Time_for_the_Stars' },
       { title: 'Time Enough for Love', author: 'Robert A. Heinlein', year: 1973, universe: 'Future History', world: 'Secundus & Tertius (Howard Families colonies)', medium: 'novel', wiki: 'Time_Enough_for_Love' },
       { title: 'The Songs of Distant Earth', author: 'Arthur C. Clarke', year: 1986, universe: 'Arthur C. Clarke', world: 'Interstellar seedship target', medium: 'novel', wiki: 'Beta_Hydri' },
@@ -953,6 +954,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-108870', // Epsilon Indi
     works: [
+      { title: 'We Are Legion / For We Are Many (Bobiverse)', author: 'Dennis E. Taylor', year: 2016, universe: 'Bobiverse', world: 'Big Top & KKP (Klown Kar Planet) — Linus rescues Henry Roberts; Howard & Bridget live on Tantor', medium: 'novel', wiki: 'Epsilon_Indi' },
       { title: 'Halo: Contact Harvest', author: 'Joseph Staten', year: 2007, universe: 'Halo', world: 'Harvest (site of first Human–Covenant contact)', medium: 'novel', wiki: 'Halo:_Contact_Harvest' },
       { title: 'Known Space', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Kzinhome? / Early human-Kzin border', medium: 'novel', wiki: 'Known_Space' },
       { title: 'Star Trek: Enterprise', author: 'Rick Berman & Brannon Braga', year: 2001, universe: 'Star Trek', world: 'Andoria (ringed gas giant moon)', medium: 'tv', wiki: 'Epsilon_Indi' },
@@ -969,6 +971,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-3821', // Eta Cassiopeiae (Achird)
     works: [
+      { title: 'For We Are Many / All These Worlds (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Poseidon (water world discovered by Mulder; aerial cities led by Marcus)', medium: 'novel', wiki: 'Eta_Cassiopeiae' },
       { title: 'Star Trek: Enterprise', author: 'Rick Berman & Brannon Braga', year: 2001, universe: 'Star Trek', world: 'Terra Nova (first human deep-space colony)', medium: 'tv', wiki: 'Eta_Cassiopeiae' },
       { title: 'Known Space', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Early human colony sector', medium: 'novel', wiki: 'Eta_Cassiopeiae' },
     ],
@@ -976,7 +979,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-15510', // 82 G. Eridani
     works: [
-      { title: 'We Are Legion (We Are Bob)', author: 'Dennis E. Taylor', year: 2016, universe: 'Bobiverse', world: 'Poseidon (ocean world colony around 82 Eridani)', medium: 'novel', wiki: '82_G._Eridani' },
+      { title: 'We Are Legion / All These Worlds (Bobiverse)', author: 'Dennis E. Taylor', year: 2016, universe: 'Bobiverse', world: 'Asgard & Takamagahara (site of Milo vs. Medeiros, settled by Mack in 2220)', medium: 'novel', wiki: '82_G._Eridani' },
       { title: 'Noon Universe', author: 'Arkady & Boris Strugatsky', year: 1964, universe: 'Noon Universe', world: 'EN-2 / Nearby G8V solar analog', medium: 'novel', wiki: '82_G._Eridani' },
     ],
   },
@@ -1117,6 +1120,55 @@ const CURATED_HIGHLIGHTS = [
     works: [
       { title: 'Tau Zero', author: 'Poul Anderson', year: 1970, universe: 'Classic Hard SF', world: 'Destination of the runaway 1g Bussard ramjet Leonora Christine (35.6 ly)', medium: 'novel', wiki: 'Tau_Zero' },
       { title: 'Star Trek / Classic Hard SF', author: 'Various', year: 1966, universe: 'Star Trek', world: 'Beta Virginis system (35.6 ly F9V star)', medium: 'tv', wiki: 'Beta_Virginis' },
+    ],
+  },
+  // === BOBIVERSE COMPLETE OUTER NETWORK (BOOKS 2–4) ===
+  {
+    id: 'hip-113229', // Gliese 877 (GJ 877)
+    works: [
+      { title: 'For We Are Many / All These Worlds (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Home system & Dyson Sphere of The Others (scouted by Bashful & Hal; destroyed by Icarus & Daedalus in 2257)', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Gliese_877' },
+    ],
+  },
+  {
+    id: 'hip-5496', // Gliese 54 (GJ 54)
+    works: [
+      { title: 'For We Are Many (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Mario’s untouched forward base (2180), birthplace of Bashful, Hal & Others first contact', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Gliese_54' },
+    ],
+  },
+  {
+    id: 'hip-1599', // Zeta Tucanae
+    works: [
+      { title: 'For We Are Many (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Second devastated system explored by Mario (2176), confirming The Others’ galactic harvesting', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Zeta_Tucanae' },
+    ],
+  },
+  {
+    id: 'hip-105858', // Gamma Pavonis
+    works: [
+      { title: 'For We Are Many / Heaven’s River (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Newholme (colony discovered by Claude in 2205; Battle of Newholme in 2334)', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Gamma_Pavonis' },
+    ],
+  },
+  {
+    id: 'hip-14101', // HIP 14101
+    works: [
+      { title: 'For We Are Many / All These Worlds (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'Odin (gas giant with aerial life & Rivendell floating city; Howard & Bridget’s home from 2210)', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/HIP_14101' },
+    ],
+  },
+  {
+    id: 'hip-15457', // Kappa-1 Ceti
+    works: [
+      { title: 'For We Are Many (Bobiverse)', author: 'Dennis E. Taylor', year: 2017, universe: 'Bobiverse', world: 'High-gravity (3g) super-Earth biosphere catalogued by Luke (2170s)', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Kappa_Ceti' },
+    ],
+  },
+  {
+    id: 'hip-27072', // Gamma Leporis
+    works: [
+      { title: 'We Are Legion / Heaven’s River (Bobiverse)', author: 'Dennis E. Taylor', year: 2020, universe: 'Bobiverse', world: 'Gamma Leporis A — Bender’s lost 2165 destination where Bob-1 picks up his faint trail in 2296', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Bender' },
+    ],
+  },
+  {
+    id: 'hip-28103', // Eta Leporis
+    works: [
+      { title: 'Heaven’s River (Bobiverse Book 4)', author: 'Dennis E. Taylor', year: 2020, universe: 'Bobiverse', world: 'Quin & Heaven’s River topopolis megastructure — where Bender is held by Quinlan AI ANEC and rescued by Bob-1 (2331–2334)', medium: 'novel', url: 'https://bobiverse.fandom.com/wiki/Eta_Leporis' },
     ],
   },
 ];

@@ -1,11 +1,11 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
-    "generatedAtIso": "2026-11-19T14:53:45.147Z",
+    "generatedAtIso": "2026-11-19T17:29:35.364Z",
     "catalogueSystemsSwept": 3494,
     "uniqueAliasesIndexed": 9352,
     "systemsWithFictionCount": 214,
-    "curatedHighlightsCount": 485,
+    "curatedHighlightsCount": 496,
     "wikipediaCategoryWorksCount": 227,
     "universes": [
       {
@@ -22,7 +22,7 @@
       },
       {
         "name": "Bobiverse",
-        "count": 17
+        "count": 18
       },
       {
         "name": "Known Space",
@@ -2297,6 +2297,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "We Are Legion / For We Are Many (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2016,
+          "universe": "Bobiverse",
+          "world": "Big Top & KKP (Klown Kar Planet) — Linus rescues Henry Roberts; Howard & Bridget live on Tantor",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Epsilon_Indi",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Halo: Contact Harvest",
           "author": "Joseph Staten",
           "year": 2007,
@@ -2398,7 +2408,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 10
+      "totalCount": 11
     },
     "hip-8102": {
       "systemId": "hip-8102",
@@ -3611,6 +3621,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "For We Are Many / All These Worlds (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Poseidon (water world discovered by Mulder; aerial cities led by Marcus)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Eta_Cassiopeiae",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Star Trek: Enterprise",
           "author": "Rick Berman & Brannon Braga",
           "year": 2001,
@@ -3672,7 +3692,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 6
+      "totalCount": 7
     },
     "hip-117473": {
       "systemId": "hip-117473",
@@ -3732,11 +3752,11 @@
       "wikiCategories": [],
       "notableWorks": [
         {
-          "title": "We Are Legion (We Are Bob)",
+          "title": "We Are Legion / All These Worlds (Bobiverse)",
           "author": "Dennis E. Taylor",
           "year": 2016,
           "universe": "Bobiverse",
-          "world": "Poseidon (ocean world colony around 82 Eridani)",
+          "world": "Asgard & Takamagahara (site of Milo vs. Medeiros, settled by Mack in 2220)",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/82_G._Eridani",
           "source": "Curated Hard SF"
@@ -4145,6 +4165,16 @@
       ],
       "notableWorks": [
         {
+          "title": "We Are Legion / For We Are Many (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2016,
+          "universe": "Bobiverse",
+          "world": "Beta Hydri (metal-stripped dead system where Mario finds first evidence of The Others)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Beta_Hydri",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Time for the Stars",
           "author": "Robert A. Heinlein",
           "year": 1956,
@@ -4257,7 +4287,7 @@
           "source": "Wikipedia Category"
         }
       ],
-      "totalCount": 14
+      "totalCount": 15
     },
     "hip-7981": {
       "systemId": "hip-7981",
@@ -4793,6 +4823,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "For We Are Many (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Mario’s untouched forward base (2180), birthplace of Bashful, Hal & Others first contact",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Gliese_54",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Bobiverse — Gliese 54",
           "author": "Dennis E. Taylor",
           "year": 2016,
@@ -4804,7 +4844,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 1
+      "totalCount": 2
     },
     "hip-86974": {
       "systemId": "hip-86974",
@@ -4915,6 +4955,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "For We Are Many (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Second devastated system explored by Mario (2176), confirming The Others’ galactic harvesting",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Zeta_Tucanae",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Bobiverse — Zeta Tucanae",
           "author": "Dennis E. Taylor",
           "year": 2016,
@@ -4926,7 +4976,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 1
+      "totalCount": 2
     },
     "hip-113229": {
       "systemId": "hip-113229",
@@ -4942,6 +4992,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "For We Are Many / All These Worlds (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Home system & Dyson Sphere of The Others (scouted by Bashful & Hal; destroyed by Icarus & Daedalus in 2257)",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Gliese_877",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Bobiverse — Gliese 877",
           "author": "Dennis E. Taylor",
           "year": 2016,
@@ -4953,7 +5013,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 1
+      "totalCount": 2
     },
     "hip-55360": {
       "systemId": "hip-55360",
@@ -4991,11 +5051,22 @@
         "Gliese 216"
       ],
       "universes": [
-        "Alien"
+        "Alien",
+        "Bobiverse"
       ],
       "sfeUrl": null,
       "wikiCategories": [],
       "notableWorks": [
+        {
+          "title": "We Are Legion / Heaven’s River (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2020,
+          "universe": "Bobiverse",
+          "world": "Gamma Leporis A — Bender’s lost 2165 destination where Bob-1 picks up his faint trail in 2296",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Bender",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Alien — Gamma Leporis System",
           "author": "Ridley Scott / Alien Universe",
@@ -5008,7 +5079,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 1
+      "totalCount": 2
     },
     "hip-17378": {
       "systemId": "hip-17378",
@@ -5143,6 +5214,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "For We Are Many (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "High-gravity (3g) super-Earth biosphere catalogued by Luke (2170s)",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Kappa_Ceti",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Bobiverse — Kappa Ceti",
           "author": "Dennis E. Taylor",
           "year": 2016,
@@ -5154,7 +5235,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 1
+      "totalCount": 2
     },
     "hip-105858": {
       "systemId": "hip-105858",
@@ -5171,6 +5252,16 @@
       "sfeUrl": null,
       "wikiCategories": [],
       "notableWorks": [
+        {
+          "title": "For We Are Many / Heaven’s River (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Newholme (colony discovered by Claude in 2205; Battle of Newholme in 2334)",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Gamma_Pavonis",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Bobiverse — Gamma Pavonis",
           "author": "Dennis E. Taylor",
@@ -5213,7 +5304,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 4
+      "totalCount": 5
     },
     "hip-14101": {
       "systemId": "hip-14101",
@@ -5228,6 +5319,16 @@
       "sfeUrl": null,
       "wikiCategories": [],
       "notableWorks": [
+        {
+          "title": "For We Are Many / All These Worlds (Bobiverse)",
+          "author": "Dennis E. Taylor",
+          "year": 2017,
+          "universe": "Bobiverse",
+          "world": "Odin (gas giant with aerial life & Rivendell floating city; Howard & Bridget’s home from 2210)",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/HIP_14101",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Bobiverse — HIP 14101",
           "author": "Dennis E. Taylor",
@@ -5250,7 +5351,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 2
+      "totalCount": 3
     },
     "hip-56997": {
       "systemId": "hip-56997",
@@ -6667,6 +6768,16 @@
       "wikiCategories": [],
       "notableWorks": [
         {
+          "title": "Heaven’s River (Bobiverse Book 4)",
+          "author": "Dennis E. Taylor",
+          "year": 2020,
+          "universe": "Bobiverse",
+          "world": "Quin & Heaven’s River topopolis megastructure — where Bender is held by Quinlan AI ANEC and rescued by Bob-1 (2331–2334)",
+          "medium": "novel",
+          "url": "https://bobiverse.fandom.com/wiki/Eta_Leporis",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Bobiverse — Eta Leporis",
           "author": "Dennis E. Taylor",
           "year": 2016,
@@ -6698,7 +6809,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 3
+      "totalCount": 4
     },
     "hip-86032": {
       "systemId": "hip-86032",

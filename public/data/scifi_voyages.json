@@ -1,10 +1,10 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
-    "generatedAtIso": "2026-11-19T17:13:45.907Z",
-    "voyageCount": 20,
+    "generatedAtIso": "2026-11-19T17:29:35.539Z",
+    "voyageCount": 23,
     "customVoyagesCount": 0,
-    "totalShipsCount": 38
+    "totalShipsCount": 60
   },
   "voyages": [
     {
@@ -447,6 +447,1482 @@
           "totalProperTimeYears": 6.13,
           "peakSpeedC": 0.9964,
           "peakGamma": 11.83
+        }
+      ]
+    },
+    {
+      "id": "bobiverse-expansion",
+      "category": "bobiverse",
+      "universe": "Bobiverse",
+      "universeCs": "Bobiverzum",
+      "author": "Dennis E. Taylor",
+      "year": 2016,
+      "books": {
+        "en": "Book 1: We Are Legion (We Are Bob)",
+        "cs": "Kniha 1: My jsme legie (My jsme Bob)"
+      },
+      "sourceUrl": "https://bobiverse.fandom.com/wiki/Timeline",
+      "sourceLabel": {
+        "en": "Bobiverse Wiki — Official Book 1–4 Chronology",
+        "cs": "Bobiverse Wiki — oficiální chronologie knih 1–4"
+      },
+      "title": {
+        "en": "Bobiverse I — First Wave Expansion & Battle of Epsilon Eridani (2133–2185)",
+        "cs": "Bobiverzum I — První vlna expanze a bitva u Epsilon Eridani (2133–2185)"
+      },
+      "subtitle": {
+        "en": "Bob-1 flees Earth aboard HEAVEN-1 (2133), defeats Medeiros at Epsilon Eridani (2144), and spawns 8 canonical Von Neumann probe waves fanning out to Delta Eridani (Deltans), Sol (Riker & Homer), 40 Eridani (Milo), Beta Hydri → Zeta Tucanae → GJ 54 (Mario), Alpha Centauri, Epsilon Indi, Eta Cassiopeiae (Poseidon), and 82 Eridani (Khan).",
+        "cs": "Bob-1 uniká ze Země na lodi HEAVEN-1 (2133), poráží Medeirose u Epsilon Eridani (2144) a vysílá 8 kanonických vln Von Neumannových sond k Delta Eridani (Delťané), Slunci (Riker a Homer), 40 Eridani (Milo), Beta Hydri → Zeta Tucanae → GJ 54 (Mario), Alfě Centauri, Epsilon Indi, Eta Cassiopeiae (Poseidon) a 82 Eridani (Khan)."
+      },
+      "physicsNote": {
+        "en": "Reactionless SURGE probes at 3g midpoint-flip lock onto Dennis E. Taylor’s exact Book 1 months across real 3D Hipparcos distances: Sol → Eps Eri (10.49 ly: Aug 2133 → Aug 2144), Eps Eri → Del Eri (19.01 ly: → Apr 2165), Riker → Sol (Jan 2157), Milo → 40 Eri (Jul 2152) → 82 Eri (Aug 2165), and Mario’s 3-star sweep (2169 → 2177 → 2180)!",
+        "cs": "Nereaktivní sondy s pohonem SURGE (3g s otočkou) trefují přesné měsíce 1. knihy v reálných 3D vzdálenostech Hipparcos: Sol → Eps Eri (10,49 ly: srpen 2133 → srpen 2144), Eps Eri → Del Eri (19,01 ly: → duben 2165), Riker → Sol (leden 2157), Milo → 40 Eri (červenec 2152) → 82 Eri (srpen 2165) i Mariův tříhvězdný průzkum (2169 → 2177 → 2180)!"
+      },
+      "recommendedClockStart": 2133.5,
+      "focusSystemId": "hip-16537",
+      "ships": [
+        {
+          "id": "bob1-heaven1",
+          "name": "Bob-1 · HEAVEN-1 (3g SURGE)",
+          "nameCs": "Bob-1 · HEAVEN-1 (3g SURGE)",
+          "color": "#00f0ff",
+          "departureYear": 2133.63,
+          "crewStartAge": 31,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0.9
+            },
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-riker-homer",
+          "name": "Riker & Homer · Earth Rescue (3g)",
+          "nameCs": "Riker a Homer · Záchrana Země (3g)",
+          "color": "#38bdf8",
+          "departureYear": 2145.9,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-milo",
+          "name": "Milo · Vulcan/Romulus → 82 Eri (3g)",
+          "nameCs": "Milo · Vulkán/Romulus → 82 Eri (3g)",
+          "color": "#00ff88",
+          "departureYear": 2145.6,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-19849",
+              "stayYears": 0.6
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-mario",
+          "name": "Mario · Others Trail Sweep (3g)",
+          "nameCs": "Mario · Stopa Jiných (3g)",
+          "color": "#f59e0b",
+          "departureYear": 2145.6,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-2021",
+              "stayYears": 0.15
+            },
+            {
+              "systemId": "hip-1599",
+              "stayYears": 0.15
+            },
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-calvin-goku",
+          "name": "Calvin & Goku · Alpha Centauri (3g)",
+          "nameCs": "Calvin a Goku · Alfa Centauri (3g)",
+          "color": "#c084fc",
+          "departureYear": 2150.7,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-linus",
+          "name": "Linus · Epsilon Indi Round-Trip (3g)",
+          "nameCs": "Linus · Epsilon Indi tam a zpět (3g)",
+          "color": "#a3e635",
+          "departureYear": 2150.7,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-108870",
+              "stayYears": 0.3
+            },
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-mulder",
+          "name": "Mulder · Poseidon Discovery (3g)",
+          "nameCs": "Mulder · Objev Poseidonu (3g)",
+          "color": "#fbbf24",
+          "departureYear": 2150.6,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-3821",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob1-khan-fleet",
+          "name": "Khan & 7 Bill Clones · 1st 82 Eri Strike (3g)",
+          "nameCs": "Khan a 7 Billových klonů · 1. úder na 82 Eri (3g)",
+          "color": "#fb7185",
+          "departureYear": 2172.3,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bob1-ev-1",
+          "title": {
+            "en": "HEAVEN-1 Emergency Launch During Earth War (Sol)",
+            "cs": "Nouzový start HEAVEN-1 při vypuknutí války na Zemi (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2133.63
+        },
+        {
+          "id": "bob1-ev-2",
+          "title": {
+            "en": "Battle of Epsilon Eridani vs. Medeiros & First Cloning",
+            "cs": "Bitva u Epsilon Eridani proti Medeirosovi a první klonování"
+          },
+          "systemId": "hip-16537",
+          "year": 2144.7
+        },
+        {
+          "id": "bob1-ev-3",
+          "title": {
+            "en": "Milo Discovers Habitable Twins Vulcan & Romulus (40 Eridani)",
+            "cs": "Milo objevuje obyvatelná dvojčata Vulkán a Romulus (40 Eridani)"
+          },
+          "systemId": "hip-19849",
+          "year": 2152.5
+        },
+        {
+          "id": "bob1-ev-4",
+          "title": {
+            "en": "Riker & Homer Defeat Brazilian Probes & Save Earth (Sol)",
+            "cs": "Riker a Homer ničí brazilské sondy a zachraňují Zemi (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2157
+        },
+        {
+          "id": "bob1-ev-5",
+          "title": {
+            "en": "Bob-1 Discovers Deltans & Archimedes (Delta Eridani)",
+            "cs": "Bob-1 objevuje Delťany a Archiméda na Edenu (Delta Eridani)"
+          },
+          "systemId": "hip-17378",
+          "year": 2165.3
+        },
+        {
+          "id": "bob1-ev-6",
+          "title": {
+            "en": "Mario Finds Metal-Stripped Alien Graveyard (Beta Hydri)",
+            "cs": "Mario nachází vytěžené pohřebiště civilizace (Beta Hydri)"
+          },
+          "systemId": "hip-2021",
+          "year": 2169.6
+        },
+        {
+          "id": "bob1-ev-7",
+          "title": {
+            "en": "Mulder Discovers Ocean World Poseidon (Eta Cassiopeiae)",
+            "cs": "Mulder objevuje oceánský svět Poseidon (Eta Cassiopeiae)"
+          },
+          "systemId": "hip-3821",
+          "year": 2170.8
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bob1-heaven1",
+          "name": "Bob-1 · HEAVEN-1 (3g SURGE)",
+          "nameCs": "Bob-1 · HEAVEN-1 (3g SURGE)",
+          "routeNames": [
+            "Sol",
+            "Epsilon Eridani",
+            "Rana"
+          ],
+          "totalDistanceLy": 29.5,
+          "totalCoordTimeYears": 31.67,
+          "totalProperTimeYears": 5.84,
+          "peakSpeedC": 0.9995,
+          "peakGamma": 30.44
+        },
+        {
+          "id": "bob1-riker-homer",
+          "name": "Riker & Homer · Earth Rescue (3g)",
+          "nameCs": "Riker a Homer · Záchrana Země (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Sol"
+          ],
+          "totalDistanceLy": 10.49,
+          "totalCoordTimeYears": 11.12,
+          "totalProperTimeYears": 2.29,
+          "peakSpeedC": 0.9983,
+          "peakGamma": 17.24
+        },
+        {
+          "id": "bob1-milo",
+          "name": "Milo · Vulcan/Romulus → 82 Eri (3g)",
+          "nameCs": "Milo · Vulkán/Romulus → 82 Eri (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "40 Eridani",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 18.25,
+          "totalCoordTimeYears": 20.1,
+          "totalProperTimeYears": 4.94,
+          "peakSpeedC": 0.9987,
+          "peakGamma": 19.58
+        },
+        {
+          "id": "bob1-mario",
+          "name": "Mario · Others Trail Sweep (3g)",
+          "nameCs": "Mario · Stopa Jiných (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Beta Hydri",
+            "Zeta Tucanae",
+            "GJ 54"
+          ],
+          "totalDistanceLy": 33.05,
+          "totalCoordTimeYears": 35.19,
+          "totalProperTimeYears": 6.66,
+          "peakSpeedC": 0.9996,
+          "peakGamma": 37.12
+        },
+        {
+          "id": "bob1-calvin-goku",
+          "name": "Calvin & Goku · Alpha Centauri (3g)",
+          "nameCs": "Calvin a Goku · Alfa Centauri (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Alpha Centauri"
+          ],
+          "totalDistanceLy": 12.57,
+          "totalCoordTimeYears": 13.2,
+          "totalProperTimeYears": 2.4,
+          "peakSpeedC": 0.9988,
+          "peakGamma": 20.47
+        },
+        {
+          "id": "bob1-linus",
+          "name": "Linus · Epsilon Indi Round-Trip (3g)",
+          "nameCs": "Linus · Epsilon Indi tam a zpět (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Epsilon Indi",
+            "Epsilon Eridani"
+          ],
+          "totalDistanceLy": 28.13,
+          "totalCoordTimeYears": 29.69,
+          "totalProperTimeYears": 5.23,
+          "peakSpeedC": 0.999,
+          "peakGamma": 22.78
+        },
+        {
+          "id": "bob1-mulder",
+          "name": "Mulder · Poseidon Discovery (3g)",
+          "nameCs": "Mulder · Objev Poseidonu (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Achird"
+          ],
+          "totalDistanceLy": 19.55,
+          "totalCoordTimeYears": 20.18,
+          "totalProperTimeYears": 2.67,
+          "peakSpeedC": 0.9995,
+          "peakGamma": 31.27
+        },
+        {
+          "id": "bob1-khan-fleet",
+          "name": "Khan & 7 Bill Clones · 1st 82 Eri Strike (3g)",
+          "nameCs": "Khan a 7 Billových klonů · 1. úder na 82 Eri (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 12.44,
+          "totalCoordTimeYears": 13.07,
+          "totalProperTimeYears": 2.39,
+          "peakSpeedC": 0.9988,
+          "peakGamma": 20.26
+        }
+      ]
+    },
+    {
+      "id": "bobiverse-exodus-colonies",
+      "category": "bobiverse",
+      "universe": "Bobiverse",
+      "universeCs": "Bobiverzum",
+      "author": "Dennis E. Taylor",
+      "year": 2017,
+      "books": {
+        "en": "Book 2: For We Are Many",
+        "cs": "Kniha 2: Protože nás je mnoho"
+      },
+      "sourceUrl": "https://bobiverse.fandom.com/wiki/Timeline",
+      "sourceLabel": {
+        "en": "Bobiverse Wiki — Exodus & Colony Fleet Timeline",
+        "cs": "Bobiverse Wiki — časová osa exodu a kolonizačních flotil"
+      },
+      "title": {
+        "en": "Bobiverse II — Human Exodus Convoys & Colony Founding (2165–2222)",
+        "cs": "Bobiverzum II — Lidský exodus a zakládání kolonií (2165–2222)"
+      },
+      "subtitle": {
+        "en": "As nuclear winter freezes Earth, Riker’s 1.5g stasis transports evacuate humanity to Vulcan & Romulus (Howard, Bert & Ernie), Klown Kar Planet (Rudy & Edwin), Poseidon (Marcus & Monty), and Asgard/Takamagahara (Mack, Isaac, Jack & Owen), while Loki clears Medeiros from 82 Eridani and Luke & Marvin scout outward from Eden.",
+        "cs": "Zatímco Zemi svírá jaderná zima, 1,5g transportéry ve stázi evakuují lidstvo na Vulkán a Romulus (Howard, Bert a Ernie), KKP (Rudy a Edwin), Poseidon (Marcus a Monty) a Asgard/Takamagaharu (Mack, Isaac, Jack a Owen); Loki čistí 82 Eridani od Medeirose a Luke s Marvinem zkoumají okolí Edenu."
+      },
+      "physicsNote": {
+        "en": "Human colony transports accelerate at 1.5g (matching stasis-pod limits): Sol → 40 Eridani (16.26 ly: Apr 2171 → Sep 2188), Sol → Epsilon Indi (11.81 ly: → Feb 2190), Sol → Eta Cassiopeiae (19.42 ly: → Mar 2195), and Sol → 82 Eridani (19.71 ly: → Oct 2220). Notice how Howard’s 40 Eri → HIP 14101 leg (16.42 ly) takes 17.7 yr Earth vs. 4.3 yr ship proper time!",
+        "cs": "Lidské kolonizační lodě zrychlují 1,5g (limit stázových kapslí): Sol → 40 Eridani (16,26 ly: duben 2171 → září 2188), Sol → Epsilon Indi (11,81 ly: → únor 2190), Sol → Eta Cassiopeiae (19,42 ly: → březen 2195) a Sol → 82 Eridani (19,71 ly: → říjen 2220). Howardův přelet 40 Eri → HIP 14101 (16,42 ly) trvá 17,7 r. Země vs. 4,3 r. vlastního času!"
+      },
+      "recommendedClockStart": 2165.5,
+      "focusSystemId": "sol",
+      "ships": [
+        {
+          "id": "bob2-howard-exodus",
+          "name": "Howard, Bert & Ernie · Exodus-1/2 → Odin (1.5g)",
+          "nameCs": "Howard, Bert a Ernie · Exodus-1/2 → Odin (1,5g)",
+          "color": "#00f0ff",
+          "departureYear": 2171.3,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-19849",
+              "stayYears": 6.5
+            },
+            {
+              "systemId": "hip-14101",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-rudy-edwin",
+          "name": "Rudy & Edwin · Exodus-6 to Big Top/KKP (1.5g)",
+          "nameCs": "Rudy a Edwin · Exodus-6 na Big Top/KKP (1,5g)",
+          "color": "#00ff88",
+          "departureYear": 2177.1,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-108870",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-marcus-monty",
+          "name": "Marcus & Monty · Poseidon Transport (1.5g)",
+          "nameCs": "Marcus a Monty · Transport na Poseidon (1,5g)",
+          "color": "#38bdf8",
+          "departureYear": 2174.5,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-3821",
+              "stayYears": 6.6
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-loki-strike",
+          "name": "Loki Strike Fleet · 2nd Battle of 82 Eri (3g)",
+          "nameCs": "Úderný svaz Lokiho · 2. bitva u 82 Eri (3g)",
+          "color": "#fb7185",
+          "departureYear": 2182.8,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-mack-colonies",
+          "name": "Mack, Isaac, Jack & Owen · Asgard Fleet (1.5g)",
+          "nameCs": "Mack, Isaac, Jack a Owen · Flotila Asgard (1,5g)",
+          "color": "#f59e0b",
+          "departureYear": 2199.8,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-luke",
+          "name": "Luke · Kappa¹ Ceti Scout (3g)",
+          "nameCs": "Luke · Průzkum Kappa¹ Ceti (3g)",
+          "color": "#c084fc",
+          "departureYear": 2165.8,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15457",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob2-marvin",
+          "name": "Marvin · Pi³ Orionis / Tabit Scout (3g)",
+          "nameCs": "Marvin · Průzkum Pi³ Orionis / Tabit (3g)",
+          "color": "#a3e635",
+          "departureYear": 2173.9,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-22449",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bob2-ev-1",
+          "title": {
+            "en": "Exodus-1 & 2 Launch from Dying Earth (Sol)",
+            "cs": "Start prvních kolonizačních lodí Exodus-1 a 2 ze Země (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2171.3
+        },
+        {
+          "id": "bob2-ev-2",
+          "title": {
+            "en": "Howard, Bert & Ernie Found Vulcan Colony (40 Eridani)",
+            "cs": "Howard, Bert a Ernie zakládají kolonii na Vulkánu (40 Eridani)"
+          },
+          "systemId": "hip-19849",
+          "year": 2188.8
+        },
+        {
+          "id": "bob2-ev-3",
+          "title": {
+            "en": "Rudy & Edwin Deliver Exodus-6 to KKP (Epsilon Indi)",
+            "cs": "Rudy a Edwin přivážejí Exodus-6 na KKP (Epsilon Indi)"
+          },
+          "systemId": "hip-108870",
+          "year": 2190.1
+        },
+        {
+          "id": "bob2-ev-4",
+          "title": {
+            "en": "Marcus Arrives at Poseidon Ocean Colony (Eta Cassiopeiae)",
+            "cs": "Marcus přilétá k oceánské kolonii Poseidon (Eta Cassiopeiae)"
+          },
+          "systemId": "hip-3821",
+          "year": 2195.2
+        },
+        {
+          "id": "bob2-ev-5",
+          "title": {
+            "en": "Loki’s Task Force Clears Medeiros (82 Eridani)",
+            "cs": "Lokiho svaz poráží Medeirose v soustavě 82 Eridani"
+          },
+          "systemId": "hip-15510",
+          "year": 2195.9
+        },
+        {
+          "id": "bob2-ev-6",
+          "title": {
+            "en": "Howard Discovers Gas-Giant Life on Odin (HIP 14101)",
+            "cs": "Howard objevuje život v atmosféře plynného obra Odin (HIP 14101)"
+          },
+          "systemId": "hip-14101",
+          "year": 2219.5
+        },
+        {
+          "id": "bob2-ev-7",
+          "title": {
+            "en": "Mack Settles Asgard & Takamagahara (82 Eridani)",
+            "cs": "Mack osidluje světy Asgard a Takamagahara (82 Eridani)"
+          },
+          "systemId": "hip-15510",
+          "year": 2220.8
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bob2-howard-exodus",
+          "name": "Howard, Bert & Ernie · Exodus-1/2 → Odin (1.5g)",
+          "nameCs": "Howard, Bert a Ernie · Exodus-1/2 → Odin (1,5g)",
+          "routeNames": [
+            "Sol",
+            "40 Eridani",
+            "HIP 14101"
+          ],
+          "totalDistanceLy": 32.68,
+          "totalCoordTimeYears": 41.67,
+          "totalProperTimeYears": 15.04,
+          "peakSpeedC": 0.9973,
+          "peakGamma": 13.71
+        },
+        {
+          "id": "bob2-rudy-edwin",
+          "name": "Rudy & Edwin · Exodus-6 to Big Top/KKP (1.5g)",
+          "nameCs": "Rudy a Edwin · Exodus-6 na Big Top/KKP (1,5g)",
+          "routeNames": [
+            "Sol",
+            "Epsilon Indi",
+            "Sol"
+          ],
+          "totalDistanceLy": 23.63,
+          "totalCoordTimeYears": 27.08,
+          "totalProperTimeYears": 8.77,
+          "peakSpeedC": 0.9951,
+          "peakGamma": 10.15
+        },
+        {
+          "id": "bob2-marcus-monty",
+          "name": "Marcus & Monty · Poseidon Transport (1.5g)",
+          "nameCs": "Marcus a Monty · Transport na Poseidon (1,5g)",
+          "routeNames": [
+            "Sol",
+            "Achird",
+            "Sol"
+          ],
+          "totalDistanceLy": 38.83,
+          "totalCoordTimeYears": 47.94,
+          "totalProperTimeYears": 15.56,
+          "peakSpeedC": 0.9981,
+          "peakGamma": 16.03
+        },
+        {
+          "id": "bob2-loki-strike",
+          "name": "Loki Strike Fleet · 2nd Battle of 82 Eri (3g)",
+          "nameCs": "Úderný svaz Lokiho · 2. bitva u 82 Eri (3g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 12.44,
+          "totalCoordTimeYears": 13.07,
+          "totalProperTimeYears": 2.39,
+          "peakSpeedC": 0.9988,
+          "peakGamma": 20.26
+        },
+        {
+          "id": "bob2-mack-colonies",
+          "name": "Mack, Isaac, Jack & Owen · Asgard Fleet (1.5g)",
+          "nameCs": "Mack, Isaac, Jack a Owen · Flotila Asgard (1,5g)",
+          "routeNames": [
+            "Sol",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 19.71,
+          "totalCoordTimeYears": 20.97,
+          "totalProperTimeYears": 4.5,
+          "peakSpeedC": 0.9981,
+          "peakGamma": 16.26
+        },
+        {
+          "id": "bob2-luke",
+          "name": "Luke · Kappa¹ Ceti Scout (3g)",
+          "nameCs": "Luke · Průzkum Kappa¹ Ceti (3g)",
+          "routeNames": [
+            "Rana",
+            "Kappa-1 Ceti"
+          ],
+          "totalDistanceLy": 7.45,
+          "totalCoordTimeYears": 8.07,
+          "totalProperTimeYears": 2.08,
+          "peakSpeedC": 0.9968,
+          "peakGamma": 12.53
+        },
+        {
+          "id": "bob2-marvin",
+          "name": "Marvin · Pi³ Orionis / Tabit Scout (3g)",
+          "nameCs": "Marvin · Průzkum Pi³ Orionis / Tabit (3g)",
+          "routeNames": [
+            "Rana",
+            "Tabit"
+          ],
+          "totalDistanceLy": 11.8,
+          "totalCoordTimeYears": 12.43,
+          "totalProperTimeYears": 2.36,
+          "peakSpeedC": 0.9987,
+          "peakGamma": 19.28
+        }
+      ]
+    },
+    {
+      "id": "bobiverse-others-war",
+      "category": "bobiverse",
+      "universe": "Bobiverse",
+      "universeCs": "Bobiverzum",
+      "author": "Dennis E. Taylor",
+      "year": 2017,
+      "books": {
+        "en": "Books 2–3: For We Are Many · All These Worlds",
+        "cs": "Knihy 2–3: Protože nás je mnoho · Všechny tyto světy"
+      },
+      "sourceUrl": "https://bobiverse.fandom.com/wiki/Timeline",
+      "sourceLabel": {
+        "en": "Bobiverse Wiki — The Others War & Battle of Sol (2180–2288)",
+        "cs": "Bobiverse Wiki — Válka s Jinými a bitva o Slunce (2180–2288)"
+      },
+      "title": {
+        "en": "Bobiverse III — The Others War, Bellerophon & GL 877 Nova (2180–2288)",
+        "cs": "Bobiverzum III — Válka s Jinými, Bellerofontés a nova GL 877 (2180–2288)"
+      },
+      "subtitle": {
+        "en": "Bashful & Hal uncover The Others’ Dyson Sphere at Gliese 877; Claude & Jacques discover Newholme and the Pavs before the First Battle of Delta Pavonis (2217); Herschel & Neil pilot the captured alien cargo giant Bellerophon to evacuate Earth during the Battle of Sol (Apr 2257) — synchronized to the exact month with Icarus & Daedalus’s relativistic planet-killing flyby strike on GL 877!",
+        "cs": "Bashful a Hal odhalují Dysonovu sféru Jiných u Gliese 877; Claude a Jacques objevují Newholme a Pavy před bitvou u Delta Pavonis (2217); Herschel a Neil přivádějí ukořistěnou obří loď Bellerofontés k evakuaci Země během bitvy o Slunce (duben 2257) — přesně na měsíc synchronizovaně s relativistickým průletovým úderem Ikara a Daidala na GL 877!"
+      },
+      "physicsNote": {
+        "en": "Watch April 2257 on the timeline: Herschel & Neil’s heavy captured cargo ship Bellerophon (0.30g / 0.76c, 19.92 ly from Delta Pavonis) reaches Sol at the EXACT same moment Icarus & Daedalus (modeled in relativistic flyby mode at 0.16g / 0.91c towing two worlds across 27.46 ly from Epsilon Eridani) slam into Gliese 877 and coast onward toward Sagittarius A*!",
+        "cs": "Sledujte duben 2257 na časové ose: těžká ukořistěná loď Bellerofontés (0,30g / 0,76c, 19,92 ly od Delta Pavonis) doráží ke Slunci ve STEJNÝ okamžik, kdy Ikaros a Daidalos (v režimu relativistického průletu 0,16g / 0,91c táhnoucí dva světy 27,46 ly z Epsilon Eridani) udeří do Gliese 877 a pokračují setrvačností směrem k Sagittarius A*!"
+      },
+      "recommendedClockStart": 2180.5,
+      "focusSystemId": "hip-113229",
+      "ships": [
+        {
+          "id": "bob3-bashful",
+          "name": "Bashful · First Contact at GL 877 (3g)",
+          "nameCs": "Bashful · První kontakt u GL 877 (3g)",
+          "color": "#fb7185",
+          "departureYear": 2180.8,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-113229",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-hal",
+          "name": "Hal · GL 877 Dyson Sphere Recon (3g)",
+          "nameCs": "Hal · Průzkum Dysonovy sféry GL 877 (3g)",
+          "color": "#f59e0b",
+          "departureYear": 2181.4,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-113229",
+              "stayYears": 7.9
+            },
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-claude",
+          "name": "Claude · Newholme → Delta Pavonis (3g)",
+          "nameCs": "Claude · Newholme → Delta Pavonis (3g)",
+          "color": "#a3e635",
+          "departureYear": 2193.5,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-105858",
+              "stayYears": 0.3
+            },
+            {
+              "systemId": "hip-99240",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-jacques",
+          "name": "Jacques · Pav First Contact (3g)",
+          "nameCs": "Jacques · Objev Pavů u Delta Pavonis (3g)",
+          "color": "#c084fc",
+          "departureYear": 2193.5,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-5496",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-99240",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-delpav-fleet",
+          "name": "Bill’s Delta Pavonis Strike Fleet (3g)",
+          "nameCs": "Billův úderný svaz k Delta Pavonis (3g)",
+          "color": "#38bdf8",
+          "departureYear": 2207.3,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-108870",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-99240",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-bellerophon",
+          "name": "Herschel & Neil · Bellerophon (0.3g / 0.76c)",
+          "nameCs": "Herschel a Neil · Bellerofontés (0,3g / 0,76c)",
+          "color": "#00ff88",
+          "departureYear": 2228.1,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.3,
+            "cruiseC": 0.76,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-99240",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 1.7
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob3-icarus-daedalus",
+          "name": "Icarus & Daedalus · Planet-Movers (0.91c Flyby)",
+          "nameCs": "Ikaros a Daidalos · Vrhači planet (průlet 0,91c)",
+          "color": "#00f0ff",
+          "departureYear": 2223.2,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 0.16,
+            "cruiseC": 0.91,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-113229",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bob3-ev-1",
+          "title": {
+            "en": "Bashful & Hal Uncover Others Dyson Sphere (Gliese 877)",
+            "cs": "Bashful a Hal odhalují Dysonovu sféru Jiných (Gliese 877)"
+          },
+          "systemId": "hip-113229",
+          "year": 2188.4
+        },
+        {
+          "id": "bob3-ev-2",
+          "title": {
+            "en": "Jacques Discovers Pav Civilization (Delta Pavonis)",
+            "cs": "Jacques objevuje civilizaci Pavů (Delta Pavonis)"
+          },
+          "systemId": "hip-99240",
+          "year": 2207.2
+        },
+        {
+          "id": "bob3-ev-3",
+          "title": {
+            "en": "First Battle of Delta Pavonis & Rescue of 20,000 Pavs",
+            "cs": "Bitva u Delta Pavonis a záchrana 20 000 Pavů"
+          },
+          "systemId": "hip-99240",
+          "year": 2217.2
+        },
+        {
+          "id": "bob3-ev-4",
+          "title": {
+            "en": "Icarus & Daedalus Launch Planet-Movers (Epsilon Eridani)",
+            "cs": "Tajný start Ikara a Daidala s planetami (Epsilon Eridani)"
+          },
+          "systemId": "hip-16537",
+          "year": 2223.2
+        },
+        {
+          "id": "bob3-ev-5",
+          "title": {
+            "en": "Battle of Sol & Bellerophon Atmospheric Rescue (Sol)",
+            "cs": "Bitva o Slunce a atmosférická evakuace Bellerofontem (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2257.3
+        },
+        {
+          "id": "bob3-ev-6",
+          "title": {
+            "en": "Icarus & Daedalus Trigger GL 877 Nova — Others Defeated!",
+            "cs": "Ikaros a Daidalos vyvolávají novu GL 877 — Jiní poraženi!"
+          },
+          "systemId": "hip-113229",
+          "year": 2257.3
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bob3-bashful",
+          "name": "Bashful · First Contact at GL 877 (3g)",
+          "nameCs": "Bashful · První kontakt u GL 877 (3g)",
+          "routeNames": [
+            "GJ 54",
+            "GJ 877"
+          ],
+          "totalDistanceLy": 6.39,
+          "totalCoordTimeYears": 7,
+          "totalProperTimeYears": 1.99,
+          "peakSpeedC": 0.9958,
+          "peakGamma": 10.89
+        },
+        {
+          "id": "bob3-hal",
+          "name": "Hal · GL 877 Dyson Sphere Recon (3g)",
+          "nameCs": "Hal · Průzkum Dysonovy sféry GL 877 (3g)",
+          "routeNames": [
+            "GJ 54",
+            "GJ 877",
+            "GJ 54"
+          ],
+          "totalDistanceLy": 12.77,
+          "totalCoordTimeYears": 21.91,
+          "totalProperTimeYears": 11.88,
+          "peakSpeedC": 0.9958,
+          "peakGamma": 10.89
+        },
+        {
+          "id": "bob3-claude",
+          "name": "Claude · Newholme → Delta Pavonis (3g)",
+          "nameCs": "Claude · Newholme → Delta Pavonis (3g)",
+          "routeNames": [
+            "GJ 54",
+            "Gamma Pavonis",
+            "Delta Pavonis"
+          ],
+          "totalDistanceLy": 22.1,
+          "totalCoordTimeYears": 23.66,
+          "totalProperTimeYears": 4.94,
+          "peakSpeedC": 0.9985,
+          "peakGamma": 18.44
+        },
+        {
+          "id": "bob3-jacques",
+          "name": "Jacques · Pav First Contact (3g)",
+          "nameCs": "Jacques · Objev Pavů u Delta Pavonis (3g)",
+          "routeNames": [
+            "GJ 54",
+            "Delta Pavonis"
+          ],
+          "totalDistanceLy": 13.04,
+          "totalCoordTimeYears": 13.67,
+          "totalProperTimeYears": 2.42,
+          "peakSpeedC": 0.9989,
+          "peakGamma": 21.19
+        },
+        {
+          "id": "bob3-delpav-fleet",
+          "name": "Bill’s Delta Pavonis Strike Fleet (3g)",
+          "nameCs": "Billův úderný svaz k Delta Pavonis (3g)",
+          "routeNames": [
+            "Epsilon Indi",
+            "Delta Pavonis"
+          ],
+          "totalDistanceLy": 9.21,
+          "totalCoordTimeYears": 9.83,
+          "totalProperTimeYears": 2.21,
+          "peakSpeedC": 0.9979,
+          "peakGamma": 15.26
+        },
+        {
+          "id": "bob3-bellerophon",
+          "name": "Herschel & Neil · Bellerophon (0.3g / 0.76c)",
+          "nameCs": "Herschel a Neil · Bellerofontés (0,3g / 0,76c)",
+          "routeNames": [
+            "Delta Pavonis",
+            "Sol",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 39.64,
+          "totalCoordTimeYears": 59.8,
+          "totalProperTimeYears": 42.51,
+          "peakSpeedC": 0.76,
+          "peakGamma": 1.54
+        },
+        {
+          "id": "bob3-icarus-daedalus",
+          "name": "Icarus & Daedalus · Planet-Movers (0.91c Flyby)",
+          "nameCs": "Ikaros a Daidalos · Vrhači planet (průlet 0,91c)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "GJ 877"
+          ],
+          "totalDistanceLy": 27.46,
+          "totalCoordTimeYears": 34.07,
+          "totalProperTimeYears": 17.87,
+          "peakSpeedC": 0.91,
+          "peakGamma": 2.41
+        }
+      ]
+    },
+    {
+      "id": "bobiverse-heavens-river",
+      "category": "bobiverse",
+      "universe": "Bobiverse",
+      "universeCs": "Bobiverzum",
+      "author": "Dennis E. Taylor",
+      "year": 2020,
+      "books": {
+        "en": "Books 3–4: All These Worlds · Heaven’s River",
+        "cs": "Knihy 3–4: Všechny tyto světy · Nebeská řeka"
+      },
+      "sourceUrl": "https://bobiverse.fandom.com/wiki/Timeline",
+      "sourceLabel": {
+        "en": "Bobiverse Wiki — Earth Pilgrimage & Heaven’s River Rescue (2165–2373)",
+        "cs": "Bobiverse Wiki — Pouť na Zemi a záchranná výprava Nebeská řeka (2165–2373)"
+      },
+      "title": {
+        "en": "Bobiverse IV — Search for Bender & Heaven’s River (2165–2373)",
+        "cs": "Bobiverzum IV — Hledání Bendera a Nebeská řeka (2165–2373)"
+      },
+      "subtitle": {
+        "en": "Follow Bender’s century-old disappearance from Delta Eridani → Gamma Leporis → Eta Leporis, Bob-1’s poignant 2233→2263 Earth Pilgrimage after Archimedes’ funeral, Bob-1’s upgraded HEAVEN-5 rescue mission to the Quinlan topopolis megastructure Heaven’s River (2296→2334), and Howard & Bridget’s voyage from Odin to Big Top & Poseidon.",
+        "cs": "Sledujte sto let staré zmizení Bendera po trase Delta Eridani → Gamma Leporis → Eta Leporis, Bobovu pouť na Zemi (2233→2263) po Archimédově pohřbu, vylepšenou výpravu HEAVEN-5 k megastruktuře Nebeská řeka (topopolis Quinlanů, 2296→2334) a cestu Howarda s Bridget z Odinu přes Big Top na Poseidon."
+      },
+      "physicsNote": {
+        "en": "Real 3D Hipparcos distances highlight two awesome astrometric facts: Bob-1’s 2233.4 Earth Pilgrimage (Delta Eridani → Sol, 29.49 ly at 3g flip) reaches Sol in 2263.5 — matching canon Oct 2263! And Delta Eridani → Gamma Leporis → Eta Leporis spans 15.99 + 20.24 = 36.23 ly, so even Bob-1’s 6g HEAVEN-5 arrives in 2333.1 (only ~1.5 yr after canon Sep 2331, demonstrating true light-speed bounds).",
+        "cs": "Reálné 3D vzdálenosti Hipparcos ukazují dva skvostné detaily: Bobova pouť k Zemi z května 2233 (Delta Eridani → Sol, 29,49 ly při 3g) doráží r. 2263,5 — přesně dle kanonického října 2263! Trasa Delta Eridani → Gamma Leporis → Eta Leporis měří 15,99 + 20,24 = 36,23 ly, takže i 6g loď HEAVEN-5 doráží v r. 2333,1 (~1,5 r. za knižním zářím 2331, přesně na limitu rychlosti světla)."
+      },
+      "recommendedClockStart": 2233,
+      "focusSystemId": "hip-28103",
+      "ships": [
+        {
+          "id": "bob4-bender",
+          "name": "Bender · Missing Explorer Trail (3g)",
+          "nameCs": "Bender · Stopa ztraceného průzkumníka (3g)",
+          "color": "#f59e0b",
+          "departureYear": 2165.8,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-27072",
+              "stayYears": 0.4
+            },
+            {
+              "systemId": "hip-28103",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob4-bob1-pilgrimage",
+          "name": "Bob-1 · Earth Pilgrimage (3g SURGE)",
+          "nameCs": "Bob-1 · Pouť na Zemi po Archimédovi (3g)",
+          "color": "#38bdf8",
+          "departureYear": 2233.4,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 1
+            },
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob4-bob1-heaven5",
+          "name": "Bob-1 · HEAVEN-5 Rescue Expedition (6g)",
+          "nameCs": "Bob-1 · Záchranná výprava HEAVEN-5 (6g)",
+          "color": "#00f0ff",
+          "departureYear": 2296,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 6,
+            "cruiseC": 0.998,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-27072",
+              "stayYears": 0.2
+            },
+            {
+              "systemId": "hip-28103",
+              "stayYears": 2.5
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob4-howard-bridget",
+          "name": "Howard & Bridget · Odin → Big Top → Poseidon (3g)",
+          "nameCs": "Howard a Bridget · Odin → Big Top → Poseidon (3g)",
+          "color": "#c084fc",
+          "departureYear": 2227,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 3,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-14101",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-108870",
+              "stayYears": 50
+            },
+            {
+              "systemId": "hip-3821",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bob4-ev-1",
+          "title": {
+            "en": "Bender Departs Eden for Gamma Leporis (Delta Eridani)",
+            "cs": "Bender odlétá z Edenu směrem ke Gamma Leporis (Delta Eridani)"
+          },
+          "systemId": "hip-17378",
+          "year": 2165.8
+        },
+        {
+          "id": "bob4-ev-2",
+          "title": {
+            "en": "Archimedes’ Funeral — Bob-1 Departs for Earth (Delta Eridani)",
+            "cs": "Archimédův pohřeb — Bob-1 odlétá na pouť k Zemi (Delta Eridani)"
+          },
+          "systemId": "hip-17378",
+          "year": 2233.4
+        },
+        {
+          "id": "bob4-ev-3",
+          "title": {
+            "en": "Bob-1 Completes Earth Pilgrimage (Sol)",
+            "cs": "Bob-1 doráží na pouť k Zemi (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2263.8
+        },
+        {
+          "id": "bob4-ev-4",
+          "title": {
+            "en": "Bob-1 Launches HEAVEN-5 Search for Bender (Delta Eridani)",
+            "cs": "Bob-1 startuje s HEAVEN-5 hledat Bendera (Delta Eridani)"
+          },
+          "systemId": "hip-17378",
+          "year": 2296
+        },
+        {
+          "id": "bob4-ev-5",
+          "title": {
+            "en": "Discovery of Heaven’s River Topopolis & Quin (Eta Leporis)",
+            "cs": "Objev megastruktury Nebeská řeka (topopolis) a Quinu (Eta Leporis)"
+          },
+          "systemId": "hip-28103",
+          "year": 2333.1
+        },
+        {
+          "id": "bob4-ev-6",
+          "title": {
+            "en": "Bob, Bridget & Hugh Rescue Bender & Negotiate with ANEC (Eta Leporis)",
+            "cs": "Bob, Bridget a Hugh zachraňují Bendera a vyjednávají s AI ANEC (Eta Leporis)"
+          },
+          "systemId": "hip-28103",
+          "year": 2334.7
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bob4-bender",
+          "name": "Bender · Missing Explorer Trail (3g)",
+          "nameCs": "Bender · Stopa ztraceného průzkumníka (3g)",
+          "routeNames": [
+            "Rana",
+            "Gamma Leporis",
+            "Eta Leporis"
+          ],
+          "totalDistanceLy": 36.23,
+          "totalCoordTimeYears": 37.9,
+          "totalProperTimeYears": 5.64,
+          "peakSpeedC": 0.9995,
+          "peakGamma": 32.34
+        },
+        {
+          "id": "bob4-bob1-pilgrimage",
+          "name": "Bob-1 · Earth Pilgrimage (3g SURGE)",
+          "nameCs": "Bob-1 · Pouť na Zemi po Archimédovi (3g)",
+          "routeNames": [
+            "Rana",
+            "Sol",
+            "Rana"
+          ],
+          "totalDistanceLy": 58.97,
+          "totalCoordTimeYears": 61.25,
+          "totalProperTimeYears": 6.86,
+          "peakSpeedC": 0.9998,
+          "peakGamma": 46.66
+        },
+        {
+          "id": "bob4-bob1-heaven5",
+          "name": "Bob-1 · HEAVEN-5 Rescue Expedition (6g)",
+          "nameCs": "Bob-1 · Záchranná výprava HEAVEN-5 (6g)",
+          "routeNames": [
+            "Rana",
+            "Gamma Leporis",
+            "Eta Leporis",
+            "82 G. Eri"
+          ],
+          "totalDistanceLy": 73.28,
+          "totalCoordTimeYears": 76.94,
+          "totalProperTimeYears": 7.51,
+          "peakSpeedC": 1,
+          "peakGamma": 115.72
+        },
+        {
+          "id": "bob4-howard-bridget",
+          "name": "Howard & Bridget · Odin → Big Top → Poseidon (3g)",
+          "nameCs": "Howard a Bridget · Odin → Big Top → Poseidon (3g)",
+          "routeNames": [
+            "HIP 14101",
+            "Epsilon Indi",
+            "Achird"
+          ],
+          "totalDistanceLy": 55.67,
+          "totalCoordTimeYears": 106.94,
+          "totalProperTimeYears": 55.79,
+          "peakSpeedC": 0.9998,
+          "peakGamma": 45.04
         }
       ]
     },
@@ -2377,241 +3853,6 @@
           "totalProperTimeYears": 11,
           "peakSpeedC": 0.7,
           "peakGamma": 1.4
-        }
-      ]
-    },
-    {
-      "id": "bobiverse-expansion",
-      "category": "modern-sf",
-      "universe": "Bobiverse",
-      "universeCs": "Bobiverzum",
-      "author": "Dennis E. Taylor",
-      "year": 2016,
-      "books": {
-        "en": "We Are Legion (We Are Bob) · For We Are Many",
-        "cs": "My jsme legie (My jsme Bob) · Protože nás je mnoho"
-      },
-      "sourceUrl": "https://bobiverse.fandom.com/wiki/Bob",
-      "sourceLabel": {
-        "en": "Bobiverse Wiki — Bob & Star Systems",
-        "cs": "Bobiverse Wiki — Bob a hvězdné soustavy"
-      },
-      "title": {
-        "en": "Bobiverse — First Wave Expansion (Bob-1, Milo, Mario & Bill)",
-        "cs": "Bobiverzum — První vlna expanze (Bob-1, Milo, Mario a Bill)"
-      },
-      "subtitle": {
-        "en": "Bob-1 escapes Earth aboard HEAVEN-1 to Epsilon Eridani, replicates, and fans out across Delta Eridani (Deltans), 40 Eridani (Vulcan/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi, and Delta Pavonis (Eden).",
-        "cs": "Bob-1 uniká ze Země na lodi HEAVEN-1 k Epsilon Eridani, replikuje se a vysílá klony k Delta Eridani (Delťané), 40 Eridani (Vulkán/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi a Delta Pavonis."
-      },
-      "physicsNote": {
-        "en": "Reactionless SURGE drives modeled at 1.5g accel with 0.90c cruise cap (non-reactive). Watch all 4 Von Neumann replicants fan out simultaneously across the Eridanus/Indus sector.",
-        "cs": "Nereaktivní pohony SURGE modelované při zrychlení 1,5g a stropu 0,90c. Sledujte současnou expanzi 4 Von Neumannových sond sektorem Eridanu a Indiána."
-      },
-      "recommendedClockStart": 2133,
-      "focusSystemId": "hip-16537",
-      "ships": [
-        {
-          "id": "bob-1",
-          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
-          "nameCs": "Bob-1 · HEAVEN-1 (1,5g SURGE)",
-          "color": "#00f0ff",
-          "departureYear": 2133.5,
-          "crewStartAge": 31,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-16537",
-              "stayYears": 1.5
-            },
-            {
-              "systemId": "hip-17378",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-milo",
-          "name": "Milo · Explorer (1.5g SURGE)",
-          "nameCs": "Milo · Průzkumník (1,5g SURGE)",
-          "color": "#00ff88",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-19849",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-mario",
-          "name": "Mario · Explorer (1.5g SURGE)",
-          "nameCs": "Mario · Průzkumník (1,5g SURGE)",
-          "color": "#f59e0b",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-15510",
-              "stayYears": 1
-            },
-            {
-              "systemId": "hip-2021",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-bill",
-          "name": "Bill · Foundry & Evacuation (1.5g)",
-          "nameCs": "Bill · Základna a evakuace (1,5g)",
-          "color": "#c084fc",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-108870",
-              "stayYears": 2
-            },
-            {
-              "systemId": "hip-99240",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "bob-ev-1",
-          "title": {
-            "en": "HEAVEN-1 Emergency Launch from Earth (Sol)",
-            "cs": "Nouzový start HEAVEN-1 ze Země (Sol)"
-          },
-          "systemId": "sol",
-          "year": 2133.5
-        },
-        {
-          "id": "bob-ev-2",
-          "title": {
-            "en": "Battle of Epsilon Eridani vs. Medeiros",
-            "cs": "Bitva u Epsilon Eridani proti Medeirosovi"
-          },
-          "systemId": "hip-16537",
-          "year": 2146
-        },
-        {
-          "id": "bob-ev-3",
-          "title": {
-            "en": "Milo Explores Vulcan & Romulus (40 Eridani)",
-            "cs": "Milo zkoumá Vulkán a Romulus (40 Eridani)"
-          },
-          "systemId": "hip-19849",
-          "year": 2154.5
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "bob-1",
-          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
-          "nameCs": "Bob-1 · HEAVEN-1 (1,5g SURGE)",
-          "routeNames": [
-            "Sol",
-            "Epsilon Eridani",
-            "Rana"
-          ],
-          "totalDistanceLy": 29.5,
-          "totalCoordTimeYears": 35.9,
-          "totalProperTimeYears": 17.97,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-milo",
-          "name": "Milo · Explorer (1.5g SURGE)",
-          "nameCs": "Milo · Průzkumník (1,5g SURGE)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "40 Eridani"
-          ],
-          "totalDistanceLy": 6.25,
-          "totalCoordTimeYears": 7.76,
-          "totalProperTimeYears": 4.12,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-mario",
-          "name": "Mario · Explorer (1.5g SURGE)",
-          "nameCs": "Mario · Průzkumník (1,5g SURGE)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "82 G. Eri",
-            "Beta Hydri"
-          ],
-          "totalDistanceLy": 27.59,
-          "totalCoordTimeYears": 33.27,
-          "totalProperTimeYears": 16.55,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-bill",
-          "name": "Bill · Foundry & Evacuation (1.5g)",
-          "nameCs": "Bill · Základna a evakuace (1,5g)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "Epsilon Indi",
-            "Delta Pavonis"
-          ],
-          "totalDistanceLy": 23.27,
-          "totalCoordTimeYears": 29.48,
-          "totalProperTimeYears": 15.46,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
         }
       ]
     },
