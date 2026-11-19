@@ -67,6 +67,9 @@ export const SPECTRAL_COLORS = {
   G: '#ffe9b0',
   K: '#ffc27a',
   M: '#ff8b5e',
+  L: '#d9463e',
+  T: '#a855f7',
+  Y: '#6366f1',
   D: '#c8d4e0',
   '?': '#8a96a0',
 };

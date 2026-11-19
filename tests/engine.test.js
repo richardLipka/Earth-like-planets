@@ -24,6 +24,13 @@ import {
   computeCmbForwardGlow,
 } from '../src/engine/relativisticOptics.js';
 import { RADIO_SHELL_LAYERS, METI_BEAMS } from '../src/data/radioBroadcastLayers.js';
+import {
+  BROADCAST_MIN_YEAR,
+  BROADCAST_MAX_YEAR,
+  getBroadcastsForYear,
+  getBroadcastEraForYear,
+} from '../src/data/broadcastChronicle.js';
+import { computeESI, computeTidalLocking } from '../src/engine/exoplanetMetrics.js';
 import { systemPosAtEpoch, distanceBetweenSystems } from '../src/engine/stellarMotion.js';
 import { getSystemSourceLinks, getSkyCutoutSources } from '../src/utils/catalogLinks.js';
 import { translations } from '../src/i18n/translations.js';
@@ -571,6 +578,128 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       expect(sysIds.has(beam.targetSystemId), `Invalid METI target ${beam.targetSystemId}`).toBe(true);
       expect(beam.name?.en && beam.name?.cs).toBeTruthy();
     }
+  });
+
+  it('provides 2-3 verified bilingual broadcasts for every single year 1926..2026 (101 years)', () => {
+    const validTypes = new Set(['tv', 'radio', 'space', 'meti']);
+    let total = 0;
+    for (let y = BROADCAST_MIN_YEAR; y <= BROADCAST_MAX_YEAR; y++) {
+      const items = getBroadcastsForYear(y);
+      expect(items.length, `Year ${y} must have 2-3 broadcasts`).toBeGreaterThanOrEqual(2);
+      expect(items.length, `Year ${y} must have <= 3 broadcasts`).toBeLessThanOrEqual(3);
+      for (const b of items) {
+        expect(b.year).toBe(y);
+        expect(validTypes.has(b.type)).toBe(true);
+        expect(b.title?.en?.trim().length).toBeGreaterThan(4);
+        expect(b.title?.cs?.trim().length).toBeGreaterThan(4);
+        expect(b.detail?.en?.trim().length).toBeGreaterThan(10);
+        expect(b.detail?.cs?.trim().length).toBeGreaterThan(10);
+      }
+      const era = getBroadcastEraForYear(y);
+      expect(era.color).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(era.title?.en && era.title?.cs).toBeTruthy();
+      total += items.length;
+    }
+    expect(total).toBeGreaterThanOrEqual(250);
+  });
+
+  it('computes physically accurate ESI (Schulze-Makuch 2011) and Tidal-Locking timescales (Barnes 2017)', () => {
+    // Earth = exact 1.00 ESI and freely rotating (> 100 Gyr)
+    expect(computeESI({ radiusEarth: 1, massEarth: 1, surfaceTempK: 288 })).toBe(1);
+    const earthLock = computeTidalLocking({
+      semiMajorAxisAU: 1.0,
+      starMassSolar: 1.0,
+      radiusEarth: 1.0,
+      massEarth: 1.0,
+      isTerrestrial: true,
+    });
+    expect(earthLock.tidalLockStatus).toBe('free');
+    expect(earthLock.tidalLockGyr).toBeGreaterThan(100);
+
+    // Mercury: tidally locked (< 1 Gyr)
+    const mercLock = computeTidalLocking({
+      semiMajorAxisAU: 0.3871,
+      starMassSolar: 1.0,
+      radiusEarth: 0.383,
+      massEarth: 0.055,
+      isTerrestrial: true,
+    });
+    expect(mercLock.tidalLockStatus).toBe('locked');
+    expect(mercLock.tidalLockGyr).toBeLessThan(1.0);
+
+    // Proxima Centauri b: high ESI (>= 0.85) and rapidly tidally locked (< 0.01 Gyr)
+    const proxEsi = computeESI({ radiusEarth: 1.07, massEarth: 1.07, insolationEarth: 0.65 });
+    expect(proxEsi).toBeGreaterThanOrEqual(0.85);
+    expect(proxEsi).toBeLessThanOrEqual(0.95);
+    const proxLock = computeTidalLocking({
+      semiMajorAxisAU: 0.0485,
+      starMassSolar: 0.122,
+      radiusEarth: 1.07,
+      massEarth: 1.07,
+      isTerrestrial: true,
+    });
+    expect(proxLock.tidalLockStatus).toBe('locked');
+    expect(proxLock.tidalLockGyr).toBeLessThan(0.01);
+
+    // Jupiter: low ESI and freely rotating
+    expect(computeESI({ radiusEarth: 11.21, massEarth: 317.8, surfaceTempK: 165 })).toBeLessThan(0.4);
+  });
+
+  it('includes Gaia DR3 velocities, Ultracool L/T/Y brown dwarfs (Luhman 16, WISE 0855, Scholz), JWST spectra, Flare stars & Debris disks', () => {
+    const rawText = fs.readFileSync('public/data/astrometrics_catalog.json', 'utf8');
+    expect(/\b(NaN|Infinity)\b/.test(rawText)).toBe(false);
+
+    // 1. Iconic nearby ultracool & brown dwarf systems present with real multi-star structure
+    const luhman16 = catalog.systems.find((s) => /Luhman 16/i.test(s.name));
+    expect(luhman16).toBeDefined();
+    expect(luhman16.distLy).toBeCloseTo(6.5, 0);
+    expect(luhman16.isBrownDwarf).toBe(true);
+    expect(luhman16.stars.length).toBe(2);
+
+    const wise0855 = catalog.systems.find((s) => /WISE 0855/i.test(s.name));
+    expect(wise0855).toBeDefined();
+    expect(wise0855.distLy).toBeCloseTo(7.43, 1);
+    expect(wise0855.stars[0].cls).toBe('Y');
+    expect(wise0855.stars[0].teff).toBeLessThan(350);
+
+    const scholz = catalog.systems.find((s) => /Scholz/i.test(s.name));
+    expect(scholz).toBeDefined();
+    expect(scholz.hasFull3dVelocity).toBe(true);
+    expect(scholz.radialVelocityKmS).toBeGreaterThan(75);
+    // Past trajectory of Scholz's Star passes within < 1.5 ly of Sol ~70-85 kyr ago!
+    const sol = catalog.systems.find((s) => s.id === 'sol');
+    const scholzDistAtPast = distanceBetweenSystems(sol, scholz, -79000);
+    expect(scholzDistAtPast).toBeLessThan(1.5);
+
+    // 2. Gliese 710 upgraded to ESA Gaia DR3 precision (< 0.30 ly close encounter in ~1.33 Myr!)
+    const gj710 = catalog.systems.find((s) => s.name === 'GJ 710');
+    expect(gj710).toBeDefined();
+    expect(gj710.velocitySource).toBe('Gaia DR3');
+    expect(distanceBetweenSystems(sol, gj710, 1326000)).toBeLessThan(0.3);
+
+    // 3. Aggregate enrichment coverage thresholds
+    expect(catalog.meta.counts.full3dVelocitySystems).toBeGreaterThanOrEqual(2800);
+    expect(catalog.meta.counts.brownDwarfSystems).toBeGreaterThanOrEqual(500);
+    expect(catalog.meta.counts.flareStarSystems).toBeGreaterThanOrEqual(50);
+    expect(catalog.meta.counts.debrisDiskSystems).toBeGreaterThanOrEqual(100);
+    expect(catalog.meta.counts.jwstSpectraPlanets).toBeGreaterThanOrEqual(30);
+
+    // 4. Specific verified astrophysical tags
+    const alphaCen = catalog.systems.find((s) => s.name === 'Alpha Centauri');
+    expect(alphaCen.isFlareStar).toBe(true);
+    const vega = catalog.systems.find((s) => s.name === 'Vega');
+    expect(vega.hasDebrisDisk).toBe(true);
+    const trappist1 = catalog.systems.find((s) => s.id === 'nea-trappist-1');
+    expect(trappist1.hasJwstSpectra).toBe(true);
+    const trapE = trappist1.planets.find((p) => p.name === 'TRAPPIST-1 e');
+    expect(trapE.hasJwstSpectrum).toBe(true);
+    expect(trapE.esi).toBeGreaterThanOrEqual(0.85);
+    expect(trapE.tidalLockStatus).toBe('locked');
+
+    // 5. Sol Earth has exact ESI = 1 and free rotation
+    const earth = sol.planets.find((p) => p.name === 'Earth');
+    expect(earth.esi).toBe(1);
+    expect(earth.tidalLockStatus).toBe('free');
   });
 });
 

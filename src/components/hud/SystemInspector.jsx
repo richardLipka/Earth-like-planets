@@ -179,6 +179,9 @@ export default function SystemInspector({
           <div className="inspector-sub-badges">
             <span className="hud-tag">{activeStar.spect}</span>
             {system.constellation && <span className="hud-tag dim">{system.constellation}</span>}
+            {system.isBrownDwarf && (
+              <span className="hud-tag violet-tag">{t('badgeBrownDwarf')}</span>
+            )}
             {system.hasConservativeHZ ? (
               <span className="hud-tag emerald">◈ {t('zoneConservativeHZ')}</span>
             ) : system.hasOptimisticHZ ? (
@@ -186,6 +189,25 @@ export default function SystemInspector({
             ) : system.hasPlanets ? (
               <span className="hud-tag cyan">◎ {system.planetCount} {t('planetsShort')}</span>
             ) : null}
+            {system.hasJwstSpectra && (
+              <span className="hud-tag jwst-tag" title={t('badgeJwstTooltip')}>
+                🔭 JWST
+              </span>
+            )}
+            {system.isFlareStar ? (
+              <span className="hud-tag flare-tag" title={t('badgeFlareTooltip')}>
+                ⚡ {t('badgeFlareStar')}
+              </span>
+            ) : system.activityType ? (
+              <span className="hud-tag amber" title={t('badgeActiveTooltip')}>
+                ◉ {t('badgeActiveStar')} ({system.activityType})
+              </span>
+            ) : null}
+            {system.hasDebrisDisk && (
+              <span className="hud-tag cyan" title={t('badgeDebrisDiskTooltip')}>
+                ◎ {t('badgeDebrisDisk')}
+              </span>
+            )}
             {scifiCount > 0 && (
               <button
                 type="button"
@@ -323,11 +345,40 @@ export default function SystemInspector({
                       {formatNum(velKmS, 1, lang)} km/s ({formatNum(velMagLyKyr, 3, lang)} ly/kyr)
                       <small className="block-note">
                         {system.hasFull3dVelocity ? t('velocityFull3D') : t('velocityTangential')}
+                        {system.radialVelocityKmS !== null && system.radialVelocityKmS !== undefined
+                          ? ` · RV ${system.radialVelocityKmS > 0 ? '+' : ''}${formatNum(system.radialVelocityKmS, 1, lang)} km/s`
+                          : ''}
+                        {system.velocitySource ? ` (${system.velocitySource})` : ''}
                       </small>
                     </>
                   )}
                 </span>
               </div>
+              {system.metallicityFeH !== null && system.metallicityFeH !== undefined && (
+                <div className="kv-cell">
+                  <span className="kv-label">{t('metallicityLabel')}</span>
+                  <span className="kv-value">
+                    {system.metallicityFeH > 0 ? '+' : ''}
+                    {formatNum(system.metallicityFeH, 2, lang)} dex
+                    <small className="block-note">Gaia DR3 [Fe/H]</small>
+                  </span>
+                </div>
+              )}
+              {(system.ruwe !== null && system.ruwe !== undefined) || system.nonSingleStar ? (
+                <div className="kv-cell">
+                  <span className="kv-label">{t('gaiaRuweLabel')}</span>
+                  <span className="kv-value">
+                    {system.ruwe !== null && system.ruwe !== undefined
+                      ? formatNum(system.ruwe, 2, lang)
+                      : '—'}
+                    {(system.nonSingleStar || (system.ruwe !== null && system.ruwe > 1.4)) && (
+                      <small className="block-note highlight-amber">
+                        {system.nonSingleStar ? t('gaiaNonSingleFlag') : t('gaiaHighRuweFlag')}
+                      </small>
+                    )}
+                  </span>
+                </div>
+              ) : null}
             </div>
 
             {/* Multi-Star Component Switcher & Astrophysical Parameters */}
@@ -561,6 +612,9 @@ export default function SystemInspector({
                       <strong>{hoveredPlanet.name}</strong> · {formatNum(hoveredPlanet.semiMajorAxisAU, 3, lang)} AU
                       {hoveredPlanet.radiusEarth ? ` · ${formatNum(hoveredPlanet.radiusEarth, 2, lang)} R⊕` : ''}
                       {hoveredPlanet.eqTempK ? ` · ${formatNum(hoveredPlanet.eqTempK, 0, lang)} K` : ''}
+                      {hoveredPlanet.esi !== null && hoveredPlanet.esi !== undefined
+                        ? ` · ESI ${formatNum(hoveredPlanet.esi, 2, lang)}`
+                        : ''}
                     </div>
                   )}
                 </div>
@@ -677,6 +731,39 @@ export default function SystemInspector({
                             <td className="planet-name-cell">
                               <strong>{pl.name}</strong>
                               {system.stars.length > 1 && <small className="host-comp-sub">{pl.hostComponent}</small>}
+                              <div className="planet-astro-badges">
+                                {pl.esi !== null && pl.esi !== undefined && (
+                                  <span
+                                    className={`pl-mini-badge ${pl.esi >= 0.8 ? 'esi-high' : pl.esi >= 0.65 ? 'esi-mid' : 'esi-low'}`}
+                                    title={t('esiTooltip')}
+                                  >
+                                    ESI {formatNum(pl.esi, 2, lang)}
+                                  </span>
+                                )}
+                                {pl.tidalLockStatus && (
+                                  <span
+                                    className={`pl-mini-badge lock-${pl.tidalLockStatus}`}
+                                    title={`${t('tidalLockTooltip')}: ${pl.tidalLockGyr !== null ? `${pl.tidalLockGyr} Gyr` : '—'}`}
+                                  >
+                                    {pl.tidalLockStatus === 'locked'
+                                      ? `🔒 ${t('tidalLockedShort')}`
+                                      : pl.tidalLockStatus === 'possible'
+                                        ? `⟳ ${t('tidalPossibleShort')}`
+                                        : `↻ ${t('tidalFreeShort')}`}
+                                  </span>
+                                )}
+                                {pl.spectraCount > 0 && (
+                                  <a
+                                    href={`https://exoplanetarchive.ipac.caltech.edu/overview/${encodeURIComponent(pl.name)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={`pl-mini-badge ${pl.hasJwstSpectrum ? 'spec-jwst' : 'spec-hst'}`}
+                                    title={`${t('spectraTooltip')}: ${(pl.spectraFacilities || []).join(', ')} (${pl.spectraCount})`}
+                                  >
+                                    🔭 {pl.hasJwstSpectrum ? 'JWST' : pl.hasHstSpectrum ? 'HST' : 'Spec'} ({pl.spectraCount})
+                                  </a>
+                                )}
+                              </div>
                             </td>
                             <td>
                               {pl.semiMajorAxisAU ? `${formatNum(pl.semiMajorAxisAU, 3, lang)} AU` : '—'}

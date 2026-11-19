@@ -37,6 +37,18 @@ import {
   fetchWithRetry,
   createSpatialGrid,
 } from './lib/ioUtils.mjs';
+import { computeESI, computeTidalLocking } from '../src/engine/exoplanetMetrics.js';
+import {
+  createSkyGrid,
+  indexGaiaDr3,
+  matchSystemToGaia,
+  indexCns5,
+  matchSystemToCns5,
+  indexNeaSpectra,
+  indexGcvsActivity,
+  indexDebrisDisks,
+  processUltracoolCatalogs,
+} from './lib/enrichment.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -50,6 +62,10 @@ const argv = process.argv.slice(2);
 const REFRESH_ALL = argv.includes('--refresh') || argv.includes('--force');
 const REFRESH_PLANETS = REFRESH_ALL || argv.includes('--refresh-planets');
 const REFRESH_STARS = REFRESH_ALL || argv.includes('--refresh-stars');
+const REFRESH_GAIA = REFRESH_STARS || argv.includes('--refresh-gaia');
+const REFRESH_ULTRACOOL = REFRESH_STARS || argv.includes('--refresh-ultracool');
+const REFRESH_SPECTRA = REFRESH_PLANETS || argv.includes('--refresh-spectra');
+const REFRESH_ACTIVITY = REFRESH_STARS || argv.includes('--refresh-activity');
 const RESPECT_TTL = argv.includes('--respect-ttl');
 const OFFLINE = argv.includes('--offline');
 
@@ -142,6 +158,34 @@ const NEA_ADQL = [
 
 const NEA_TAP_BASE =
   CONFIG.sources?.neaTapBaseUrl || 'https://exoplanetarchive.ipac.caltech.edu/TAP/sync';
+const GAIA_TAP_BASE =
+  CONFIG.sources?.gaiaTapBaseUrl || 'https://gea.esac.esa.int/tap-server/tap/sync';
+const VIZIER_ASU_BASE =
+  CONFIG.sources?.vizierAsuBaseUrl || 'https://vizier.cfa.harvard.edu/viz-bin/asu-tsv';
+
+const NEA_SPECTRA_ADQL =
+  'select pl_name,spec_type,facility,instrument,num_datapoints,minwavelng,maxwavelng,bibcode from spectra';
+
+// Dynamic Gaia DR3 parallax thresholds covering the active sphere radius (+3 pc margin for Hipparcos error)
+const GAIA_CORE_MAX_PC = Math.min(36, Math.ceil(MAX_RADIUS_LY / LY_PER_PC) + 3);
+const GAIA_CORE_MIN_PLX = Math.max(27, Math.floor(1000 / GAIA_CORE_MAX_PC));
+const GAIA_EXT_MAX_PC = Math.ceil(EXTENDED_HZ_RADIUS_LY / LY_PER_PC) + 3;
+const GAIA_EXT_MIN_PLX = Math.max(5, Math.floor(1000 / GAIA_EXT_MAX_PC));
+
+const GAIA_CORE_ADQL = [
+  'SELECT source_id, ra, dec, parallax, parallax_over_error, pmra, pmdec,',
+  'radial_velocity, mh_gspphot, ruwe, non_single_star, phot_g_mean_mag',
+  'FROM gaiadr3.gaia_source',
+  `WHERE parallax > ${GAIA_CORE_MIN_PLX} AND parallax_over_error > 5`,
+].join(' ');
+
+const GAIA_EXT_ADQL = [
+  'SELECT TOP 100000 source_id, ra, dec, parallax, parallax_over_error, pmra, pmdec,',
+  'radial_velocity, mh_gspphot, ruwe, non_single_star, phot_g_mean_mag',
+  'FROM gaiadr3.gaia_source',
+  `WHERE parallax > ${GAIA_EXT_MIN_PLX} AND parallax <= ${GAIA_CORE_MIN_PLX}`,
+  'AND parallax_over_error > 5 AND (radial_velocity IS NOT NULL OR phot_g_mean_mag < 10.5)',
+].join(' ');
 
 const SOURCES = {
   hyg: {
@@ -165,6 +209,124 @@ const SOURCES = {
     url: `${NEA_TAP_BASE}?query=${encodeURIComponent(NEA_ADQL)}&format=json`,
     forceRefresh: REFRESH_PLANETS,
     ttlDays: Number(CONFIG.cacheMaxAgeDays?.planets) || 7,
+    validateJson: true,
+  },
+  neaSpectra: {
+    file: 'nea_spectra.json',
+    url: `${NEA_TAP_BASE}?query=${encodeURIComponent(NEA_SPECTRA_ADQL)}&format=json`,
+    forceRefresh: REFRESH_SPECTRA,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.spectra) || 7,
+    validateJson: true,
+    optional: true,
+  },
+  gaiaCore: {
+    file: `gaia_dr3_plx_${GAIA_CORE_MIN_PLX}.json`,
+    url: `${GAIA_TAP_BASE}?request=doQuery&lang=adql&format=json&query=${encodeURIComponent(GAIA_CORE_ADQL)}`,
+    forceRefresh: REFRESH_GAIA,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.gaia) || 180,
+    validateJson: true,
+    optional: true,
+  },
+  gaiaExt: {
+    file: `gaia_dr3_ext_${GAIA_EXT_MIN_PLX}_${GAIA_CORE_MIN_PLX}.json`,
+    url: `${GAIA_TAP_BASE}?request=doQuery&lang=adql&format=json&query=${encodeURIComponent(GAIA_EXT_ADQL)}`,
+    forceRefresh: REFRESH_GAIA,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.gaia) || 180,
+    validateJson: true,
+    optional: true,
+  },
+  cns5: {
+    file: 'vizier_cns5_25pc.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'J/A+A/670/A19/cns5',
+      '-out': 'CNS5,GJ,GaiaDR3,HIP,RAJ2000,DEJ2000,plx,pmRA,pmDE,RV',
+      '-out.max': 'unlimited',
+    })}`,
+    forceRefresh: REFRESH_ULTRACOOL,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.ultracool) || 180,
+    optional: true,
+  },
+  kirk2024: {
+    file: 'vizier_kirkpatrick2024_20pc.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'J/ApJS/271/55/table4',
+      '-out':
+        'Name,OName,GJ,Gaia,Plx,pmRA,pmDE,GaiaRV,SpTOpt,SpTNIR,Teff,Mass,RUWE,VarType,Const,Gmag,_RAJ2000,_DEJ2000',
+      '-out.max': 'unlimited',
+    })}`,
+    forceRefresh: REFRESH_ULTRACOOL,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.ultracool) || 180,
+    optional: true,
+  },
+  best2021: {
+    file: 'vizier_best2021_ultracool.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'J/AJ/161/42',
+      '-out': 'Object,Dist,plx,SpT-opt,SpT-nir,_RA,_DE',
+      '-out.max': 'unlimited',
+    })}`,
+    forceRefresh: REFRESH_ULTRACOOL,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.ultracool) || 180,
+    optional: true,
+  },
+  gcvsUv: {
+    file: 'vizier_gcvs_uv.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'B/gcvs/gcvs_cat',
+      '-out': 'GCVS,VarType,_RAJ2000,_DEJ2000',
+      '-out.max': 'unlimited',
+      VarType: '*UV*',
+    })}`,
+    forceRefresh: REFRESH_ACTIVITY,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.activity) || 90,
+    optional: true,
+  },
+  gcvsBy: {
+    file: 'vizier_gcvs_by.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'B/gcvs/gcvs_cat',
+      '-out': 'GCVS,VarType,_RAJ2000,_DEJ2000',
+      '-out.max': 'unlimited',
+      VarType: '*BY*',
+    })}`,
+    forceRefresh: REFRESH_ACTIVITY,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.activity) || 90,
+    optional: true,
+  },
+  gcvsRs: {
+    file: 'vizier_gcvs_rs.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'B/gcvs/gcvs_cat',
+      '-out': 'GCVS,VarType,_RAJ2000,_DEJ2000',
+      '-out.max': 'unlimited',
+      VarType: '*RS*',
+    })}`,
+    forceRefresh: REFRESH_ACTIVITY,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.activity) || 90,
+    optional: true,
+  },
+  debrisCotten: {
+    file: 'vizier_debris_cotten2016.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'J/ApJS/225/15',
+      '-out': 'Name,Dist,_RAJ2000,_DEJ2000',
+      '-out.max': 'unlimited',
+      Dist: `<${Math.max(45, NEA_MAX_PC)}`,
+    })}`,
+    forceRefresh: REFRESH_ACTIVITY,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.activity) || 90,
+    optional: true,
+  },
+  debrisChen: {
+    file: 'vizier_debris_chen2014.tsv',
+    url: `${VIZIER_ASU_BASE}?${new URLSearchParams({
+      '-source': 'J/ApJS/211/25',
+      '-out': 'Name,SpType,_RA,_DE',
+      '-out.max': 'unlimited',
+    })}`,
+    forceRefresh: REFRESH_ACTIVITY,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.activity) || 90,
+    optional: true,
   },
 };
 
@@ -193,7 +355,7 @@ function findCoveringNeaCache(minPc) {
 }
 
 async function fetchOrCache(key) {
-  const { file, url, forceRefresh, ttlDays } = SOURCES[key];
+  const { file, url, forceRefresh, ttlDays, validateJson, optional } = SOURCES[key];
   let target = path.join(CACHE, file);
 
   // For NASA exoplanets, check if a larger radius cache already covers this request
@@ -212,6 +374,10 @@ async function fetchOrCache(key) {
   const shouldDownload = !OFFLINE && (!exists || forceRefresh || expired);
 
   if (OFFLINE && !exists) {
+    if (optional) {
+      console.warn(`[DATA] Offline: optional cache ${file} missing — skipping ${key}.`);
+      return null;
+    }
     throw new Error(
       `Offline mode requested, but cache file ${file} is missing in ${CACHE}. Run without --offline first.`
     );
@@ -220,15 +386,16 @@ async function fetchOrCache(key) {
   if (shouldDownload) {
     fs.mkdirSync(CACHE, { recursive: true });
     const reason = !exists ? 'missing' : forceRefresh ? 'forced refresh' : `cache > ${ttlDays}d`;
-    console.log(`[DATA] Downloading ${key} (${reason}) from ${url} ...`);
+    console.log(`[DATA] Downloading ${key} (${reason})...`);
     try {
-      const res = await fetchWithRetry(url, { label: key, timeoutMs: 60000, retries: 3 });
+      const res = await fetchWithRetry(url, { label: key, timeoutMs: 75000, retries: 3 });
       const buf = Buffer.from(await res.arrayBuffer());
-      if (key === 'nea') {
-        // Validate JSON before replacing cached file
+      if (validateJson) {
         const parsed = JSON.parse(buf.toString('utf8'));
-        const rows = Array.isArray(parsed) ? parsed : parsed.value || [];
-        if (rows.length === 0) throw new Error('NASA Exoplanet Archive returned 0 rows');
+        const rows = Array.isArray(parsed) ? parsed : parsed.data || parsed.value || [];
+        if (key === 'nea' && rows.length === 0) {
+          throw new Error('NASA Exoplanet Archive returned 0 rows');
+        }
       }
       writeFileAtomic(target, buf);
     } catch (err) {
@@ -236,6 +403,9 @@ async function fetchOrCache(key) {
         console.warn(
           `[DATA] Warning: Download failed for ${key} (${err.message}). Falling back to existing cached ${file}.`
         );
+      } else if (optional) {
+        console.warn(`[DATA] Warning: Optional source ${key} unavailable (${err.message}). Continuing without it.`);
+        return null;
       } else {
         throw err;
       }
@@ -561,10 +731,36 @@ function normalizeHostKey(str) {
 // ---------------------------------------------------------------------------
 
 async function main() {
-  const [hygText, mamText, neaJsonText] = await Promise.all([
+  const [
+    hygText,
+    mamText,
+    neaJsonText,
+    neaSpectraText,
+    gaiaCoreText,
+    gaiaExtText,
+    cns5Text,
+    kirk2024Text,
+    best2021Text,
+    gcvsUvText,
+    gcvsByText,
+    gcvsRsText,
+    debrisCottenText,
+    debrisChenText,
+  ] = await Promise.all([
     fetchOrCache('hyg'),
     fetchOrCache('mamajek'),
     fetchOrCache('nea'),
+    fetchOrCache('neaSpectra'),
+    fetchOrCache('gaiaCore'),
+    GAIA_EXT_MIN_PLX < GAIA_CORE_MIN_PLX ? fetchOrCache('gaiaExt') : Promise.resolve(null),
+    fetchOrCache('cns5'),
+    fetchOrCache('kirk2024'),
+    fetchOrCache('best2021'),
+    fetchOrCache('gcvsUv'),
+    fetchOrCache('gcvsBy'),
+    fetchOrCache('gcvsRs'),
+    fetchOrCache('debrisCotten'),
+    fetchOrCache('debrisChen'),
   ]);
 
   const mamajek = parseMamajek(mamText);
@@ -975,6 +1171,8 @@ async function main() {
       pos: primary.posGal.map((v) => round(v, 3)),
       vel: primary.velGal.map((v) => round(v, 4)), // ly / kyr in Galactic frame
       hasFull3dVelocity: primary.hasRadialVel,
+      radialVelocityKmS: primary.hasRadialVel ? round(Number(p.rv), 2) : null,
+      velocitySource: primary.hasRadialVel ? 'HYG v3.8' : null,
       distLy: round(primary.distLy, 3),
       distPc: round(primary.distPc, 3),
       ra: p.ra !== '' ? round(Number(p.ra) * 15, 5) : null, // HYG RA is in hours -> convert to degrees
@@ -987,6 +1185,15 @@ async function main() {
       hasConservativeHZ,
       hasOptimisticHZ,
       hasTerrestrialHZ,
+      hasJwstSpectra: false,
+      maxEsi: null,
+      isBrownDwarf: stars[0]?.cls === 'L' || stars[0]?.cls === 'T' || stars[0]?.cls === 'Y',
+      isFlareStar: false,
+      activityType: null,
+      hasDebrisDisk: false,
+      metallicityFeH: null,
+      ruwe: null,
+      nonSingleStar: stars.length > 1,
       ids: {
         hip: primary.hip,
         hd: primary.hd,
@@ -998,6 +1205,9 @@ async function main() {
       },
       stars,
       planets,
+      _memberCoords: ordered
+        .filter((m) => m.r.ra !== '' && m.r.dec !== '')
+        .map((m) => ({ ra: Number(m.r.ra) * 15, dec: Number(m.r.dec) })),
     };
     catalogSystems.push(sysRecord);
     catalogGrid.add(sysRecord.pos, sysRecord);
@@ -1066,6 +1276,8 @@ async function main() {
       pos: posGalLy.map((v) => round(v, 3)),
       vel: velGalLyKyr.map((v) => round(v, 4)),
       hasFull3dVelocity: entry.rv !== null,
+      radialVelocityKmS: entry.rv !== null ? round(entry.rv, 2) : null,
+      velocitySource: entry.rv !== null ? 'NASA Exoplanet Archive' : null,
       distLy: entry.distLy,
       distPc: round(entry.distPc, 3),
       ra: round(entry.ra, 5),
@@ -1078,6 +1290,15 @@ async function main() {
       hasConservativeHZ: entry.planets.some((pl) => pl.hzStatus === 2),
       hasOptimisticHZ: entry.planets.some((pl) => pl.hzStatus >= 1),
       hasTerrestrialHZ: entry.planets.some((pl) => pl.hzStatus >= 1 && pl.isTerrestrial),
+      hasJwstSpectra: false,
+      maxEsi: null,
+      isBrownDwarf: cls === 'L' || cls === 'T' || cls === 'Y',
+      isFlareStar: false,
+      activityType: null,
+      hasDebrisDisk: false,
+      metallicityFeH: null,
+      ruwe: null,
+      nonSingleStar: false,
       ids: {
         hip: entry.hip,
         hd: entry.hd,
@@ -1113,6 +1334,225 @@ async function main() {
     catalogGrid.add(neaRecord.pos, neaRecord);
   }
 
+  // 6. Ingest Ultracool & Brown Dwarf (L / T / Y) Census (Kirkpatrick et al. 2024 + Best et al. 2021)
+  const existingSkyGrid = createSkyGrid(0.25);
+  for (const s of catalogSystems) {
+    if (Number.isFinite(s.ra) && Number.isFinite(s.dec)) {
+      existingSkyGrid.add(s.ra, s.dec, s);
+    }
+  }
+  const { kirkActivitySky, addedSystems: ultracoolSystems } = processUltracoolCatalogs({
+    kirkTsv: kirk2024Text,
+    bestTsv: best2021Text,
+    maxRadiusLy: MAX_RADIUS_LY,
+    closeVolumeLy: CLOSE_VOLUME_LY,
+    constellationNom: CONSTELLATION_NOM,
+    astrometryToGalactic,
+    getKopparapuHZ,
+    catalogGrid,
+    existingSkyGrid,
+    makeUniqueSysId,
+    round,
+    sig,
+  });
+  for (const uc of ultracoolSystems) {
+    catalogSystems.push(uc);
+  }
+  console.log(
+    `[DATA] Added ${ultracoolSystems.length} ultracool & L/T/Y brown dwarf systems (Kirkpatrick 2024 + Best 2021).`
+  );
+
+  // 7. Cross-match against ESA Gaia DR3 TAP + CNS5 (Radial Velocities, [Fe/H], RUWE, Non-Single Star)
+  const gaiaIndex = indexGaiaDr3([gaiaCoreText, gaiaExtText], astrometryToGalactic);
+  const cns5Index = indexCns5(cns5Text);
+  let gaiaMatchedCount = 0;
+  let gaiaRvAddedCount = 0;
+  let gaiaRvUpgradedCount = 0;
+  let cns5RvAddedCount = 0;
+
+  for (const s of catalogSystems) {
+    if (s.id === 'sol') continue;
+
+    const g = matchSystemToGaia(s, gaiaIndex);
+    if (g) {
+      gaiaMatchedCount++;
+      if (!s.ids.gaiaDr3) s.ids.gaiaDr3 = g.sourceId;
+      if (g.mhGspphot !== null) s.metallicityFeH = round(g.mhGspphot, 2);
+      if (g.ruwe !== null) s.ruwe = round(g.ruwe, 2);
+      if (g.nonSingleStar) s.nonSingleStar = true;
+
+      const highQualityGaia =
+        g.rv !== null &&
+        (g.parallaxOverError === null || g.parallaxOverError >= 15) &&
+        (g.ruwe === null || g.ruwe < 2.8);
+
+      if (!s.hasFull3dVelocity && g.rv !== null) {
+        const { velGalLyKyr } = astrometryToGalactic({
+          raDeg: g.ra,
+          decDeg: g.dec,
+          distPc: g.distPc,
+          pmRaMasYr: g.pmra,
+          pmDecMasYr: g.pmdec,
+          rvKmS: g.rv,
+        });
+        s.vel = velGalLyKyr.map((v) => round(v, 4));
+        s.hasFull3dVelocity = true;
+        s.radialVelocityKmS = round(g.rv, 2);
+        s.velocitySource = 'Gaia DR3';
+        gaiaRvAddedCount++;
+      } else if (s.hasFull3dVelocity && highQualityGaia && s.vmag >= 4.0) {
+        // Upgrade older Hipparcos/HYG velocities (e.g. Gliese 710!) to high-precision ESA Gaia DR3
+        const { velGalLyKyr } = astrometryToGalactic({
+          raDeg: g.ra,
+          decDeg: g.dec,
+          distPc: g.distPc,
+          pmRaMasYr: g.pmra,
+          pmDecMasYr: g.pmdec,
+          rvKmS: g.rv,
+        });
+        s.vel = velGalLyKyr.map((v) => round(v, 4));
+        s.radialVelocityKmS = round(g.rv, 2);
+        s.velocitySource = 'Gaia DR3';
+        gaiaRvUpgradedCount++;
+      } else if (s.radialVelocityKmS === null && g.rv !== null) {
+        s.radialVelocityKmS = round(g.rv, 2);
+      }
+    }
+
+    // CNS5 fallback for radial velocities missed by Gaia RVS (e.g. Scholz's Star, very cool M/L dwarfs)
+    if (!s.hasFull3dVelocity) {
+      const c = matchSystemToCns5(s, cns5Index);
+      if (c && c.rv !== null) {
+        const { velGalLyKyr } = astrometryToGalactic({
+          raDeg: c.ra,
+          decDeg: c.dec,
+          distPc: c.distPc,
+          pmRaMasYr: c.pmra,
+          pmDecMasYr: c.pmdec,
+          rvKmS: c.rv,
+        });
+        s.vel = velGalLyKyr.map((v) => round(v, 4));
+        s.hasFull3dVelocity = true;
+        s.radialVelocityKmS = round(c.rv, 2);
+        s.velocitySource = 'CNS5';
+        cns5RvAddedCount++;
+      }
+    }
+  }
+  console.log(
+    `[DATA] Gaia DR3 matched ${gaiaMatchedCount} systems (+${gaiaRvAddedCount} new 3D RVs, ${gaiaRvUpgradedCount} upgraded to Gaia DR3, +${cns5RvAddedCount} CNS5 RVs).`
+  );
+
+  // 8. Cross-match Flare / Active Stars (GCVS v5.1 + Kirkpatrick 2024) & Debris Disks (Cotten & Song 2016 + Chen 2014)
+  const gcvsIndex = indexGcvsActivity(gcvsUvText, gcvsByText, gcvsRsText);
+  const debrisIndex = indexDebrisDisks(debrisCottenText, debrisChenText);
+
+  for (const s of catalogSystems) {
+    if (s.id === 'sol') {
+      delete s._memberCoords;
+      continue;
+    }
+    const coordList =
+      s._memberCoords && s._memberCoords.length > 0
+        ? s._memberCoords
+        : Number.isFinite(s.ra) && Number.isFinite(s.dec)
+          ? [{ ra: s.ra, dec: s.dec }]
+          : [];
+
+    for (const pt of coordList) {
+      const gcvsHits = gcvsIndex.skyGrid.query(pt.ra, pt.dec, 45);
+      if (gcvsHits.length > 0) {
+        const best = gcvsHits.find((h) => h.item.isFlare) || gcvsHits[0];
+        if (best.item.isFlare) s.isFlareStar = true;
+        if (!s.activityType || best.item.isFlare) s.activityType = best.item.activityType;
+      }
+
+      const kirkHits = kirkActivitySky.query(pt.ra, pt.dec, 45);
+      if (kirkHits.length > 0) {
+        for (const h of kirkHits) {
+          if (h.item.isFlare) {
+            s.isFlareStar = true;
+            s.activityType = 'UV';
+          }
+          if (s.ruwe === null && h.item.ruwe !== null) {
+            s.ruwe = round(h.item.ruwe, 2);
+          }
+        }
+      }
+
+      const debrisHits = debrisIndex.skyGrid.query(pt.ra, pt.dec, 40);
+      if (debrisHits.length > 0) {
+        s.hasDebrisDisk = true;
+      }
+    }
+
+    if (!s.hasDebrisDisk) {
+      const nameCandidates = [
+        s.name,
+        s.ids?.hd ? `HD ${s.ids.hd}` : null,
+        s.ids?.hd ? `HD${s.ids.hd}` : null,
+        s.ids?.hip ? `HIP ${s.ids.hip}` : null,
+        s.ids?.hr ? `HR ${s.ids.hr}` : null,
+      ].filter(Boolean);
+      if (nameCandidates.some((c) => debrisIndex.byName.has(debrisIndex.normName(c)))) {
+        s.hasDebrisDisk = true;
+      }
+    }
+
+    delete s._memberCoords;
+  }
+
+  // 9. Exoplanet Enrichment: Earth Similarity Index (ESI), Tidal-Locking Timescale, & NASA JWST/HST Spectra
+  const spectraByPlanet = indexNeaSpectra(neaSpectraText);
+  let jwstSpectraPlanets = 0;
+  let highEsiPlanets = 0;
+
+  for (const s of catalogSystems) {
+    if (!s.planets || s.planets.length === 0) continue;
+    const isSol = s.id === 'sol';
+    let sysHasJwst = false;
+    let maxEsi = null;
+
+    for (const pl of s.planets) {
+      const hostStar = s.stars.find((st) => st.name === pl.hostComponent) || s.stars[0];
+      const esi = computeESI({
+        radiusEarth: pl.radiusEarth,
+        massEarth: pl.massEarth,
+        eqTempK: isSol ? null : pl.eqTempK,
+        surfaceTempK: isSol ? pl.eqTempK : null,
+        insolationEarth: pl.insolationEarth,
+      });
+      const { tidalLockGyr, tidalLockStatus } = computeTidalLocking({
+        semiMajorAxisAU: pl.semiMajorAxisAU,
+        starMassSolar: hostStar?.mass ?? 1.0,
+        radiusEarth: pl.radiusEarth,
+        massEarth: pl.massEarth,
+        isTerrestrial: pl.isTerrestrial,
+      });
+
+      const spec = spectraByPlanet.get(clean(pl.name).toLowerCase()) || null;
+      pl.esi = esi;
+      pl.tidalLockGyr = tidalLockGyr;
+      pl.tidalLockStatus = tidalLockStatus;
+      pl.spectraCount = spec ? spec.count : 0;
+      pl.hasJwstSpectrum = spec ? spec.hasJwst : false;
+      pl.hasHstSpectrum = spec ? spec.hasHst : false;
+      pl.spectraFacilities = spec ? [...spec.facilities].sort() : [];
+
+      if (pl.hasJwstSpectrum) {
+        sysHasJwst = true;
+        jwstSpectraPlanets++;
+      }
+      if (esi !== null) {
+        if (maxEsi === null || esi > maxEsi) maxEsi = esi;
+        if (!isSol && esi >= 0.75) highEsiPlanets++;
+      }
+    }
+
+    s.hasJwstSpectra = sysHasJwst;
+    s.maxEsi = maxEsi;
+  }
+
   catalogSystems.sort((a, b) => a.distLy - b.distLy);
 
   const tier1Count = catalogSystems.filter((s) => s.tier === 1).length;
@@ -1121,6 +1561,11 @@ async function main() {
   const hzHostCount = catalogSystems.filter((s) => s.hasOptimisticHZ).length;
   const conservativeHzHostCount = catalogSystems.filter((s) => s.hasConservativeHZ).length;
   const totalPlanets = catalogSystems.reduce((sum, s) => sum + s.planetCount, 0);
+  const full3dVelocityCount = catalogSystems.filter((s) => s.hasFull3dVelocity).length;
+  const brownDwarfCount = catalogSystems.filter((s) => s.isBrownDwarf).length;
+  const flareStarCount = catalogSystems.filter((s) => s.isFlareStar).length;
+  const debrisDiskCount = catalogSystems.filter((s) => s.hasDebrisDisk).length;
+  const jwstSpectraHosts = catalogSystems.filter((s) => s.hasJwstSpectra).length;
 
   const nowIso = new Date().toISOString();
   const catalog = {
@@ -1133,7 +1578,7 @@ async function main() {
       extendedMagLimit: EXTENDED_MAG_LIMIT,
       neaQueryMaxPc: NEA_MAX_PC,
       coordinateFrame: 'Galactic Cartesian (light-years; Sol at [0,0,0]; +X -> Galactic Center, +Y -> Galactic Rotation, +Z -> North Galactic Pole)',
-      velocityFrame: 'Galactic Space Velocity (ly / kyr; derived from Hipparcos/Gaia proper motion + radial velocity)',
+      velocityFrame: 'Galactic Space Velocity (ly / kyr; derived from ESA Gaia DR3 / Hipparcos / CNS5 proper motion + radial velocity)',
       counts: {
         totalSystems: catalogSystems.length,
         tier1CoreSystems: tier1Count,
@@ -1143,13 +1588,33 @@ async function main() {
         conservativeHzHostSystems: conservativeHzHostCount,
         totalConfirmedPlanets: totalPlanets,
         synthesizedGaiaExoplanetHosts: synthesizedNeaCount,
+        full3dVelocitySystems: full3dVelocityCount,
+        gaiaMatchedSystems: gaiaMatchedCount,
+        brownDwarfSystems: brownDwarfCount,
+        flareStarSystems: flareStarCount,
+        debrisDiskSystems: debrisDiskCount,
+        jwstSpectraPlanets,
+        jwstSpectraHosts,
+        highEsiPlanets,
       },
       sources: [
         {
           id: 'nea',
-          name: 'NASA Exoplanet Archive (pscomppars TAP API)',
+          name: 'NASA Exoplanet Archive (pscomppars & Atmospheric Spectroscopy TAP API)',
           url: 'https://exoplanetarchive.ipac.caltech.edu/',
-          citation: 'Akeson et al. (2013), PASP 125, 989; NASA/IPAC Exoplanet Science Institute',
+          citation: 'Akeson et al. (2013), PASP 125, 989; NASA/IPAC Exoplanet Science Institute (JWST/HST/Spitzer spectra)',
+        },
+        {
+          id: 'gaia',
+          name: 'ESA Gaia Data Release 3 (Live TAP Service — gaiadr3.gaia_source)',
+          url: 'https://gea.esac.esa.int/archive/',
+          citation: 'Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1 (3D RVs, [Fe/H], RUWE, Non-Single Stars)',
+        },
+        {
+          id: 'ultracool',
+          name: '20-pc Full-Sky Census & UltracoolSheet Volume-Limited L/T/Y Brown Dwarfs',
+          url: 'https://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=J/ApJS/271/55',
+          citation: 'Kirkpatrick et al. (2024), ApJS 271, 55; Best et al. (2021), AJ 161, 42; Golovin et al. (2023) CNS5, A&A 670, A19',
         },
         {
           id: 'hyg',
@@ -1159,22 +1624,16 @@ async function main() {
           citation: 'Nash, D. (2023), HYG Database v3.8',
         },
         {
-          id: 'hip2',
-          name: 'Hipparcos New Reduction (VizieR I/311)',
-          url: 'https://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=I/311',
-          citation: 'van Leeuwen, F. (2007), A&A 474, 653',
-        },
-        {
-          id: 'gaia',
-          name: 'ESA Gaia Data Release 3 (VizieR I/355)',
-          url: 'https://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=I/355/gaiadr3',
-          citation: 'Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1',
+          id: 'activity',
+          name: 'GCVS v5.1 Flare/Active Stars & Spitzer/WISE Circumstellar Debris Disks',
+          url: 'https://vizier.cfa.harvard.edu/viz-bin/VizieR?-source=B/gcvs',
+          citation: 'Samus et al. (2017) GCVS v5.1; Cotten & Song (2016), ApJS 225, 15; Chen et al. (2014), ApJS 211, 25',
         },
         {
           id: 'kopparapu',
-          name: 'Circumstellar Habitable Zones around Main-Sequence Stars',
+          name: 'Habitable Zones (Kopparapu 2014), ESI (Schulze-Makuch 2011) & Tidal Locking (Barnes 2017)',
           url: 'https://arxiv.org/abs/1404.5292',
-          citation: 'Kopparapu, R. K. et al. (2014), ApJL 787, L29; Kopparapu et al. (2013), ApJ 765, 131',
+          citation: 'Kopparapu et al. (2014), ApJL 787, L29; Schulze-Makuch et al. (2011), Astrobiology 11, 1041; Barnes (2017), CeMDA 129, 509',
         },
         {
           id: 'mamajek',

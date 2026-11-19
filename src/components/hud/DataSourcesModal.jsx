@@ -62,6 +62,32 @@ export default function DataSourcesModal({ isOpen, onClose, catalogMeta, scifiMe
               <span>{cs ? 'Potvrzené planety' : 'Confirmed Planets'}</span>
               <strong>{catalogMeta.counts?.totalConfirmedPlanets}</strong>
             </div>
+            {catalogMeta.counts?.full3dVelocitySystems > 0 && (
+              <div className="m-stat">
+                <span>{cs ? 'Plná 3D rychlost (Gaia/CNS5)' : 'Full 3D Velocity (Gaia/CNS5)'}</span>
+                <strong className="highlight-cyan">{catalogMeta.counts.full3dVelocitySystems}</strong>
+              </div>
+            )}
+            {catalogMeta.counts?.brownDwarfSystems > 0 && (
+              <div className="m-stat">
+                <span>{cs ? 'Hnědí trpaslíci (L/T/Y)' : 'Brown Dwarfs (L/T/Y)'}</span>
+                <strong style={{ color: '#c084fc' }}>{catalogMeta.counts.brownDwarfSystems}</strong>
+              </div>
+            )}
+            {catalogMeta.counts?.jwstSpectraPlanets > 0 && (
+              <div className="m-stat">
+                <span>{cs ? 'JWST spektra exoplanet' : 'JWST Spectra Worlds'}</span>
+                <strong className="highlight-emerald">{catalogMeta.counts.jwstSpectraPlanets}</strong>
+              </div>
+            )}
+            {catalogMeta.counts?.debrisDiskSystems > 0 && (
+              <div className="m-stat">
+                <span>{cs ? 'Eruptivní / Disky' : 'Flare Stars / Disks'}</span>
+                <strong className="highlight-amber">
+                  {catalogMeta.counts.flareStarSystems || 0} / {catalogMeta.counts.debrisDiskSystems}
+                </strong>
+              </div>
+            )}
           </div>
 
           <p className="modal-intro-text">

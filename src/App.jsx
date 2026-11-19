@@ -36,8 +36,11 @@ import {
   X,
 } from 'lucide-react';
 
-const SHIP_COLORS = ['#00f0ff', '#00ff88', '#f59e0b', '#c084fc', '#fb7185', '#38bdf8'];
-const SPECTRAL_CLASS_LIST = ['O', 'B', 'A', 'F', 'G', 'K', 'M', 'D'];
+const SHIP_COLORS = [
+  '#00f0ff', '#00ff88', '#f59e0b', '#c084fc', '#fb7185', '#38bdf8',
+  '#34d399', '#fbbf24', '#a78bfa', '#f472b6', '#22d3ee', '#f97316',
+];
+const SPECTRAL_CLASS_LIST = ['O', 'B', 'A', 'F', 'G', 'K', 'M', 'L', 'T', 'Y', 'D'];
 
 const DEFAULT_SHIPS = [
   {
@@ -102,12 +105,13 @@ export default function App() {
   const [scifiData, setScifiData] = useState({ meta: {}, bySystemId: {} });
   const [voyagesLibrary, setVoyagesLibrary] = useState([]);
   const [activeVoyagePreset, setActiveVoyagePreset] = useState(null);
+  const [mergedVoyagePresetIds, setMergedVoyagePresetIds] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Filters & 3D Map Viewport state
   const [searchQuery, setSearchQuery] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
-  const [filterMode, setFilterMode] = useState('core'); // 'core' | 'deep' | 'visible' | 'exoplanets' | 'hz' | 'conservative-hz' | 'scifi' | 'solar-analogs'
+  const [filterMode, setFilterMode] = useState('core'); // 'core' | 'deep' | 'visible' | 'exoplanets' | 'hz' | 'conservative-hz' | 'jwst' | 'brown-dwarfs' | 'scifi' | 'solar-analogs'
   const [selectedSpectralClasses, setSelectedSpectralClasses] = useState([]);
   const [selectedConstellation, setSelectedConstellation] = useState('');
   const [maxCrewReachYears, setMaxCrewReachYears] = useState(0); // 0 = No limit
@@ -115,6 +119,10 @@ export default function App() {
   const [selectedSciFiUniverse, setSelectedSciFiUniverse] = useState('');
   const [multiStarOnly, setMultiStarOnly] = useState(false);
   const [terrestrialHzOnly, setTerrestrialHzOnly] = useState(false);
+  const [jwstOnly, setJwstOnly] = useState(false);
+  const [highEsiOnly, setHighEsiOnly] = useState(false);
+  const [flareStarOnly, setFlareStarOnly] = useState(false);
+  const [debrisDiskOnly, setDebrisDiskOnly] = useState(false);
   const [radiusLy, setRadiusLy] = useState(105);
   const [epochOffsetYears, setEpochOffsetYears] = useState(0); // -100,000 to +100,000 yr
   const [labelMode, setLabelMode] = useState('auto'); // 'auto' | 'all' | 'hz' | 'none'
@@ -122,7 +130,7 @@ export default function App() {
   const [velocityVectorMode, setVelocityVectorMode] = useState('off'); // 'off' | 'full3d' | 'all'
   const [velocityHorizonKyr, setVelocityHorizonKyr] = useState(20); // 10 | 20 | 50 kyr projection
   const [radioBubbleEnabled, setRadioBubbleEnabled] = useState(false);
-  const [radioSelectedLayerId, setRadioSelectedLayerId] = useState('layer-50');
+  const [radioSelectedYear, setRadioSelectedYear] = useState(1976);
   const [radioShowMetiBeams, setRadioShowMetiBeams] = useState(true);
   const [isBridgeViewOpen, setIsBridgeViewOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -233,10 +241,10 @@ export default function App() {
   const radioBubbleConfig = useMemo(
     () => ({
       enabled: radioBubbleEnabled,
-      selectedLayerId: radioSelectedLayerId,
+      selectedYear: radioSelectedYear,
       showMetiBeams: radioShowMetiBeams,
     }),
-    [radioBubbleEnabled, radioSelectedLayerId, radioShowMetiBeams]
+    [radioBubbleEnabled, radioSelectedYear, radioShowMetiBeams]
   );
 
   const catalogDefaultRadius = catalog?.meta?.maxRadiusLy || 105;
@@ -299,19 +307,31 @@ export default function App() {
     if (!catalog?.systems) return [];
     const hasSpectralFilter = selectedSpectralClasses.length > 0;
     const specSet = new Set(selectedSpectralClasses);
-    const isSciFiFocused = filterMode === 'scifi' || scifiOnly || Boolean(selectedSciFiUniverse);
+    const isFullSweepFilter =
+      filterMode === 'scifi' ||
+      filterMode === 'brown-dwarfs' ||
+      filterMode === 'jwst' ||
+      scifiOnly ||
+      Boolean(selectedSciFiUniverse) ||
+      jwstOnly ||
+      highEsiOnly ||
+      flareStarOnly ||
+      debrisDiskOnly ||
+      selectedSpectralClasses.some((c) => c === 'L' || c === 'T' || c === 'Y');
 
     return catalog.systems.filter((s) => {
       if (routeSystemIds.has(s.id)) return true;
       const distAtEpoch = solSystem ? distanceBetweenSystems(solSystem, s, epochOffsetYears) : s.distLy;
       if (distAtEpoch > radiusLy) return false;
       if (distAtEpoch > maxReachDistanceLy) return false;
-      // When filtering specifically for Sci-Fi stars or a Sci-Fi universe, sweep ALL 3,494 stars (not just Tier 1)
-      if (filterMode === 'core' && !isSciFiFocused && s.tier !== 1) return false;
+      // When filtering specifically for Sci-Fi, Brown Dwarfs, JWST, Flare, Debris, or High-ESI, sweep ALL systems
+      if (filterMode === 'core' && !isFullSweepFilter && s.tier !== 1) return false;
       if (filterMode === 'visible' && !s.isVisibleFromEarth) return false;
       if (filterMode === 'exoplanets' && !s.hasPlanets) return false;
       if (filterMode === 'hz' && !s.hasOptimisticHZ) return false;
       if (filterMode === 'conservative-hz' && !s.hasConservativeHZ) return false;
+      if (filterMode === 'jwst' && !s.hasJwstSpectra) return false;
+      if (filterMode === 'brown-dwarfs' && !s.isBrownDwarf) return false;
       const sfEntry = scifiBySystemId[s.id];
       if (filterMode === 'scifi' && !sfEntry) return false;
       if (
@@ -326,6 +346,10 @@ export default function App() {
       if (selectedSciFiUniverse && !sfEntry?.universes?.includes(selectedSciFiUniverse)) return false;
       if (multiStarOnly && s.stars.length < 2) return false;
       if (terrestrialHzOnly && !s.hasTerrestrialHZ) return false;
+      if (jwstOnly && !s.hasJwstSpectra) return false;
+      if (highEsiOnly && !(s.maxEsi !== null && s.maxEsi >= 0.75)) return false;
+      if (flareStarOnly && !s.isFlareStar) return false;
+      if (debrisDiskOnly && !s.hasDebrisDisk) return false;
       return true;
     });
   }, [
@@ -341,6 +365,10 @@ export default function App() {
     selectedSciFiUniverse,
     multiStarOnly,
     terrestrialHzOnly,
+    jwstOnly,
+    highEsiOnly,
+    flareStarOnly,
+    debrisDiskOnly,
     routeSystemIds,
     scifiBySystemId,
   ]);
@@ -355,7 +383,11 @@ export default function App() {
     (scifiOnly ? 1 : 0) +
     (selectedSciFiUniverse ? 1 : 0) +
     (multiStarOnly ? 1 : 0) +
-    (terrestrialHzOnly ? 1 : 0);
+    (terrestrialHzOnly ? 1 : 0) +
+    (jwstOnly ? 1 : 0) +
+    (highEsiOnly ? 1 : 0) +
+    (flareStarOnly ? 1 : 0) +
+    (debrisDiskOnly ? 1 : 0);
 
   const toggleSpectralClass = (cls) => {
     setSelectedSpectralClasses((prev) =>
@@ -372,6 +404,10 @@ export default function App() {
     setSelectedSciFiUniverse('');
     setMultiStarOnly(false);
     setTerrestrialHzOnly(false);
+    setJwstOnly(false);
+    setHighEsiOnly(false);
+    setFlareStarOnly(false);
+    setDebrisDiskOnly(false);
     setRadiusLy(catalogDefaultRadius);
     setEpochOffsetYears(0);
   };
@@ -574,6 +610,7 @@ export default function App() {
       setActiveShipId(clonedShips[0].id);
       setStoryEvents(clonedEvents);
       setActiveVoyagePreset(preset);
+      setMergedVoyagePresetIds([preset.id]);
       setEpochOffsetYears(0);
 
       const startClock =
@@ -590,6 +627,98 @@ export default function App() {
       setFocusRequest({ systemId: focusId, ts: Date.now() });
     },
     [lang]
+  );
+
+  // Merge one or more voyage presets together (deduplicating ship IDs and story events)
+  const handleMergeVoyagePresets = useCallback(
+    (presetsToMerge, { replaceExisting = false, autoPlay = false } = {}) => {
+      const validPresets = (presetsToMerge || []).filter(
+        (p) => p && Array.isArray(p.ships) && p.ships.length > 0
+      );
+      if (validPresets.length === 0) return;
+
+      const baseShips = replaceExisting ? [] : ships;
+      const baseEvents = replaceExisting ? [] : storyEvents;
+      const basePresetIds = replaceExisting ? [] : mergedVoyagePresetIds;
+
+      const shipMap = new Map(baseShips.map((s) => [s.id, s]));
+      const nextShips = [...baseShips];
+      for (const vp of validPresets) {
+        for (const sh of vp.ships) {
+          if (shipMap.has(sh.id)) continue;
+          const cloned = {
+            ...sh,
+            name: lang === 'cs' && sh.nameCs ? sh.nameCs : sh.name,
+            nameEn: sh.name,
+            nameCs: sh.nameCs || sh.name,
+            color: sh.color || SHIP_COLORS[nextShips.length % SHIP_COLORS.length],
+            driveConfig: { ...sh.driveConfig },
+            waypoints: sh.waypoints.map((w) => ({ ...w })),
+          };
+          shipMap.set(cloned.id, cloned);
+          nextShips.push(cloned);
+        }
+      }
+
+      const eventKeys = new Set(
+        baseEvents.map((ev) => ev.id || `${ev.systemId}|${ev.year}|${ev.title}`)
+      );
+      const nextEvents = [...baseEvents];
+      for (const vp of validPresets) {
+        for (const ev of vp.storyEvents || []) {
+          const k = ev.id || `${ev.systemId}|${ev.year}|${ev.title}`;
+          if (eventKeys.has(k)) continue;
+          eventKeys.add(k);
+          nextEvents.push({ ...ev });
+        }
+      }
+      nextEvents.sort((a, b) => (a.year || 0) - (b.year || 0));
+
+      const nextPresetIds = [...new Set([...basePresetIds, ...validPresets.map((p) => p.id)])];
+      const mergedPresets = nextPresetIds
+        .map((id) => voyagesLibrary.find((v) => v.id === id) || validPresets.find((v) => v.id === id))
+        .filter(Boolean);
+
+      const universesEn = [...new Set(mergedPresets.map((p) => p.universe).filter(Boolean))];
+      const universesCs = [...new Set(mergedPresets.map((p) => p.universeCs || p.universe).filter(Boolean))];
+      const summaryPreset =
+        mergedPresets.length === 1
+          ? mergedPresets[0]
+          : {
+              id: `merged-${nextPresetIds.join('+')}`,
+              universe: universesEn.join(' + '),
+              universeCs: universesCs.join(' + '),
+              title: {
+                en: `${mergedPresets.length} merged presets · ${nextShips.length} ships`,
+                cs: `${mergedPresets.length} sloučených scénářů · ${nextShips.length} lodí`,
+              },
+              ships: nextShips,
+              storyEvents: nextEvents,
+            };
+
+      setShips(nextShips);
+      if (replaceExisting && nextShips.length > 0) {
+        setActiveShipId(nextShips[0].id);
+      }
+      setStoryEvents(nextEvents);
+      setMergedVoyagePresetIds(nextPresetIds);
+      setActiveVoyagePreset(summaryPreset);
+      setEpochOffsetYears(0);
+
+      const minDep = Math.min(...nextShips.map((s) => s.departureYear));
+      if (replaceExisting || !Number.isFinite(masterClockYear)) {
+        setMasterClockYear(minDep);
+      }
+      setIsLeftDockOpen(true);
+      setIsTimelineOpen(true);
+      setIsPlayingTimeline(Boolean(autoPlay));
+
+      const focusId =
+        validPresets[0].focusSystemId || nextShips[0]?.waypoints?.[0]?.systemId || 'sol';
+      setSelectedSystemId(focusId);
+      setFocusRequest({ systemId: focusId, ts: Date.now() });
+    },
+    [lang, ships, storyEvents, mergedVoyagePresetIds, voyagesLibrary, masterClockYear]
   );
 
   // Keep loaded preset ship labels synchronized if the user switches EN <-> CS
@@ -750,6 +879,8 @@ export default function App() {
               <option value="exoplanets">{t('filterExoplanets')}</option>
               <option value="hz">{t('filterHabitable')}</option>
               <option value="conservative-hz">{t('filterConservativeHZ')}</option>
+              <option value="jwst">{t('filterJwstSpectra')}</option>
+              <option value="brown-dwarfs">{t('filterBrownDwarfs')}</option>
               <option value="solar-analogs">{t('filterSolarAnalogs')}</option>
               <option value="scifi">{t('filterSciFi')}</option>
               <option value="deep">{t('filterAllDeep')}</option>
@@ -961,6 +1092,38 @@ export default function App() {
                     />
                     <span>{t('multiStarOnlyLabel')}</span>
                   </label>
+                  <label className="hud-check-row">
+                    <input
+                      type="checkbox"
+                      checked={jwstOnly}
+                      onChange={(e) => setJwstOnly(e.target.checked)}
+                    />
+                    <span>🔭 {t('jwstOnlyLabel')}</span>
+                  </label>
+                  <label className="hud-check-row">
+                    <input
+                      type="checkbox"
+                      checked={highEsiOnly}
+                      onChange={(e) => setHighEsiOnly(e.target.checked)}
+                    />
+                    <span>◈ {t('highEsiOnlyLabel')}</span>
+                  </label>
+                  <label className="hud-check-row">
+                    <input
+                      type="checkbox"
+                      checked={flareStarOnly}
+                      onChange={(e) => setFlareStarOnly(e.target.checked)}
+                    />
+                    <span>⚡ {t('flareStarOnlyLabel')}</span>
+                  </label>
+                  <label className="hud-check-row">
+                    <input
+                      type="checkbox"
+                      checked={debrisDiskOnly}
+                      onChange={(e) => setDebrisDiskOnly(e.target.checked)}
+                    />
+                    <span>◎ {t('debrisDiskOnlyLabel')}</span>
+                  </label>
                 </div>
 
                 {/* Sci-Fi Universe / Franchise Filter */}
@@ -1125,8 +1288,8 @@ export default function App() {
           <RadioBubblePanel
             isOpen={radioBubbleEnabled}
             onClose={() => setRadioBubbleEnabled(false)}
-            selectedLayerId={radioSelectedLayerId}
-            onSelectLayerId={setRadioSelectedLayerId}
+            selectedYear={radioSelectedYear}
+            onSelectYear={setRadioSelectedYear}
             showMetiBeams={radioShowMetiBeams}
             onToggleMetiBeams={setRadioShowMetiBeams}
             allSystems={catalog?.systems || []}
@@ -1353,7 +1516,10 @@ export default function App() {
         onClose={() => setIsVoyagesModalOpen(false)}
         voyages={voyagesLibrary}
         activeVoyagePresetId={activeVoyagePreset?.id || null}
+        mergedVoyagePresetIds={mergedVoyagePresetIds}
+        currentShipCount={ships.length}
         onLoadVoyage={handleLoadVoyagePreset}
+        onMergeVoyages={handleMergeVoyagePresets}
       />
 
       {/* Data Sources & Attribution Modal */}

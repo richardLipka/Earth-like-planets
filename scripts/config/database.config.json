@@ -7,14 +7,20 @@
   "mergeLy": 0.28,
   "cacheMaxAgeDays": {
     "planets": 7,
+    "spectra": 7,
     "stars": 180,
+    "gaia": 180,
+    "ultracool": 180,
     "calibration": 90,
+    "activity": 90,
     "scifi": 30
   },
   "sources": {
     "hygUrl": "https://raw.githubusercontent.com/astronexus/HYG-Database/master/hyg/v3/hyg_v38.csv.gz",
     "mamajekUrl": "https://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt",
-    "neaTapBaseUrl": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync"
+    "neaTapBaseUrl": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "gaiaTapBaseUrl": "https://gea.esac.esa.int/tap-server/tap/sync",
+    "vizierAsuBaseUrl": "https://vizier.cfa.harvard.edu/viz-bin/asu-tsv"
   }
 }
 

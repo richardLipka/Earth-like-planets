@@ -1,14 +1,29 @@
 import React, { useState, useMemo } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext.jsx';
 import { formatNum } from '../../utils/format.js';
-import { BookMarked, Play, Compass, ExternalLink, X, Rocket, Radio, Sparkles } from 'lucide-react';
+import {
+  BookMarked,
+  Play,
+  Compass,
+  ExternalLink,
+  X,
+  Rocket,
+  Radio,
+  Sparkles,
+  Layers,
+  Plus,
+  Check,
+} from 'lucide-react';
 
 export default function SciFiVoyagesModal({
   isOpen,
   onClose,
   voyages,
   activeVoyagePresetId,
+  mergedVoyagePresetIds = [],
+  currentShipCount = 0,
   onLoadVoyage,
+  onMergeVoyages,
 }) {
   const { lang, t } = useLanguage();
   const [category, setCategory] = useState('all');
@@ -32,7 +47,25 @@ export default function SciFiVoyagesModal({
     return list.filter((v) => v.category === category);
   }, [voyages, category]);
 
+  const mergedSet = useMemo(() => {
+    const s = new Set(mergedVoyagePresetIds || []);
+    if (s.size === 0 && activeVoyagePresetId && !activeVoyagePresetId.startsWith('merged-')) {
+      s.add(activeVoyagePresetId);
+    }
+    return s;
+  }, [mergedVoyagePresetIds, activeVoyagePresetId]);
+
+  const categoryTotalShips = useMemo(() => {
+    const ids = new Set();
+    for (const vp of filtered) {
+      for (const sh of vp.ships || []) ids.add(sh.id);
+    }
+    return ids.size;
+  }, [filtered]);
+
   if (!isOpen) return null;
+
+  const canMergeCategory = category !== 'all' && filtered.length >= 2 && typeof onMergeVoyages === 'function';
 
   return (
     <div className="hud-modal-backdrop" onClick={onClose}>
@@ -72,10 +105,51 @@ export default function SciFiVoyagesModal({
             ))}
           </div>
 
+          {/* Multi-Preset Merge Action Bar */}
+          <div className="voyage-merge-toolbar">
+            <div className="voyage-merge-status">
+              <Layers size={13} className="section-icon" />
+              <span>
+                {mergedSet.size > 1
+                  ? `${t('voyageMergedActiveLabel')}: ${mergedSet.size} ${t('voyagePresetsUnit')} · ${currentShipCount} ${t('voyageShipsUnit')}`
+                  : t('voyageMergeHint')}
+              </span>
+            </div>
+
+            {canMergeCategory && (
+              <div className="voyage-merge-cat-actions">
+                <button
+                  type="button"
+                  className="hud-btn primary-btn compact-btn"
+                  onClick={() => {
+                    onMergeVoyages(filtered, { replaceExisting: true, autoPlay: false });
+                    onClose();
+                  }}
+                >
+                  <Layers size={12} />
+                  <span>
+                    {t('voyageMergeAllInTab')} ({filtered.length} · {categoryTotalShips} {t('voyageShipsUnit')})
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  className="hud-btn secondary-btn compact-btn"
+                  onClick={() => {
+                    onMergeVoyages(filtered, { replaceExisting: false, autoPlay: false });
+                  }}
+                  title={t('voyageAppendAllInTabTooltip')}
+                >
+                  <Plus size={12} />
+                  <span>{t('voyageAppendAllInTab')}</span>
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* 2-Column Voyage Cards Grid */}
           <div className="voyage-cards-grid">
             {filtered.map((vp) => {
-              const isLoaded = vp.id === activeVoyagePresetId;
+              const isMerged = mergedSet.has(vp.id);
               const loc = (v) => (v && typeof v === 'object' ? v[lang] || v.en : v);
               const titleText = loc(vp.title);
               const subText = loc(vp.subtitle);
@@ -84,7 +158,7 @@ export default function SciFiVoyagesModal({
               const sourceTitle = loc(vp.sourceLabel);
 
               return (
-                <article key={vp.id} className={`voyage-preset-card ${isLoaded ? 'active' : ''}`}>
+                <article key={vp.id} className={`voyage-preset-card ${isMerged ? 'active' : ''}`}>
                   <div className="vp-top-meta">
                     <span className="hud-tag scifi-badge-tag">
                       ★ {lang === 'cs' && vp.universeCs ? vp.universeCs : vp.universe}
@@ -167,6 +241,17 @@ export default function SciFiVoyagesModal({
                       <Compass size={12} />
                       <span>{t('voyageLoadPaused')}</span>
                     </button>
+                    {typeof onMergeVoyages === 'function' && (
+                      <button
+                        type="button"
+                        className={`hud-btn ${isMerged ? 'merged-btn' : 'secondary-btn'}`}
+                        onClick={() => onMergeVoyages([vp], { replaceExisting: false, autoPlay: false })}
+                        title={t('voyageMergeBtnTooltip')}
+                      >
+                        {isMerged ? <Check size={12} /> : <Plus size={12} />}
+                        <span>{isMerged ? t('voyageMergedBtn') : t('voyageMergeBtn')}</span>
+                      </button>
+                    )}
                     {vp.sourceUrl && (
                       <a
                         href={vp.sourceUrl}
@@ -189,4 +274,3 @@ export default function SciFiVoyagesModal({
     </div>
   );
 }
-

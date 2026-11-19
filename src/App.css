@@ -2250,7 +2250,7 @@ body,
 
 .modal-stats-banner {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
   gap: 8px;
 }
 
@@ -3485,6 +3485,239 @@ a.scifi-work-title:hover {
   font-size: 10.5px;
   color: #ffffff;
 }
+
+/* Year-by-Year Broadcast Shell Slider (1926 -> 2026) */
+.radio-year-slider-card {
+  background: rgba(5, 12, 26, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  border-radius: 5px;
+  padding: 8px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.radio-year-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.radio-year-readout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.radio-year-big {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.radio-radius-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 3px;
+  padding: 2px 5px;
+}
+
+.radio-radius-pill strong {
+  color: #fff;
+}
+
+.radio-twoway-tag {
+  font-size: 9px !important;
+  padding: 1px 5px !important;
+}
+
+.radio-year-step-btns {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.radio-year-step-btns .mini-hud-btn.active {
+  background: rgba(0, 255, 136, 0.22);
+  border-color: var(--bio-emerald);
+  color: #fff;
+}
+
+.radio-year-range {
+  width: 100%;
+  accent-color: #00f0ff;
+  cursor: pointer;
+  margin: 0;
+}
+
+.radio-year-scale {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.radio-hz-star-btn.wf-hz {
+  border-color: rgba(0, 255, 136, 0.65);
+  background: rgba(0, 255, 136, 0.14);
+}
+
+.radio-hz-star-btn.wf-exo {
+  border-color: rgba(0, 240, 255, 0.55);
+  background: rgba(0, 240, 255, 0.12);
+}
+
+.radio-empty-wf {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  padding: 4px 2px;
+}
+
+/* Multi-Preset Voyage Merge Toolbar */
+.voyage-merge-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 7px 10px;
+  background: rgba(6, 15, 34, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.28);
+  border-radius: 5px;
+}
+
+.voyage-merge-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-main);
+}
+
+.voyage-merge-cat-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.hud-btn.merged-btn {
+  background: rgba(0, 255, 136, 0.18);
+  border: 1px solid rgba(0, 255, 136, 0.6);
+  color: #a7f3d0;
+}
+.hud-btn.merged-btn:hover {
+  background: rgba(0, 255, 136, 0.26);
+}
+
+/* Enriched Astronomical Badges (Gaia DR3, Brown Dwarfs, Flare, Debris, ESI, Tidal Lock, JWST) */
+.hud-tag.violet-tag {
+  background: rgba(168, 85, 247, 0.18);
+  border-color: rgba(192, 132, 252, 0.55);
+  color: #e9d5ff;
+}
+
+.hud-tag.jwst-tag {
+  background: rgba(16, 185, 129, 0.18);
+  border-color: rgba(52, 211, 153, 0.65);
+  color: #a7f3d0;
+}
+
+.hud-tag.flare-tag {
+  background: rgba(244, 63, 94, 0.18);
+  border-color: rgba(251, 113, 133, 0.6);
+  color: #fecdd3;
+}
+
+.planet-astro-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 3px;
+}
+
+.pl-mini-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  line-height: 1.25;
+  white-space: nowrap;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  background: rgba(15, 23, 42, 0.85);
+  color: #cbd5e1;
+  text-decoration: none;
+}
+
+.pl-mini-badge.esi-high {
+  border-color: rgba(0, 255, 136, 0.6);
+  background: rgba(0, 255, 136, 0.15);
+  color: #a7f3d0;
+  font-weight: 600;
+}
+
+.pl-mini-badge.esi-mid {
+  border-color: rgba(0, 240, 255, 0.5);
+  background: rgba(0, 240, 255, 0.12);
+  color: #bae6fd;
+}
+
+.pl-mini-badge.esi-low {
+  opacity: 0.78;
+}
+
+.pl-mini-badge.lock-locked {
+  border-color: rgba(251, 146, 60, 0.55);
+  background: rgba(249, 115, 22, 0.14);
+  color: #fed7aa;
+}
+
+.pl-mini-badge.lock-possible {
+  border-color: rgba(250, 204, 21, 0.5);
+  background: rgba(234, 179, 8, 0.12);
+  color: #fef08a;
+}
+
+.pl-mini-badge.lock-free {
+  border-color: rgba(56, 189, 248, 0.45);
+  background: rgba(56, 189, 248, 0.1);
+  color: #bae6fd;
+}
+
+.pl-mini-badge.spec-jwst {
+  border-color: rgba(192, 132, 252, 0.7);
+  background: rgba(168, 85, 247, 0.22);
+  color: #f3e8ff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.pl-mini-badge.spec-jwst:hover {
+  background: rgba(168, 85, 247, 0.35);
+}
+
+.pl-mini-badge.spec-hst {
+  border-color: rgba(56, 189, 248, 0.6);
+  background: rgba(56, 189, 248, 0.16);
+  color: #e0f2fe;
+  cursor: pointer;
+}
+.pl-mini-badge.spec-hst:hover {
+  background: rgba(56, 189, 248, 0.28);
+}
+
 
 
 

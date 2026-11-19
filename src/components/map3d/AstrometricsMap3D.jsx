@@ -7,9 +7,9 @@ import { evaluateVoyageAtCoordYear } from '../../engine/voyagePlanner.js';
 import { SPECTRAL_COLORS } from '../../utils/format.js';
 import {
   RADIO_REFERENCE_YEAR,
-  RADIO_SHELL_LAYERS,
   METI_BEAMS,
 } from '../../data/radioBroadcastLayers.js';
+import { getBroadcastEraForYear } from '../../data/broadcastChronicle.js';
 
 /**
  * Galactic [x, y, z] -> Three.js Y-up scene [x, z, -y]
@@ -1039,53 +1039,49 @@ export default function AstrometricsMap3D({
 
     if (!radioBubbleConfig || !radioBubbleConfig.enabled) return;
 
-    const selectedId = radioBubbleConfig.selectedLayerId || 'layer-100';
+    const selectedYear = Math.max(1926, Math.min(2026, Math.round(radioBubbleConfig.selectedYear ?? 1976)));
+    const activeRadius = Math.max(0, RADIO_REFERENCE_YEAR - selectedYear);
+    const activeEra = getBroadcastEraForYear(selectedYear);
 
-    // 1. Concentric Spherical Radio Broadcast Horizons centered on Sol [0, 0, 0]
-    RADIO_SHELL_LAYERS.forEach((layer) => {
-      const r = layer.radiusLy;
-      const isSelected = layer.id === selectedId;
-      const isTwoWay = layer.isTwoWayHorizon;
-      const color = new THREE.Color(layer.color);
+    const addSphereRingSet = ({ r, colorHex, fillOpacity, eqOpacity, merOpacity, dashed, labelText, labelAngle, isActive }) => {
+      if (r < 0.25) return;
+      const color = new THREE.Color(colorHex);
 
-      // Translucent sphere surface for the selected layer (plus subtle outer 100 ly & 50 ly reference spheres)
-      if (isSelected || layer.radiusLy === 100 || isTwoWay) {
+      if (fillOpacity > 0) {
         const sphGeom = new THREE.SphereGeometry(r, 40, 24);
         const sphMat = new THREE.MeshBasicMaterial({
           color,
           transparent: true,
-          opacity: isSelected ? 0.095 : isTwoWay ? 0.038 : 0.025,
+          opacity: fillOpacity,
           depthWrite: false,
           side: THREE.DoubleSide,
         });
         radioBubbleGroup.add(new THREE.Mesh(sphGeom, sphMat));
       }
 
-      // Equatorial ring in Galactic Plane (XZ in Three.js)
       const eqPts = [];
       for (let i = 0; i <= 96; i++) {
         const a = (i / 96) * Math.PI * 2;
         eqPts.push(new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r));
       }
-      const eqMat = isTwoWay
+      const eqMat = dashed
         ? new THREE.LineDashedMaterial({
             color,
             dashSize: 2.2,
             gapSize: 1.2,
             transparent: true,
-            opacity: isSelected ? 0.95 : 0.72,
+            opacity: eqOpacity,
           })
         : new THREE.LineBasicMaterial({
             color,
             transparent: true,
-            opacity: isSelected ? 0.92 : 0.28,
+            opacity: eqOpacity,
           });
       const eqLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(eqPts), eqMat);
-      if (isTwoWay) eqLine.computeLineDistances();
+      if (dashed) eqLine.computeLineDistances();
       radioBubbleGroup.add(eqLine);
 
-      // Vertical meridian rings on the selected layer & 2-way reply horizon to emphasize 3D sphere volume
-      if (isSelected || isTwoWay) {
+      if (merOpacity > 0) {
         const merPts1 = [];
         const merPts2 = [];
         for (let i = 0; i <= 72; i++) {
@@ -1096,25 +1092,68 @@ export default function AstrometricsMap3D({
         const mMat = new THREE.LineBasicMaterial({
           color,
           transparent: true,
-          opacity: isSelected ? 0.42 : 0.16,
+          opacity: merOpacity,
         });
         radioBubbleGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(merPts1), mMat));
         radioBubbleGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(merPts2), mMat.clone()));
       }
 
-      // Floating CSS2D badge on the active shell (and 50 ly 2-way horizon)
-      if (isSelected || isTwoWay) {
+      if (labelText) {
         const el = document.createElement('div');
-        el.className = `map3d-radio-label${isSelected ? ' active' : ''}`;
-        el.style.borderColor = layer.color;
-        el.style.color = layer.color;
-        el.textContent = `📡 ${layer.badge?.[lang] || layer.badge?.en}`;
+        el.className = `map3d-radio-label${isActive ? ' active' : ''}`;
+        el.style.borderColor = colorHex;
+        el.style.color = colorHex;
+        el.textContent = labelText;
         const lbl = new CSS2DObject(el);
-        const angle = isTwoWay && !isSelected ? Math.PI * 0.72 : Math.PI * 0.22;
-        lbl.position.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+        lbl.position.set(Math.cos(labelAngle) * r, 0, Math.sin(labelAngle) * r);
         radioBubbleGroup.add(lbl);
       }
-    });
+    };
+
+    // 1a. Outer 100 ly reference shell (1926 dawn of VHF/network radio)
+    if (activeRadius !== 100) {
+      addSphereRingSet({
+        r: 100,
+        colorHex: '#38bdf8',
+        fillOpacity: 0.02,
+        eqOpacity: 0.3,
+        merOpacity: 0,
+        dashed: false,
+        labelText: null,
+        labelAngle: 0,
+        isActive: false,
+      });
+    }
+
+    // 1b. Persistent 50 ly Two-Way Reply Horizon (emerald dashed reference)
+    if (activeRadius !== 50) {
+      addSphereRingSet({
+        r: 50,
+        colorHex: '#00ff88',
+        fillOpacity: 0.032,
+        eqOpacity: 0.68,
+        merOpacity: 0.14,
+        dashed: true,
+        labelText: lang === 'cs' ? '📡 50 ly · 2-směrná odezva ⇄' : '📡 50 ly · 2-Way Reply ⇄',
+        labelAngle: Math.PI * 0.72,
+        isActive: false,
+      });
+    }
+
+    // 1c. Dynamic Active Year Wavefront Sphere (r = 2026 - selectedYear)
+    if (activeRadius > 0) {
+      addSphereRingSet({
+        r: activeRadius,
+        colorHex: activeEra.color,
+        fillOpacity: 0.095,
+        eqOpacity: 0.95,
+        merOpacity: 0.42,
+        dashed: activeRadius === 50,
+        labelText: `📡 ${selectedYear} · ${activeRadius} ly${activeRadius === 50 ? ' ⇄' : ''}`,
+        labelAngle: Math.PI * 0.22,
+        isActive: true,
+      });
+    }
 
     // 2. Real Directed Interstellar METI Beams (Sónar Calling GJ 273b, AMFE GJ 581, Cosmic Call 1 & 2)
     if (radioBubbleConfig.showMetiBeams && systemsById) {

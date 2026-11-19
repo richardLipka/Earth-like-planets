@@ -178,10 +178,18 @@ function printStatusReport(snap) {
   }
 
   console.log('\nUpstream Cache Freshness:');
+  const gaiaCoreMinPlx = Math.max(27, Math.floor(1000 / Math.min(36, Math.ceil(targetRadiusLy / lyPerPc) + 3)));
   const checks = [
     { label: 'HYG v3.8 Stars', file: path.join(CACHE_DIR, 'hyg_v38.csv.gz'), maxAge: ttl.stars ?? 180 },
+    { label: `ESA Gaia DR3 (plx>${gaiaCoreMinPlx})`, file: path.join(CACHE_DIR, `gaia_dr3_plx_${gaiaCoreMinPlx}.json`), maxAge: ttl.gaia ?? 180 },
+    { label: 'Ultracool (Kirkpatrick 24)', file: path.join(CACHE_DIR, 'vizier_kirkpatrick2024_20pc.tsv'), maxAge: ttl.ultracool ?? 180 },
+    { label: 'UltracoolSheet (Best 21)', file: path.join(CACHE_DIR, 'vizier_best2021_ultracool.tsv'), maxAge: ttl.ultracool ?? 180 },
+    { label: 'CNS5 25-pc Census', file: path.join(CACHE_DIR, 'vizier_cns5_25pc.tsv'), maxAge: ttl.ultracool ?? 180 },
     { label: 'Pecaut & Mamajek', file: path.join(CACHE_DIR, 'EEM_dwarf_UBVIJHK_colors_Teff.txt'), maxAge: ttl.calibration ?? 90 },
     { label: `NASA Exoplanets (<=${neaMaxPc} pc)`, file: path.join(CACHE_DIR, neaFile), maxAge: ttl.planets ?? 7 },
+    { label: 'NASA Spectra (JWST/HST)', file: path.join(CACHE_DIR, 'nea_spectra.json'), maxAge: ttl.spectra ?? 7 },
+    { label: 'GCVS Flare Stars (UV)', file: path.join(CACHE_DIR, 'vizier_gcvs_uv.tsv'), maxAge: ttl.activity ?? 90 },
+    { label: 'Debris Disks (Cotten 16)', file: path.join(CACHE_DIR, 'vizier_debris_cotten2016.tsv'), maxAge: ttl.activity ?? 90 },
     { label: 'Wikipedia Sci-Fi Categories', file: path.join(CACHE_DIR, 'scifi_v2', 'wiki_allcategories_fiction_set_around.json'), maxAge: ttl.scifi ?? 30 },
   ];
   for (const ch of checks) {
@@ -275,6 +283,18 @@ function printDiffSummary(before, after) {
   );
   console.log(
     `  HZ Host Systems    : ${bc.optimisticHzHostSystems ?? 0} -> ${ac.optimisticHzHostSystems ?? 0} (${formatDelta(bc.optimisticHzHostSystems, ac.optimisticHzHostSystems)})`
+  );
+  console.log(
+    `  Full 3D Velocity   : ${bc.full3dVelocitySystems ?? 0} -> ${ac.full3dVelocitySystems ?? 0} (${formatDelta(bc.full3dVelocitySystems, ac.full3dVelocitySystems)})`
+  );
+  console.log(
+    `  L/T/Y Brown Dwarfs : ${bc.brownDwarfSystems ?? 0} -> ${ac.brownDwarfSystems ?? 0} (${formatDelta(bc.brownDwarfSystems, ac.brownDwarfSystems)})`
+  );
+  console.log(
+    `  JWST Spectra Worlds: ${bc.jwstSpectraPlanets ?? 0} -> ${ac.jwstSpectraPlanets ?? 0} (${formatDelta(bc.jwstSpectraPlanets, ac.jwstSpectraPlanets)})`
+  );
+  console.log(
+    `  Flare / Debris Sys : ${ac.flareStarSystems ?? 0} flare stars · ${ac.debrisDiskSystems ?? 0} debris disks · ${ac.highEsiPlanets ?? 0} high-ESI (>=0.75)`
   );
   console.log(
     `  Sci-Fi Stars       : ${before.scifiMeta?.systemsWithFictionCount ?? 0} -> ${after.scifiMeta?.systemsWithFictionCount ?? 0} (${formatDelta(before.scifiMeta?.systemsWithFictionCount, after.scifiMeta?.systemsWithFictionCount)})`
