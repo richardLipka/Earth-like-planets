@@ -1,0 +1,54 @@
+{
+  "$comment": "User-editable custom Sci-Fi voyages merged automatically by `npm run voyages` / `npm run update-db`. Waypoints can specify either `systemId` (e.g. 'hip-8102') or `system` (star name such as 'Tau Ceti' or 'Epsilon Eridani'). Entries with `_example: true` are ignored.",
+  "voyages": [
+    {
+      "_example": true,
+      "id": "my-custom-voyage",
+      "category": "classic-sf",
+      "universe": "My Custom Universe",
+      "author": "Author Name",
+      "year": 2026,
+      "books": "Book Title",
+      "sourceUrl": "https://en.wikipedia.org/wiki/Interstellar_travel",
+      "sourceLabel": "Custom Scenario",
+      "title": {
+        "en": "Example Custom Interstellar Expedition",
+        "cs": "Ukázková vlastní mezihvězdná expedice"
+      },
+      "subtitle": {
+        "en": "Replace _example with false (or remove it) to include this scenario in the Voyages Library.",
+        "cs": "Odstraňte pole _example (nebo jej nastavte na false), chcete-li scénář zařadit do knihovny výprav."
+      },
+      "physicsNote": {
+        "en": "1g brachistochrone flip profile between Sol and Tau Ceti.",
+        "cs": "1g brachistochrona s otočkou v polovině mezi Sluncem a Tau Ceti."
+      },
+      "recommendedClockStart": 2200.0,
+      "focusSystem": "Sol",
+      "ships": [
+        {
+          "id": "custom-ship-1",
+          "name": "ISV Example (1g)",
+          "color": "#00f0ff",
+          "departureYear": 2200.0,
+          "crewStartAge": 30.0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.0,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 0.33
+          },
+          "waypoints": [
+            { "system": "Sol", "stayYears": 0 },
+            { "system": "Tau Ceti", "stayYears": 1.0 }
+          ]
+        }
+      ],
+      "storyEvents": [
+        { "id": "custom-ev-1", "title": "Departure from Sol", "system": "Sol", "year": 2200.0 }
+      ]
+    }
+  ]
+}
+

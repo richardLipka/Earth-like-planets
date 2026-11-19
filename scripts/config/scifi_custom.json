@@ -1,0 +1,53 @@
+{
+  "$comment": "User-editable custom Sci-Fi literature sources & overrides merged automatically by `npm run scifi` / `npm run update-db` — no code changes or LLM required.",
+  "extraBlockedAliases": [],
+  "extraSystemAliases": {
+    "_example_comment": "Map systemId (e.g. 'hip-8102') to extra searchable alias names; keys starting with '_' are ignored."
+  },
+  "extraWikiArticles": [
+    {
+      "_example": true,
+      "article": "Example_Wikipedia_Article_Title",
+      "title": "Novel or Series Title",
+      "author": "Author Name",
+      "year": 2024,
+      "universe": "Universe Name",
+      "medium": "novel"
+    }
+  ],
+  "extraFranchiseWikis": [
+    {
+      "_example": true,
+      "key": "example_wiki",
+      "label": "Example Sci-Fi Wiki",
+      "apiBase": "https://example.fandom.com/api.php",
+      "wikiBase": "https://example.fandom.com/wiki/",
+      "universe": "Example Universe",
+      "author": "Author / Creator",
+      "year": 2020,
+      "medium": "novel",
+      "systemCategories": ["Category:Star_systems"],
+      "planetCategories": ["Category:Planets"],
+      "maxCatPages": 2
+    }
+  ],
+  "extraCuratedWorks": [
+    {
+      "_example": true,
+      "system": "Tau Ceti",
+      "sfeSlug": null,
+      "works": [
+        {
+          "title": "My Custom Novel",
+          "author": "Author Name",
+          "year": 2025,
+          "universe": "My Universe",
+          "world": "Colony description",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Tau_Ceti"
+        }
+      ]
+    }
+  ]
+}
+

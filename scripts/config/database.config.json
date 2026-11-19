@@ -1,0 +1,20 @@
+{
+  "radiusLy": 105,
+  "extendedHzMarginLy": 30,
+  "minExtendedHzRadiusLy": 135,
+  "closeVolumeLy": 35,
+  "extendedMagLimit": 8.5,
+  "mergeLy": 0.28,
+  "cacheMaxAgeDays": {
+    "planets": 7,
+    "stars": 180,
+    "calibration": 90,
+    "scifi": 30
+  },
+  "sources": {
+    "hygUrl": "https://raw.githubusercontent.com/astronexus/HYG-Database/master/hyg/v3/hyg_v38.csv.gz",
+    "mamajekUrl": "https://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt",
+    "neaTapBaseUrl": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync"
+  }
+}
+

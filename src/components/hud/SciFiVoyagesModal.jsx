@@ -18,6 +18,7 @@ export default function SciFiVoyagesModal({
     return {
       all: list.length,
       'revelation-space': list.filter((v) => v.category === 'revelation-space').length,
+      'eastern-bloc': list.filter((v) => v.category === 'eastern-bloc').length,
       'classic-sf': list.filter((v) => v.category === 'classic-sf').length,
       'modern-sf': list.filter((v) => v.category === 'modern-sf').length,
     };
@@ -52,6 +53,7 @@ export default function SciFiVoyagesModal({
             {[
               { id: 'all', label: `${t('voyageCatAll')} (${counts.all})` },
               { id: 'revelation-space', label: `★ ${t('voyageCatRevSpace')} (${counts['revelation-space']})` },
+              { id: 'eastern-bloc', label: `${t('voyageCatEasternBloc')} (${counts['eastern-bloc']})` },
               { id: 'classic-sf', label: `${t('voyageCatClassic')} (${counts['classic-sf']})` },
               { id: 'modern-sf', label: `${t('voyageCatModern')} (${counts['modern-sf']})` },
             ].map((tab) => (
@@ -70,16 +72,21 @@ export default function SciFiVoyagesModal({
           <div className="voyage-cards-grid">
             {filtered.map((vp) => {
               const isLoaded = vp.id === activeVoyagePresetId;
-              const titleText = vp.title?.[lang] || vp.title?.en;
-              const subText = vp.subtitle?.[lang] || vp.subtitle?.en;
-              const physNote = vp.physicsNote?.[lang] || vp.physicsNote?.en;
+              const loc = (v) => (v && typeof v === 'object' ? v[lang] || v.en : v);
+              const titleText = loc(vp.title);
+              const subText = loc(vp.subtitle);
+              const booksText = loc(vp.books);
+              const physNote = loc(vp.physicsNote);
+              const sourceTitle = loc(vp.sourceLabel);
 
               return (
                 <article key={vp.id} className={`voyage-preset-card ${isLoaded ? 'active' : ''}`}>
                   <div className="vp-top-meta">
-                    <span className="hud-tag scifi-badge-tag">★ {vp.universe}</span>
+                    <span className="hud-tag scifi-badge-tag">
+                      ★ {lang === 'cs' && vp.universeCs ? vp.universeCs : vp.universe}
+                    </span>
                     <span className="vp-author">
-                      {vp.author} ({vp.year})
+                      {lang === 'cs' && vp.authorCs ? vp.authorCs : vp.author} ({vp.year})
                     </span>
                     <span className="vp-counts">
                       <Rocket size={11} /> {vp.ships.length} · <Radio size={11} /> {(vp.storyEvents || []).length}
@@ -87,13 +94,15 @@ export default function SciFiVoyagesModal({
                   </div>
 
                   <h4 className="vp-title">{titleText}</h4>
-                  <div className="vp-books">{vp.books}</div>
+                  <div className="vp-books">{booksText}</div>
                   <p className="vp-desc">{subText}</p>
 
                   {/* Ship Trajectories Preview */}
                   <div className="vp-ships-list">
                     {(vp.computedSummary || []).map((ss, idx) => {
                       const shRaw = vp.ships[idx];
+                      const shipName =
+                        lang === 'cs' ? ss.nameCs || shRaw?.nameCs || ss.name : ss.name;
                       return (
                         <div key={ss.id} className="vp-ship-row">
                           <div className="vp-ship-head">
@@ -101,7 +110,7 @@ export default function SciFiVoyagesModal({
                               className="ship-color-dot"
                               style={{ backgroundColor: shRaw?.color || '#00f0ff' }}
                             />
-                            <strong>{ss.name}</strong>
+                            <strong>{shipName}</strong>
                           </div>
                           <div className="vp-ship-route">{ss.routeNames.join(' → ')}</div>
                           <div className="vp-ship-metrics">
@@ -160,7 +169,7 @@ export default function SciFiVoyagesModal({
                         target="_blank"
                         rel="noopener noreferrer"
                         className="source-ref-link vp-src-link"
-                        title={vp.sourceLabel}
+                        title={sourceTitle}
                       >
                         <span>{t('voyageSourceLink')}</span>
                         <ExternalLink size={11} />
@@ -176,3 +185,4 @@ export default function SciFiVoyagesModal({
     </div>
   );
 }
+

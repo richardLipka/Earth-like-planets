@@ -1,10 +1,11 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
+    "generatedAtIso": "2026-11-19T14:53:45.147Z",
     "catalogueSystemsSwept": 3494,
     "uniqueAliasesIndexed": 9352,
     "systemsWithFictionCount": 214,
-    "curatedHighlightsCount": 474,
+    "curatedHighlightsCount": 485,
     "wikipediaCategoryWorksCount": 227,
     "universes": [
       {
@@ -64,8 +65,20 @@
         "count": 5
       },
       {
+        "name": "Eastern Bloc SF",
+        "count": 5
+      },
+      {
+        "name": "Classic Hard SF",
+        "count": 5
+      },
+      {
         "name": "Classic SF",
         "count": 4
+      },
+      {
+        "name": "Stanisław Lem",
+        "count": 3
       },
       {
         "name": "Hitchhiker's Guide",
@@ -77,10 +90,6 @@
       },
       {
         "name": "Three-Body",
-        "count": 2
-      },
-      {
-        "name": "Classic Hard SF",
         "count": 2
       },
       {
@@ -104,7 +113,7 @@
         "count": 2
       },
       {
-        "name": "Stanisław Lem",
+        "name": "Noon Universe",
         "count": 2
       },
       {
@@ -149,10 +158,6 @@
       },
       {
         "name": "Forbidden Planet",
-        "count": 1
-      },
-      {
-        "name": "Noon Universe",
         "count": 1
       },
       {
@@ -252,10 +257,12 @@
         "Bobiverse",
         "CoDominium",
         "Dune",
+        "Eastern Bloc SF",
         "Elite",
         "Foundation / Robots",
         "Known Space",
         "Proxima",
+        "Stanisław Lem",
         "Star Trek",
         "Three-Body"
       ],
@@ -272,6 +279,26 @@
       ],
       "notableWorks": [
         {
+          "title": "The Magellanic Cloud (Obłok Magellana)",
+          "author": "Stanisław Lem",
+          "year": 1955,
+          "universe": "Stanisław Lem",
+          "world": "Starship Gea (227 crew) — humanity’s first relativistic voyage to Alpha & Proxima Centauri",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/The_Magellanic_Cloud",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Planeta tří sluncí / Oceánem světelných roků",
+          "author": "Vladimír Babula",
+          "year": 1954,
+          "universe": "Eastern Bloc SF",
+          "world": "Kvarten (Planet of Three Suns) — destination of the Czechoslovak starship Paprsek",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Vladim%C3%ADr_Babula",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "The Three-Body Problem",
           "author": "Liu Cixin",
           "year": 2008,
@@ -286,7 +313,7 @@
           "author": "James Cameron",
           "year": 2009,
           "universe": "Avatar",
-          "world": "Pandora (moon of Polyphemus around Alpha Cen A)",
+          "world": "Pandora (moon of Polyphemus around Alpha Cen A, reached by ISV Venture Star at 0.70c)",
           "medium": "film",
           "url": "https://en.wikipedia.org/wiki/Avatar_(2009_film)",
           "source": "Curated Hard SF"
@@ -309,6 +336,16 @@
           "world": "Pasadena / early relativistic colony transit",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/The_Songs_of_Distant_Earth",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Known Space (Wunderland)",
+          "author": "Larry Niven",
+          "year": 1966,
+          "universe": "Known Space",
+          "world": "Wunderland (first human slowboat colony around Alpha Centauri)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Known_Space",
           "source": "Curated Hard SF"
         },
         {
@@ -450,16 +487,6 @@
           "medium": "novel",
           "url": "https://asimov.fandom.com/wiki/Alpha",
           "source": "Asimov / Foundation Wiki"
-        },
-        {
-          "title": "Known Space — Wunderland",
-          "author": "Larry Niven",
-          "year": 1966,
-          "universe": "Known Space",
-          "world": "Wunderland is a planet circling Alpha Centauri, 4.3 light years distant, the closest extra-solar colony in Known Space's human history and as such, one of…",
-          "medium": "novel",
-          "url": "https://larryniven.fandom.com/wiki/Wunderland",
-          "source": "Known Space Wiki"
         }
       ],
       "wikiWorks": [
@@ -774,7 +801,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 81
+      "totalCount": 83
     },
     "hip-87937": {
       "systemId": "hip-87937",
@@ -788,6 +815,7 @@
       "universes": [
         "Alliance-Union",
         "Classic Hard SF",
+        "Eastern Bloc SF",
         "Elite",
         "Hitchhiker's Guide",
         "Hyperion Cantos",
@@ -810,6 +838,16 @@
           "world": "Rocheworld (double planet reached via laser-pushed lightsail)",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Rocheworld",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Přátelé z Hadonoše (Friends from Ophiuchus)",
+          "author": "Vladimír Babula",
+          "year": 1956,
+          "universe": "Eastern Bloc SF",
+          "world": "Ophiuchus interstellar expedition of the Czechoslovak starship Paprsek",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Vladim%C3%ADr_Babula",
           "source": "Curated Hard SF"
         },
         {
@@ -945,7 +983,7 @@
           "source": "Wikipedia Category"
         }
       ],
-      "totalCount": 19
+      "totalCount": 20
     },
     "hyg-118720": {
       "systemId": "hyg-118720",
@@ -1192,6 +1230,7 @@
       ],
       "universes": [
         "Classic SF",
+        "Eastern Bloc SF",
         "Elite",
         "Foundation / Robots",
         "Hitchhiker's Guide",
@@ -1207,6 +1246,16 @@
         }
       ],
       "notableWorks": [
+        {
+          "title": "Kallisto / The Kallistonians (Каллисто)",
+          "author": "Georgy Martynov",
+          "year": 1957,
+          "universe": "Eastern Bloc SF",
+          "world": "Kallisto (Sirius system — 1g / 0.63c relativistic meson starship visiting Earth)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Georgy_Martynov",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Micromégas",
           "author": "Voltaire",
@@ -1248,14 +1297,24 @@
           "source": "Curated Hard SF"
         },
         {
+          "title": "Known Space (Flatlander)",
+          "author": "Larry Niven",
+          "year": 1966,
+          "universe": "Known Space",
+          "world": "Jinx & runaway slowboat Lazy Eight II",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Known_Space",
+          "source": "Curated Hard SF"
+        },
+        {
           "title": "Known Space",
           "author": "Larry Niven",
           "year": 1966,
           "universe": "Known Space",
-          "world": "Jinx (tidally distorted egg-shaped moon)",
+          "world": "Jinx, orbiting Sirius A, is a massive moon of a gas giant (called Primary), stretched by tidal forces into an egg shape and tidally locked.",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Known_Space",
-          "source": "Curated Hard SF"
+          "source": "Wikipedia Article"
         },
         {
           "title": "Frontier: Elite II",
@@ -1380,7 +1439,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 27
+      "totalCount": 29
     },
     "hip-92403": {
       "systemId": "hip-92403",
@@ -1911,6 +1970,7 @@
       "universes": [
         "Alien",
         "Classic Hard SF",
+        "Eastern Bloc SF",
         "Foundation / Robots",
         "Revelation Space",
         "Star Trek"
@@ -1926,6 +1986,16 @@
           "world": "Sky's Edge (61 Cygni A — colony founded by the generation ship Santiago)",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/Chasm_City",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Andromeda: A Space-Age Tale (Туманность Андромеды)",
+          "author": "Ivan Yefremov",
+          "year": 1957,
+          "universe": "Eastern Bloc SF",
+          "world": "Closest Great Ring (Великое Кольцо) interstellar relay partner to Earth",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Andromeda_(novel)",
           "source": "Curated Hard SF"
         },
         {
@@ -2020,7 +2090,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 10
+      "totalCount": 11
     },
     "hip-37279": {
       "systemId": "hip-37279",
@@ -2341,6 +2411,7 @@
       "universes": [
         "Alien",
         "Alliance-Union",
+        "Classic Hard SF",
         "CoDominium",
         "Elite",
         "Foundation / Robots",
@@ -2387,9 +2458,19 @@
           "author": "Ursula K. Le Guin",
           "year": 1974,
           "universe": "Hainish Cycle",
-          "world": "Urras & Anarres (twin inhabited worlds)",
+          "world": "Urras & Anarres (twin inhabited worlds linked by NAFAL sublight ships)",
           "medium": "novel",
           "url": "https://en.wikipedia.org/wiki/The_Dispossessed",
+          "source": "Curated Hard SF"
+        },
+        {
+          "title": "Time for the Stars",
+          "author": "Robert A. Heinlein",
+          "year": 1956,
+          "universe": "Classic Hard SF",
+          "world": "Survey destination of the 1g torchship Lewis and Clark",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Time_for_the_Stars",
           "source": "Curated Hard SF"
         },
         {
@@ -2755,7 +2836,7 @@
           "source": "Wikipedia Survey"
         }
       ],
-      "totalCount": 60
+      "totalCount": 61
     },
     "hip-36208": {
       "systemId": "hip-36208",
@@ -3118,12 +3199,23 @@
         "Alien",
         "CoDominium",
         "Dune",
+        "Eastern Bloc SF",
         "Hyperion Cantos",
         "Star Trek"
       ],
       "sfeUrl": null,
       "wikiCategories": [],
       "notableWorks": [
+        {
+          "title": "Andromeda: A Space-Age Tale (Туманность Андромеды)",
+          "author": "Ivan Yefremov",
+          "year": 1957,
+          "universe": "Eastern Bloc SF",
+          "world": "Zirda sector (Ophiuchus) — 37th Cosmic Expedition aboard the 5/6c anameson starship Tantra",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Andromeda_(novel)",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Dune (Expanded / Encyclopedia)",
           "author": "Frank Herbert",
@@ -3176,7 +3268,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 5
+      "totalCount": 6
     },
     "hip-97649": {
       "systemId": "hip-97649",
@@ -4037,6 +4129,7 @@
       "universes": [
         "Arthur C. Clarke",
         "Bobiverse",
+        "Classic Hard SF",
         "Elite",
         "Future History",
         "Halo",
@@ -4051,6 +4144,16 @@
         }
       ],
       "notableWorks": [
+        {
+          "title": "Time for the Stars",
+          "author": "Robert A. Heinlein",
+          "year": 1956,
+          "universe": "Classic Hard SF",
+          "world": "Ammonia-ocean world \"Inferno\" surveyed by the 1g torchship Lewis and Clark",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Time_for_the_Stars",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Time Enough for Love",
           "author": "Robert A. Heinlein",
@@ -4154,7 +4257,7 @@
           "source": "Wikipedia Category"
         }
       ],
-      "totalCount": 13
+      "totalCount": 14
     },
     "hip-7981": {
       "systemId": "hip-7981",
@@ -4234,6 +4337,7 @@
         "Contact",
         "Foundation / Robots",
         "Hyperion Cantos",
+        "Noon Universe",
         "Rama",
         "Star Trek"
       ],
@@ -4245,6 +4349,16 @@
         }
       ],
       "notableWorks": [
+        {
+          "title": "Noon: 22nd Century (Полдень, XXII век)",
+          "author": "Arkady & Boris Strugatsky",
+          "year": 1961,
+          "universe": "Noon Universe",
+          "world": "Relativistic photon starship Taimyr launched in 2017 toward Lyra (Vega sector), returning a century later",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Noon%3A_22nd_Century",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Contact",
           "author": "Carl Sagan",
@@ -4363,7 +4477,7 @@
           "source": "Wikipedia Category"
         }
       ],
-      "totalCount": 16
+      "totalCount": 17
     },
     "hip-113368": {
       "systemId": "hip-113368",
@@ -5412,11 +5526,22 @@
         "Gliese 449"
       ],
       "universes": [
+        "Classic Hard SF",
         "Star Trek"
       ],
       "sfeUrl": null,
       "wikiCategories": [],
       "notableWorks": [
+        {
+          "title": "Tau Zero",
+          "author": "Poul Anderson",
+          "year": 1970,
+          "universe": "Classic Hard SF",
+          "world": "Destination of the runaway 1g Bussard ramjet Leonora Christine (35.6 ly)",
+          "medium": "novel",
+          "url": "https://en.wikipedia.org/wiki/Tau_Zero",
+          "source": "Curated Hard SF"
+        },
         {
           "title": "Star Trek / Classic Hard SF",
           "author": "Various",
@@ -5439,7 +5564,7 @@
         }
       ],
       "wikiWorks": [],
-      "totalCount": 2
+      "totalCount": 3
     },
     "hip-12777": {
       "systemId": "hip-12777",

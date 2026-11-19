@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 /**
- * Builds public/data/astrometrics_catalog.json and public/data/attribution.json
- * from primary web astronomical catalogues:
+ * Builds public/data/astrometrics_catalog.json from primary astronomical catalogues:
  *
  *  1. Astronexus HYG Stellar Database v3.8 (Hipparcos + Yale Bright Star + Gliese/CNS3):
  *     3D Cartesian coordinates (x,y,z), 3D velocity vectors (vx,vy,vz), proper motions,
@@ -19,30 +18,63 @@
  *     (Recent Venus, Runaway Greenhouse, Maximum Greenhouse, Early Mars).
  *
  * Usage:
- *   node scripts/buildAstrometricsData.mjs [--refresh] [--radius 105]
+ *   node scripts/buildAstrometricsData.mjs [--radius 105] [--hz-radius 135] [--close-volume 35]
+ *     [--mag-limit 8.5] [--refresh | --refresh-planets | --refresh-stars]
+ *     [--respect-ttl] [--offline]
  */
 
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import {
+  getNumArg,
+  readJsonIfExists,
+  writeFileAtomic,
+  writeJsonAtomic,
+  isCacheFresh,
+  fileAgeDays,
+  fetchWithRetry,
+  createSpatialGrid,
+} from './lib/ioUtils.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const CACHE = path.join(__dirname, '.cache');
 const OUT_DIR = path.join(ROOT, 'public', 'data');
+const CONFIG_PATH = path.join(__dirname, 'config', 'database.config.json');
 
-const REFRESH = process.argv.includes('--refresh');
-const radiusArgIdx = process.argv.indexOf('--radius');
-const MAX_RADIUS_LY = radiusArgIdx >= 0 ? Number(process.argv[radiusArgIdx + 1]) : 105;
-const EXTENDED_HZ_RADIUS_LY = 135; // Include famous benchmark HZ systems like TOI-700 (101.4 ly) & K2-18 (124 ly)
-const CLOSE_VOLUME_LY = 35; // Include all stars within 35 ly regardless of faintness
-const MERGE_LY = 0.28; // Merge binary/trinary star components closer than 0.28 ly into one navigable system
+const CONFIG = readJsonIfExists(CONFIG_PATH, {}) || {};
+const argv = process.argv.slice(2);
+
+const REFRESH_ALL = argv.includes('--refresh') || argv.includes('--force');
+const REFRESH_PLANETS = REFRESH_ALL || argv.includes('--refresh-planets');
+const REFRESH_STARS = REFRESH_ALL || argv.includes('--refresh-stars');
+const RESPECT_TTL = argv.includes('--respect-ttl');
+const OFFLINE = argv.includes('--offline');
+
+const MAX_RADIUS_LY = getNumArg(argv, '--radius', Number(CONFIG.radiusLy) || 105);
+const DEFAULT_HZ_RADIUS = Math.max(
+  Number(CONFIG.minExtendedHzRadiusLy) || 135,
+  MAX_RADIUS_LY + (Number(CONFIG.extendedHzMarginLy) || 30)
+);
+const EXTENDED_HZ_RADIUS_LY = Math.max(
+  MAX_RADIUS_LY,
+  getNumArg(argv, '--hz-radius', DEFAULT_HZ_RADIUS)
+);
+const CLOSE_VOLUME_LY = getNumArg(argv, '--close-volume', Number(CONFIG.closeVolumeLy) || 35);
+const EXTENDED_MAG_LIMIT = getNumArg(argv, '--mag-limit', Number(CONFIG.extendedMagLimit) || 8.5);
+const MERGE_LY = Number(CONFIG.mergeLy) || 0.28; // Merge binary/trinary star components closer than 0.28 ly
 
 const LY_PER_PC = 3.261563777;
 const T_SUN = 5772; // IAU 2015 Resolution B3
 const MBOL_SUN_IAU = 4.74;
 const MBOL_SUN_FLOWER = 4.73;
+
+// Dynamic parsec cutoff for NASA Exoplanet Archive TAP query so expanding --radius fetches ALL exoplanets!
+const NEA_MAX_PC = Math.max(45, Math.ceil(EXTENDED_HZ_RADIUS_LY / LY_PER_PC) + 2);
+const NEA_CACHE_FILE =
+  NEA_MAX_PC === 45 ? 'nea_pscomppars_nearby.json' : `nea_pscomppars_max_${NEA_MAX_PC}pc.json`;
 
 // Equatorial (J2000) to Galactic rotation matrix:
 // Galactic +X -> Galactic Center, +Y -> Galactic Rotation, +Z -> North Galactic Pole
@@ -105,37 +137,114 @@ const NEA_ADQL = [
   'pl_orbsmax,pl_orbper,pl_orbeccen,pl_rade,pl_bmasse,pl_eqt,pl_insol,',
   'disc_year,discoverymethod,disc_refname',
   'from pscomppars',
-  'where sy_dist is not null and sy_dist <= 45',
+  `where sy_dist is not null and sy_dist <= ${NEA_MAX_PC}`,
 ].join(' ');
+
+const NEA_TAP_BASE =
+  CONFIG.sources?.neaTapBaseUrl || 'https://exoplanetarchive.ipac.caltech.edu/TAP/sync';
 
 const SOURCES = {
   hyg: {
     file: 'hyg_v38.csv.gz',
-    url: 'https://raw.githubusercontent.com/astronexus/HYG-Database/master/hyg/v3/hyg_v38.csv.gz',
+    url:
+      CONFIG.sources?.hygUrl ||
+      'https://raw.githubusercontent.com/astronexus/HYG-Database/master/hyg/v3/hyg_v38.csv.gz',
+    forceRefresh: REFRESH_STARS,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.stars) || 180,
   },
   mamajek: {
     file: 'EEM_dwarf_UBVIJHK_colors_Teff.txt',
-    url: 'https://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt',
+    url:
+      CONFIG.sources?.mamajekUrl ||
+      'https://www.pas.rochester.edu/~emamajek/EEM_dwarf_UBVIJHK_colors_Teff.txt',
+    forceRefresh: REFRESH_STARS,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.calibration) || 90,
   },
   nea: {
-    file: 'nea_pscomppars_nearby.json',
-    url: `https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=${encodeURIComponent(NEA_ADQL)}&format=json`,
+    file: NEA_CACHE_FILE,
+    url: `${NEA_TAP_BASE}?query=${encodeURIComponent(NEA_ADQL)}&format=json`,
+    forceRefresh: REFRESH_PLANETS,
+    ttlDays: Number(CONFIG.cacheMaxAgeDays?.planets) || 7,
   },
 };
 
-async function fetchOrCache(key) {
-  const { file, url } = SOURCES[key];
-  const target = path.join(CACHE, file);
-  if (REFRESH || !fs.existsSync(target)) {
-    fs.mkdirSync(CACHE, { recursive: true });
-    console.log(`[DATA] Downloading ${key} from ${url} ...`);
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to download ${url}: HTTP ${res.status}`);
-    const buf = Buffer.from(await res.arrayBuffer());
-    fs.writeFileSync(target, buf);
-  } else {
-    console.log(`[DATA] Using cached ${file}`);
+/**
+ * If a larger cached NASA pscomppars file already exists (e.g. max_100pc) and is usable,
+ * we can reuse it when building a smaller sphere in offline or non-refresh mode.
+ */
+function findCoveringNeaCache(minPc) {
+  if (!fs.existsSync(CACHE)) return null;
+  let best = null;
+  for (const name of fs.readdirSync(CACHE)) {
+    let pc = null;
+    if (name === 'nea_pscomppars_nearby.json') pc = 45;
+    else {
+      const m = /^nea_pscomppars_max_(\d+)pc\.json$/.exec(name);
+      if (m) pc = Number(m[1]);
+    }
+    if (pc !== null && pc >= minPc) {
+      const fullPath = path.join(CACHE, name);
+      if (!best || fileAgeDays(fullPath) < fileAgeDays(best.fullPath)) {
+        best = { file: name, fullPath, pc };
+      }
+    }
   }
+  return best;
+}
+
+async function fetchOrCache(key) {
+  const { file, url, forceRefresh, ttlDays } = SOURCES[key];
+  let target = path.join(CACHE, file);
+
+  // For NASA exoplanets, check if a larger radius cache already covers this request
+  if (key === 'nea' && !fs.existsSync(target) && !forceRefresh) {
+    const covering = findCoveringNeaCache(NEA_MAX_PC);
+    if (covering && (!RESPECT_TTL || isCacheFresh(covering.fullPath, ttlDays) || OFFLINE)) {
+      console.log(
+        `[DATA] Reusing cached ${covering.file} (covers <= ${covering.pc} pc, age ${fileAgeDays(covering.fullPath).toFixed(1)}d)`
+      );
+      return fs.readFileSync(covering.fullPath, 'utf8');
+    }
+  }
+
+  const exists = fs.existsSync(target);
+  const expired = RESPECT_TTL && !isCacheFresh(target, ttlDays);
+  const shouldDownload = !OFFLINE && (!exists || forceRefresh || expired);
+
+  if (OFFLINE && !exists) {
+    throw new Error(
+      `Offline mode requested, but cache file ${file} is missing in ${CACHE}. Run without --offline first.`
+    );
+  }
+
+  if (shouldDownload) {
+    fs.mkdirSync(CACHE, { recursive: true });
+    const reason = !exists ? 'missing' : forceRefresh ? 'forced refresh' : `cache > ${ttlDays}d`;
+    console.log(`[DATA] Downloading ${key} (${reason}) from ${url} ...`);
+    try {
+      const res = await fetchWithRetry(url, { label: key, timeoutMs: 60000, retries: 3 });
+      const buf = Buffer.from(await res.arrayBuffer());
+      if (key === 'nea') {
+        // Validate JSON before replacing cached file
+        const parsed = JSON.parse(buf.toString('utf8'));
+        const rows = Array.isArray(parsed) ? parsed : parsed.value || [];
+        if (rows.length === 0) throw new Error('NASA Exoplanet Archive returned 0 rows');
+      }
+      writeFileAtomic(target, buf);
+    } catch (err) {
+      if (exists) {
+        console.warn(
+          `[DATA] Warning: Download failed for ${key} (${err.message}). Falling back to existing cached ${file}.`
+        );
+      } else {
+        throw err;
+      }
+    }
+  } else {
+    const ageStr = exists ? `${fileAgeDays(target).toFixed(1)}d old` : 'cached';
+    console.log(`[DATA] Using cached ${file} (${ageStr})`);
+  }
+
   const buf = fs.readFileSync(target);
   return file.endsWith('.gz') ? zlib.gunzipSync(buf).toString('utf8') : buf.toString('utf8');
 }
@@ -632,19 +741,56 @@ async function main() {
   groupList.sort((a, b) => a.primary.absmag - b.primary.absmag); // Brightest primary absorbs nearby companions
 
   const mergedSystems = [];
+  const mergedGrid = createSpatialGrid(Math.max(0.5, MERGE_LY * 2));
   for (const g of groupList) {
-    const host = mergedSystems.find(
-      (m) => Math.hypot(...m.primary.posGal.map((v, i) => v - g.primary.posGal[i])) < MERGE_LY
-    );
+    const hits = mergedGrid.queryWithin(g.primary.posGal, MERGE_LY);
+    // Preserve brightest-primary absorption order (lowest insertion index in mergedSystems)
+    let host = null;
+    for (const h of hits) {
+      if (!host || h.item._idx < host._idx) host = h.item;
+    }
     if (host) {
       host.members.push(...g.members);
     } else {
+      g._idx = mergedSystems.length;
       mergedSystems.push(g);
+      mergedGrid.add(g.primary.posGal, g);
+    }
+  }
+
+  // Pre-compute Galactic coordinates for all NASA hosts and index in a 3D spatial hash grid (O(N))
+  const neaSpatialGrid = createSpatialGrid(Math.max(0.5, MERGE_LY * 2));
+  for (const entry of neaHostsMap.values()) {
+    if (Number.isFinite(entry.ra) && Number.isFinite(entry.dec) && Number.isFinite(entry.distPc)) {
+      const { posGalLy, velGalLyKyr } = astrometryToGalactic({
+        raDeg: entry.ra,
+        decDeg: entry.dec,
+        distPc: entry.distPc,
+        pmRaMasYr: entry.pmRa,
+        pmDecMasYr: entry.pmDec,
+        rvKmS: entry.rv || 0,
+      });
+      entry._posGalLy = posGalLy;
+      entry._velGalLyKyr = velGalLyKyr;
+      neaSpatialGrid.add(posGalLy, entry);
     }
   }
 
   // 4. Build System records and cross-match with NASA Exoplanet Archive
   const catalogSystems = [];
+  const catalogGrid = createSpatialGrid(0.5);
+  const usedSystemIds = new Set();
+  const makeUniqueSysId = (baseId) => {
+    if (!usedSystemIds.has(baseId)) {
+      usedSystemIds.add(baseId);
+      return baseId;
+    }
+    let suffix = 2;
+    while (usedSystemIds.has(`${baseId}-${suffix}`)) suffix++;
+    const unique = `${baseId}-${suffix}`;
+    usedSystemIds.add(unique);
+    return unique;
+  };
 
   for (const { members, primary } of mergedSystems) {
     const p = primary.r;
@@ -655,7 +801,8 @@ async function main() {
     const named = p.proper || ((p.bayer || p.flam) && p.con ? formatStarName(p) : '');
     const baseName = (named || (p.base ? clean(p.base) : '') || formatStarName(p)).replace(/(\S)\s?[A-C]$/, '$1');
     const sysName = isSol ? 'Sol' : SYSTEM_NAME_OVERRIDES[baseName] ?? baseName;
-    const sysId = isSol ? 'sol' : p.hip ? `hip-${p.hip}` : `hyg-${p.id}`;
+    const rawSysId = isSol ? 'sol' : p.hip ? `hip-${p.hip}` : `hyg-${p.id}`;
+    const sysId = makeUniqueSysId(rawSysId);
 
     // Cross-match every member star with NASA Exoplanet Archive hosts
     // Store matched hosts mapped to the specific component star they belong to
@@ -699,35 +846,23 @@ async function main() {
       }
     }
 
-    // Also claim any NASA host whose 3D position is within 0.30 ly of any star in this system
+    // Also claim any NASA host whose 3D position is within MERGE_LY of this system (O(1) grid lookup)
     // (catches binary companions whose NASA name differs from HYG, e.g., "Gl 725 B" vs "Struve 2398 B", "55 Cnc B" vs "GJ 324B")
-    for (const entry of neaHostsMap.values()) {
+    for (const hit of neaSpatialGrid.queryWithin(primary.posGal, MERGE_LY)) {
+      const entry = hit.item;
       if (entry.matchedSystemId || matchedEntries.some((x) => x.entry === entry)) continue;
-      if (!Number.isFinite(entry.ra) || !Number.isFinite(entry.dec) || !Number.isFinite(entry.distPc)) continue;
-      const { posGalLy } = astrometryToGalactic({
-        raDeg: entry.ra,
-        decDeg: entry.dec,
-        distPc: entry.distPc,
-      });
-      const distToSys = Math.hypot(
-        primary.posGal[0] - posGalLy[0],
-        primary.posGal[1] - posGalLy[1],
-        primary.posGal[2] - posGalLy[2]
-      );
-      if (distToSys < MERGE_LY) {
-        // Match to specific component star by component letter (A/B/C) or closest luminosity/Teff
-        const compMatch = /\s+([A-C])$/i.exec(entry.hostname);
-        let bestMember = ordered[0];
-        if (compMatch) {
-          const letter = compMatch[1].toUpperCase();
-          const byComp = ordered.find((m) => {
-            const nm = formatStarName(m.r);
-            return new RegExp(`(\\s|\\d)${letter}$`, 'i').test(nm) || new RegExp(`(\\s|\\d)${letter}$`, 'i').test(m.gl || '');
-          });
-          if (byComp) bestMember = byComp;
-        }
-        matchedEntries.push({ entry, memberStar: bestMember });
+      // Match to specific component star by component letter (A/B/C) or closest luminosity/Teff
+      const compMatch = /\s+([A-C])$/i.exec(entry.hostname);
+      let bestMember = ordered[0];
+      if (compMatch) {
+        const letter = compMatch[1].toUpperCase();
+        const byComp = ordered.find((m) => {
+          const nm = formatStarName(m.r);
+          return new RegExp(`(\\s|\\d)${letter}$`, 'i').test(nm) || new RegExp(`(\\s|\\d)${letter}$`, 'i').test(m.gl || '');
+        });
+        if (byComp) bestMember = byComp;
       }
+      matchedEntries.push({ entry, memberStar: bestMember });
     }
 
     // Build stellar components
@@ -826,14 +961,14 @@ async function main() {
     const isNamed = Boolean(p.proper || p.bayer || p.flam);
 
     // Tier classification:
-    // Tier 1 (Core Default Map): All Exoplanet Hosts + All Naked-Eye Visible Stars (V <= 6.5) + All Close Neighbors (<= 35 ly)
-    // Tier 2 (Extended Survey): Stars with V <= 8.5 or named/Gliese within 100 ly
+    // Tier 1 (Core Default Map): All Exoplanet Hosts + All Naked-Eye Visible Stars (V <= 6.5) + All Close Neighbors (<= CLOSE_VOLUME_LY)
+    // Tier 2 (Extended Survey): Stars with V <= EXTENDED_MAG_LIMIT or named/Gliese within MAX_RADIUS_LY
     const isCoreTier = isSol || hasPlanets || isVisible || primary.distLy <= CLOSE_VOLUME_LY;
-    const isExtendedTier = isCoreTier || brightestVmag <= 8.5 || isNamed || Boolean(primary.gl);
+    const isExtendedTier = isCoreTier || brightestVmag <= EXTENDED_MAG_LIMIT || isNamed || Boolean(primary.gl);
 
     if (!isExtendedTier) continue;
 
-    catalogSystems.push({
+    const sysRecord = {
       id: sysId,
       name: sysName,
       constellation: CONSTELLATION_NOM[p.con] || p.con || null,
@@ -863,7 +998,9 @@ async function main() {
       },
       stars,
       planets,
-    });
+    };
+    catalogSystems.push(sysRecord);
+    catalogGrid.add(sysRecord.pos, sysRecord);
   }
 
   // 5. Add any remaining unmatched NASA Exoplanet Hosts (e.g. TRAPPIST-1, LHS 1140, Teegarden's Star, Gliese 12, TOI-700, K2-18)
@@ -871,19 +1008,31 @@ async function main() {
   for (const entry of neaHostsMap.values()) {
     if (entry.matchedSystemId) continue;
 
-    // Check if an existing system is within 0.25 ly of this host's 3D position
-    const { posGalLy, velGalLyKyr } = astrometryToGalactic({
-      raDeg: entry.ra,
-      decDeg: entry.dec,
-      distPc: entry.distPc,
-      pmRaMasYr: entry.pmRa,
-      pmDecMasYr: entry.pmDec,
-      rvKmS: entry.rv || 0,
-    });
+    // Check if an existing system is within 0.25 ly of this host's 3D position (O(1) spatial lookup)
+    const posGalLy =
+      entry._posGalLy ||
+      astrometryToGalactic({
+        raDeg: entry.ra,
+        decDeg: entry.dec,
+        distPc: entry.distPc,
+        pmRaMasYr: entry.pmRa,
+        pmDecMasYr: entry.pmDec,
+        rvKmS: entry.rv || 0,
+      }).posGalLy;
+    const velGalLyKyr =
+      entry._velGalLyKyr ||
+      astrometryToGalactic({
+        raDeg: entry.ra,
+        decDeg: entry.dec,
+        distPc: entry.distPc,
+        pmRaMasYr: entry.pmRa,
+        pmDecMasYr: entry.pmDec,
+        rvKmS: entry.rv || 0,
+      }).velGalLyKyr;
 
-    const nearbyExisting = catalogSystems.find(
-      (sys) => Math.hypot(sys.pos[0] - posGalLy[0], sys.pos[1] - posGalLy[1], sys.pos[2] - posGalLy[2]) < 0.25
-    );
+    const nearHits = catalogGrid.queryWithin(posGalLy, 0.25);
+    nearHits.sort((a, b) => a.distSq - b.distSq);
+    const nearbyExisting = nearHits[0]?.item || null;
 
     if (nearbyExisting) {
       // Attach planets and IDs to the existing system
@@ -908,9 +1057,9 @@ async function main() {
     const hz = getKopparapuHZ(entry.lum, entry.teff);
     const vmag = entry.vmag ?? round(4.74 - 2.5 * Math.log10(entry.lum) + 5 * Math.log10(entry.distPc / 10), 2);
     const absmag = round(vmag - 5 * Math.log10(entry.distPc / 10), 2);
-    const sysId = `nea-${entry.hostname.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+    const sysId = makeUniqueSysId(`nea-${entry.hostname.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`);
 
-    catalogSystems.push({
+    const neaRecord = {
       id: sysId,
       name: entry.hostname,
       constellation: null,
@@ -959,7 +1108,9 @@ async function main() {
         },
       ],
       planets: entry.planets,
-    });
+    };
+    catalogSystems.push(neaRecord);
+    catalogGrid.add(neaRecord.pos, neaRecord);
   }
 
   catalogSystems.sort((a, b) => a.distLy - b.distLy);
@@ -971,11 +1122,16 @@ async function main() {
   const conservativeHzHostCount = catalogSystems.filter((s) => s.hasConservativeHZ).length;
   const totalPlanets = catalogSystems.reduce((sum, s) => sum + s.planetCount, 0);
 
+  const nowIso = new Date().toISOString();
   const catalog = {
     meta: {
-      generatedAt: new Date().toISOString().slice(0, 10),
+      generatedAt: nowIso.slice(0, 10),
+      generatedAtIso: nowIso,
       maxRadiusLy: MAX_RADIUS_LY,
       extendedHzRadiusLy: EXTENDED_HZ_RADIUS_LY,
+      closeVolumeLy: CLOSE_VOLUME_LY,
+      extendedMagLimit: EXTENDED_MAG_LIMIT,
+      neaQueryMaxPc: NEA_MAX_PC,
       coordinateFrame: 'Galactic Cartesian (light-years; Sol at [0,0,0]; +X -> Galactic Center, +Y -> Galactic Rotation, +Z -> North Galactic Pole)',
       velocityFrame: 'Galactic Space Velocity (ly / kyr; derived from Hipparcos/Gaia proper motion + radial velocity)',
       counts: {
@@ -1031,12 +1187,13 @@ async function main() {
     systems: catalogSystems,
   };
 
-  fs.mkdirSync(OUT_DIR, { recursive: true });
   const outPath = path.join(OUT_DIR, 'astrometrics_catalog.json');
-  fs.writeFileSync(outPath, JSON.stringify(catalog));
+  writeJsonAtomic(outPath, catalog, false);
   const sizeKb = (fs.statSync(outPath).size / 1024).toFixed(1);
 
-  console.log(`[DATA] Wrote ${outPath} (${sizeKb} KB):`);
+  console.log(
+    `[DATA] Wrote ${outPath} (${sizeKb} KB, radius <= ${MAX_RADIUS_LY} ly, HZ <= ${EXTENDED_HZ_RADIUS_LY} ly):`
+  );
   console.log(catalog.meta.counts);
 }
 

@@ -39,7 +39,11 @@ export default function DataSourcesModal({ isOpen, onClose, catalogMeta, scifiMe
         <div className="hud-modal-body">
           <div className="modal-stats-banner">
             <div className="m-stat">
-              <span>{cs ? 'Hvězdné soustavy (100+ ly)' : 'Star Systems (100+ ly)'}</span>
+              <span>
+                {cs
+                  ? `Hvězdné soustavy (≤ ${catalogMeta.maxRadiusLy || 105} ly)`
+                  : `Star Systems (≤ ${catalogMeta.maxRadiusLy || 105} ly)`}
+              </span>
               <strong>{catalogMeta.counts?.totalSystems}</strong>
             </div>
             <div className="m-stat">
@@ -62,8 +66,8 @@ export default function DataSourcesModal({ isOpen, onClose, catalogMeta, scifiMe
 
           <p className="modal-intro-text">
             {cs
-              ? 'Katalog této aplikace je sestavován výhradně ze skutečných pozorovaných dat pomocí reprodukovatelného skriptu (npm run data). Žádné fiktivní ani procedurálně generované planety nejsou zobrazovány. Každá vybraná hvězda a planeta obsahuje přímý odkaz na původní vědecký záznam a objevovou studii v NASA ADS.'
-              : 'This application catalogue is built strictly from real observational data via a reproducible pipeline (npm run data). No fictional or procedurally generated planets are displayed. Every selected star and planet links directly to its primary scientific catalogue record and peer-reviewed discovery paper on NASA ADS.'}
+              ? `Katalog této aplikace je sestavován výhradně ze skutečných pozorovaných dat pomocí automatizovaného skriptu (npm run update-db). Poslední aktualizace lokálních dat: ${catalogMeta.generatedAt || '—'}${scifiMeta?.generatedAt ? ` (Sci-Fi index: ${scifiMeta.generatedAt})` : ''}. Žádné fiktivní planety nejsou v astronomických tabulkách zobrazovány.`
+              : `This catalogue is built strictly from real observational data via an automated local pipeline (npm run update-db). Last local dataset refresh: ${catalogMeta.generatedAt || '—'}${scifiMeta?.generatedAt ? ` (Sci-Fi index: ${scifiMeta.generatedAt})` : ''}. No fictional planets are displayed in astronomical tables.`}
           </p>
 
           <div className="sources-cards-grid">

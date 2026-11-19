@@ -1,6 +1,7 @@
 node_modules/
 dist/
 scripts/.cache/
+scripts/.backups/
 .DS_Store
 *.local
 

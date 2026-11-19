@@ -28,6 +28,7 @@ import {
   PanelRight,
   ChevronDown,
   BookMarked,
+  MoveUpRight,
   X,
 } from 'lucide-react';
 
@@ -114,6 +115,8 @@ export default function App() {
   const [epochOffsetYears, setEpochOffsetYears] = useState(0); // -100,000 to +100,000 yr
   const [labelMode, setLabelMode] = useState('auto'); // 'auto' | 'all' | 'hz' | 'none'
   const [colorMode, setColorMode] = useState('spectral'); // 'spectral' | 'exoplanet'
+  const [velocityVectorMode, setVelocityVectorMode] = useState('off'); // 'off' | 'full3d' | 'all'
+  const [velocityHorizonKyr, setVelocityHorizonKyr] = useState(20); // 10 | 20 | 50 kyr projection
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const filtersRef = useRef(null);
 
@@ -166,6 +169,9 @@ export default function App() {
     ])
       .then(([catData, sfData, voyData]) => {
         setCatalog(catData);
+        if (catData?.meta?.maxRadiusLy) {
+          setRadiusLy(catData.meta.maxRadiusLy);
+        }
         setScifiData(sfData || { meta: {}, bySystemId: {} });
         setVoyagesLibrary(voyData?.voyages || []);
         setLoading(false);
@@ -216,14 +222,20 @@ export default function App() {
     [shipsWithVoyages, activeShipId]
   );
 
+  const catalogDefaultRadius = catalog?.meta?.maxRadiusLy || 105;
+  const catalogMaxSliderRadius = Math.max(
+    catalog?.meta?.extendedHzRadiusLy || 135,
+    catalogDefaultRadius
+  );
+
   // Compute max distance (ly) reachable from Sol within `maxCrewReachYears` using active ship's drive
   const maxReachDistanceLy = useMemo(() => {
     if (!maxCrewReachYears || maxCrewReachYears <= 0 || !activeShipWithVoyage) return Infinity;
     const dc = activeShipWithVoyage.driveConfig;
-    // Monotonic binary search on distance d in [0, 200] ly so properTime(d) <= maxCrewReachYears
+    // Monotonic binary search on distance d so properTime(d) <= maxCrewReachYears
     let lo = 0;
-    let hi = 200;
-    for (let i = 0; i < 30; i++) {
+    let hi = Math.max(200, catalogMaxSliderRadius * 1.5);
+    for (let i = 0; i < 32; i++) {
       const mid = 0.5 * (lo + hi);
       const prof = computeFlightProfile({
         distance: mid,
@@ -235,7 +247,7 @@ export default function App() {
       else hi = mid;
     }
     return lo;
-  }, [maxCrewReachYears, activeShipWithVoyage]);
+  }, [maxCrewReachYears, activeShipWithVoyage, catalogMaxSliderRadius]);
 
   const scifiBySystemId = scifiData?.bySystemId || {};
 
@@ -321,7 +333,7 @@ export default function App() {
     (selectedSpectralClasses.length > 0 ? 1 : 0) +
     (selectedConstellation ? 1 : 0) +
     (maxCrewReachYears > 0 ? 1 : 0) +
-    (radiusLy !== 105 ? 1 : 0) +
+    (radiusLy !== catalogDefaultRadius ? 1 : 0) +
     (epochOffsetYears !== 0 ? 1 : 0) +
     (scifiOnly ? 1 : 0) +
     (selectedSciFiUniverse ? 1 : 0) +
@@ -343,7 +355,7 @@ export default function App() {
     setSelectedSciFiUniverse('');
     setMultiStarOnly(false);
     setTerrestrialHzOnly(false);
-    setRadiusLy(105);
+    setRadiusLy(catalogDefaultRadius);
     setEpochOffsetYears(0);
   };
 
@@ -529,33 +541,50 @@ export default function App() {
     setActiveShipId(newId);
   };
 
-  const handleLoadVoyagePreset = useCallback((preset, autoPlay = true) => {
-    if (!preset || !Array.isArray(preset.ships) || preset.ships.length === 0) return;
-    const clonedShips = preset.ships.map((sh) => ({
-      ...sh,
-      driveConfig: { ...sh.driveConfig },
-      waypoints: sh.waypoints.map((w) => ({ ...w })),
-    }));
-    const clonedEvents = (preset.storyEvents || []).map((ev) => ({ ...ev }));
-    setShips(clonedShips);
-    setActiveShipId(clonedShips[0].id);
-    setStoryEvents(clonedEvents);
-    setActiveVoyagePreset(preset);
-    setEpochOffsetYears(0);
+  const handleLoadVoyagePreset = useCallback(
+    (preset, autoPlay = true) => {
+      if (!preset || !Array.isArray(preset.ships) || preset.ships.length === 0) return;
+      const clonedShips = preset.ships.map((sh) => ({
+        ...sh,
+        name: lang === 'cs' && sh.nameCs ? sh.nameCs : sh.name,
+        nameEn: sh.name,
+        nameCs: sh.nameCs || sh.name,
+        driveConfig: { ...sh.driveConfig },
+        waypoints: sh.waypoints.map((w) => ({ ...w })),
+      }));
+      const clonedEvents = (preset.storyEvents || []).map((ev) => ({ ...ev }));
+      setShips(clonedShips);
+      setActiveShipId(clonedShips[0].id);
+      setStoryEvents(clonedEvents);
+      setActiveVoyagePreset(preset);
+      setEpochOffsetYears(0);
 
-    const startClock =
-      Number.isFinite(preset.recommendedClockStart)
-        ? preset.recommendedClockStart
-        : Math.min(...clonedShips.map((s) => s.departureYear));
-    setMasterClockYear(startClock);
-    setIsLeftDockOpen(true);
-    setIsTimelineOpen(true);
-    setIsPlayingTimeline(Boolean(autoPlay));
+      const startClock =
+        Number.isFinite(preset.recommendedClockStart)
+          ? preset.recommendedClockStart
+          : Math.min(...clonedShips.map((s) => s.departureYear));
+      setMasterClockYear(startClock);
+      setIsLeftDockOpen(true);
+      setIsTimelineOpen(true);
+      setIsPlayingTimeline(Boolean(autoPlay));
 
-    const focusId = preset.focusSystemId || clonedShips[0].waypoints[0]?.systemId || 'sol';
-    setSelectedSystemId(focusId);
-    setFocusRequest({ systemId: focusId, ts: Date.now() });
-  }, []);
+      const focusId = preset.focusSystemId || clonedShips[0].waypoints[0]?.systemId || 'sol';
+      setSelectedSystemId(focusId);
+      setFocusRequest({ systemId: focusId, ts: Date.now() });
+    },
+    [lang]
+  );
+
+  // Keep loaded preset ship labels synchronized if the user switches EN <-> CS
+  useEffect(() => {
+    setShips((prev) =>
+      prev.map((sh) => {
+        if (!sh.nameEn || !sh.nameCs) return sh;
+        const nextName = lang === 'cs' ? sh.nameCs : sh.nameEn;
+        return sh.name === nextName ? sh : { ...sh, name: nextName };
+      })
+    );
+  }, [lang]);
 
   const handleDeleteShip = () => {
     if (ships.length <= 1) return;
@@ -795,7 +824,7 @@ export default function App() {
                   <input
                     type="range"
                     min="15"
-                    max="135"
+                    max={catalogMaxSliderRadius}
                     step="5"
                     className="hud-range full-width"
                     value={radiusLy}
@@ -855,6 +884,38 @@ export default function App() {
                     value={epochOffsetYears}
                     onChange={(e) => setEpochOffsetYears(Number(e.target.value))}
                   />
+                </div>
+
+                {/* 3D Stellar Velocity Vectors Control */}
+                <div className="popover-section">
+                  <div className="popover-label-row">
+                    <span>{t('vectorsTitle')}</span>
+                    {velocityVectorMode !== 'off' && (
+                      <strong className="highlight-cyan">+{velocityHorizonKyr} kyr</strong>
+                    )}
+                  </div>
+                  <div className="vector-filter-row">
+                    <select
+                      className="hud-select"
+                      value={velocityVectorMode}
+                      onChange={(e) => setVelocityVectorMode(e.target.value)}
+                    >
+                      <option value="off">{t('vectorsModeOff')}</option>
+                      <option value="full3d">{t('vectorsModeFull3d')}</option>
+                      <option value="all">{t('vectorsModeAll')}</option>
+                    </select>
+                    <select
+                      className="hud-select"
+                      value={velocityHorizonKyr}
+                      disabled={velocityVectorMode === 'off'}
+                      onChange={(e) => setVelocityHorizonKyr(Number(e.target.value))}
+                      title={t('vectorsHorizonLabel')}
+                    >
+                      <option value={10}>+10 kyr</option>
+                      <option value={20}>+20 kyr</option>
+                      <option value={50}>+50 kyr</option>
+                    </select>
+                  </div>
                 </div>
 
                 {/* Quick Boolean Filters */}
@@ -1030,6 +1091,12 @@ export default function App() {
               focusRequest={focusRequest}
               galacticCenterText={t('galacticCenterDir')}
               scifiBySystemId={scifiBySystemId}
+              velocityVectorMode={velocityVectorMode}
+              velocityHorizonKyr={velocityHorizonKyr}
+              maxRadiusLy={catalogMaxSliderRadius}
+              velocityVectorMode={velocityVectorMode}
+              velocityHorizonKyr={velocityHorizonKyr}
+              maxRadiusLy={catalogMaxSliderRadius}
             />
           )}
 
@@ -1079,7 +1146,9 @@ export default function App() {
             </div>
           </div>
 
-          <div className="map3d-bottom-controls-bar">
+          <div
+            className={`map3d-bottom-controls-bar ${velocityVectorMode !== 'off' ? 'vectors-active' : ''}`}
+          >
             <div className="map-control-group">
               <button
                 type="button"
@@ -1121,6 +1190,51 @@ export default function App() {
                   {colorMode === 'spectral' ? t('colorBySpectral') : t('colorByExoplanet')}
                 </span>
               </button>
+
+              <button
+                type="button"
+                className={`map-pill-btn ${velocityVectorMode !== 'off' ? 'active-pill' : ''}`}
+                onClick={() =>
+                  setVelocityVectorMode((m) =>
+                    m === 'off' ? 'full3d' : m === 'full3d' ? 'all' : 'off'
+                  )
+                }
+                title={t('vectorsTitle')}
+              >
+                <MoveUpRight size={13} />
+                <span>
+                  {velocityVectorMode === 'off'
+                    ? t('vectorsOff')
+                    : velocityVectorMode === 'full3d'
+                      ? t('vectorsFull3d')
+                      : t('vectorsAll')}
+                </span>
+              </button>
+
+              {velocityVectorMode !== 'off' && (
+                <>
+                  <button
+                    type="button"
+                    className="map-pill-btn vector-horizon-pill"
+                    onClick={() =>
+                      setVelocityHorizonKyr((h) => (h === 10 ? 20 : h === 20 ? 50 : 10))
+                    }
+                    title={t('vectorsHorizonLabel')}
+                  >
+                    +{velocityHorizonKyr} kyr
+                  </button>
+                  <div className="vector-legend-pill">
+                    <span className="vec-dot vec-3d" />
+                    <span>{t('vectorsLegendFull3d')}</span>
+                    {velocityVectorMode === 'all' && (
+                      <>
+                        <span className="vec-dot vec-tan" />
+                        <span>{t('vectorsLegendTangential')}</span>
+                      </>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
 
             <div className="map-hint-banner">{t('mapHint')}</div>

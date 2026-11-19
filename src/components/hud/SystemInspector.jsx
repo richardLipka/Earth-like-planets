@@ -308,10 +308,24 @@ export default function SystemInspector({
               <div className="kv-cell">
                 <span className="kv-label">{t('properMotion3D')}</span>
                 <span className="kv-value">
-                  {formatNum(velKmS, 1, lang)} km/s ({formatNum(velMagLyKyr, 3, lang)} ly/kyr)
-                  <small className="block-note">
-                    {system.hasFull3dVelocity ? t('velocityFull3D') : t('velocityTangential')}
-                  </small>
+                  {system.id === 'sol' ? (
+                    <>
+                      0 km/s
+                      <small className="block-note">{t('velocitySolRef')}</small>
+                    </>
+                  ) : velMagLyKyr < 1e-5 ? (
+                    <>
+                      —
+                      <small className="block-note">{t('velocityUnknown')}</small>
+                    </>
+                  ) : (
+                    <>
+                      {formatNum(velKmS, 1, lang)} km/s ({formatNum(velMagLyKyr, 3, lang)} ly/kyr)
+                      <small className="block-note">
+                        {system.hasFull3dVelocity ? t('velocityFull3D') : t('velocityTangential')}
+                      </small>
+                    </>
+                  )}
                 </span>
               </div>
             </div>

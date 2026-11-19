@@ -379,20 +379,45 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
     const systemsById = new Map(catalog.systems.map((s) => [s.id, s]));
     const voyages = voyagesDoc.voyages || [];
 
-    expect(voyages.length).toBeGreaterThanOrEqual(10);
-    // Ensure Nevil Clavain (Revelation Space), Rama, Project Hail Mary, and Bobiverse are present
+    expect(voyages.length).toBeGreaterThanOrEqual(20);
+    // Ensure Revelation Space, Eastern Bloc (Lem, Yefremov, Strugatsky, Martynov, Babula), and Classic/Modern sublight SF are present
     const ids = new Set(voyages.map((v) => v.id));
-    expect(ids.has('revelation-space-clavain-inhibitor')).toBe(true);
-    expect(ids.has('revelation-space-exodus-chasm-city')).toBe(true);
-    expect(ids.has('clarke-rama-odyssey')).toBe(true);
-    expect(ids.has('project-hail-mary')).toBe(true);
-    expect(ids.has('bobiverse-expansion')).toBe(true);
+    for (const requiredId of [
+      'revelation-space-clavain-inhibitor',
+      'revelation-space-exodus-chasm-city',
+      'lem-return-from-the-stars',
+      'lem-magellanic-cloud',
+      'yefremov-andromeda-nebula',
+      'strugatsky-noon-22nd-century',
+      'martynov-kallisto-sirius',
+      'babula-planet-of-three-suns',
+      'anderson-tau-zero',
+      'heinlein-time-for-the-stars',
+      'leguin-hainish-nafal',
+      'niven-known-space-slowboats',
+      'clarke-rama-odyssey',
+      'cameron-avatar-venture-star',
+      'project-hail-mary',
+      'bobiverse-expansion',
+    ]) {
+      expect(ids.has(requiredId), `Missing voyage ${requiredId}`).toBe(true);
+    }
 
     for (const vp of voyages) {
       expect(vp.title?.en).toBeTruthy();
       expect(vp.title?.cs).toBeTruthy();
+      expect(vp.subtitle?.en).toBeTruthy();
+      expect(vp.subtitle?.cs).toBeTruthy();
+      expect(vp.physicsNote?.en).toBeTruthy();
+      expect(vp.physicsNote?.cs).toBeTruthy();
+      expect(vp.books?.en).toBeTruthy();
+      expect(vp.books?.cs).toBeTruthy();
+      expect(vp.sourceLabel?.en).toBeTruthy();
+      expect(vp.sourceLabel?.cs).toBeTruthy();
       expect(vp.ships.length).toBeGreaterThan(0);
       for (const sh of vp.ships) {
+        expect(sh.name).toBeTruthy();
+        expect(sh.nameCs).toBeTruthy();
         expect(sh.waypoints.length).toBeGreaterThanOrEqual(2);
         for (const wp of sh.waypoints) {
           expect(systemsById.has(wp.systemId), `Invalid star ${wp.systemId} in ${vp.id}`).toBe(true);
@@ -409,6 +434,8 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
       }
       for (const ev of vp.storyEvents || []) {
         expect(systemsById.has(ev.systemId)).toBe(true);
+        expect(ev.title?.en).toBeTruthy();
+        expect(ev.title?.cs).toBeTruthy();
       }
     }
   });

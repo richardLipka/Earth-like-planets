@@ -783,7 +783,7 @@ body,
   left: 10px;
   right: 10px;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 8px;
   pointer-events: none;
@@ -792,10 +792,58 @@ body,
 
 .map-control-group {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
+  align-items: center;
   gap: 6px;
   pointer-events: auto;
-  flex-shrink: 0;
+  min-width: 0;
+}
+
+.map-pill-btn.active-pill {
+  background: rgba(0, 240, 255, 0.22);
+  border-color: var(--holo-cyan);
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.28);
+}
+
+.map-pill-btn.vector-horizon-pill {
+  border-color: rgba(56, 189, 248, 0.55);
+  color: #7dd3fc;
+  padding: 5px 8px;
+}
+
+.vector-filter-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.95fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+.vector-legend-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background: rgba(5, 11, 24, 0.88);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.vec-dot {
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  display: inline-block;
+}
+.vec-dot.vec-3d {
+  background: #38bdf8;
+}
+.vec-dot.vec-tan {
+  background: #fbbf24;
+  margin-left: 4px;
 }
 
 .map-pill-btn {
@@ -834,8 +882,14 @@ body,
   min-width: 0;
 }
 
-@container mapstage (max-width: 780px) {
+@container mapstage (max-width: 1040px) {
   .map-hint-banner {
+    display: none;
+  }
+}
+
+@container mapstage (max-width: 1240px) {
+  .map3d-bottom-controls-bar.vectors-active .map-hint-banner {
     display: none;
   }
 }

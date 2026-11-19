@@ -214,7 +214,8 @@ export default function RouteComputerPanel({
       {activeVoyagePreset && (
         <div className="active-preset-strip">
           <span className="aps-title" title={activeVoyagePreset.title?.[lang] || activeVoyagePreset.title?.en}>
-            ★ {activeVoyagePreset.universe}: {activeVoyagePreset.title?.[lang] || activeVoyagePreset.title?.en}
+            ★ {lang === 'cs' && activeVoyagePreset.universeCs ? activeVoyagePreset.universeCs : activeVoyagePreset.universe}:{' '}
+            {activeVoyagePreset.title?.[lang] || activeVoyagePreset.title?.en}
           </span>
           {onOpenVoyageLibrary && (
             <button type="button" className="text-link-btn" onClick={onOpenVoyageLibrary}>

@@ -32,13 +32,23 @@
  * Outputs `public/data/scifi_literature.json`, keyed by `system.id`.
  *
  * Usage:
- *   node scripts/buildSciFiSweep.mjs [--refresh]
+ *   node scripts/buildSciFiSweep.mjs [--refresh | --respect-ttl | --offline] [--max-age-days 30]
  */
 
+import crypto from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
+import {
+  sleep,
+  getNumArg,
+  readJsonIfExists,
+  writeFileAtomic,
+  writeJsonAtomic,
+  isCacheFresh,
+  fetchWithRetry,
+} from './lib/ioUtils.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -46,9 +56,20 @@ const CATALOG_PATH = path.join(ROOT, 'public', 'data', 'astrometrics_catalog.jso
 const HYG_CACHE_PATH = path.join(__dirname, '.cache', 'hyg_v38.csv.gz');
 const CACHE_DIR = path.join(__dirname, '.cache', 'scifi_v2');
 const OUT_PATH = path.join(ROOT, 'public', 'data', 'scifi_literature.json');
-const REFRESH = process.argv.includes('--refresh');
+const DB_CONFIG = readJsonIfExists(path.join(__dirname, 'config', 'database.config.json'), {}) || {};
+const CUSTOM_SCIFI = readJsonIfExists(path.join(__dirname, 'config', 'scifi_custom.json'), {}) || {};
 
-const USER_AGENT = 'AstrometricsSciFiSweep/2.0 (https://home.zcu.cz/~lipka/)';
+const argv = process.argv.slice(2);
+const REFRESH = argv.includes('--refresh') || argv.includes('--force');
+const RESPECT_TTL = argv.includes('--respect-ttl');
+const OFFLINE = argv.includes('--offline');
+const CACHE_TTL_DAYS = getNumArg(
+  argv,
+  '--max-age-days',
+  Number(DB_CONFIG.cacheMaxAgeDays?.scifi) || 30
+);
+
+const USER_AGENT = 'AstrometricsSciFiSweep/2.1 (https://home.zcu.cz/~lipka/)';
 
 // ---------------------------------------------------------------------------
 // Astronomical Designation Tables (All 88 IAU Constellations + Greek Letters)
@@ -209,6 +230,16 @@ const EXPLICIT_SYSTEM_ALIASES = {
   'hip-13402': ['Epsilon Eridani B?'], // removed below; hip-13402 is EP Eridani
 };
 delete EXPLICIT_SYSTEM_ALIASES['hip-13402'];
+
+// Merge user-editable custom aliases & blocked terms from scripts/config/scifi_custom.json
+for (const b of CUSTOM_SCIFI.extraBlockedAliases || []) {
+  if (typeof b === 'string' && b.trim()) BLOCKED_AMBIGUOUS_ALIASES.add(b.trim().toLowerCase());
+}
+for (const [sysId, list] of Object.entries(CUSTOM_SCIFI.extraSystemAliases || {})) {
+  if (sysId.startsWith('_') || !Array.isArray(list)) continue;
+  const existing = EXPLICIT_SYSTEM_ALIASES[sysId] || [];
+  EXPLICIT_SYSTEM_ALIASES[sysId] = [...new Set([...existing, ...list.filter((v) => typeof v === 'string')])];
+}
 
 // ---------------------------------------------------------------------------
 // Normalization & CSV Helpers
@@ -461,29 +492,56 @@ function buildCatalogAliasIndex(catalog) {
 // Polite Cached HTTP & MediaWiki API Helpers
 // ---------------------------------------------------------------------------
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+function shouldUseCachedFile(filePath) {
+  if (!fs.existsSync(filePath)) return false;
+  if (OFFLINE) return true;
+  if (REFRESH) return false;
+  if (RESPECT_TTL) return isCacheFresh(filePath, CACHE_TTL_DAYS);
+  return true;
+}
 
-async function fetchJsonCached(cacheKey, url, delayMs = 160) {
+async function fetchJsonCached(cacheKey, url, delayMs = 160, legacyCacheKey = null) {
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   const safe = cacheKey.replace(/[^a-z0-9._-]+/gi, '_').slice(0, 140);
   const filePath = path.join(CACHE_DIR, `${safe}.json`);
 
-  if (!REFRESH && fs.existsSync(filePath)) {
+  if (shouldUseCachedFile(filePath)) {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  }
+
+  // Optional legacy fallback (only used when offline and hashed file has not been written yet)
+  const legacyPath = legacyCacheKey
+    ? path.join(CACHE_DIR, `${legacyCacheKey.replace(/[^a-z0-9._-]+/gi, '_').slice(0, 140)}.json`)
+    : null;
+  if (OFFLINE) {
+    if (legacyPath && fs.existsSync(legacyPath)) {
+      return JSON.parse(fs.readFileSync(legacyPath, 'utf8'));
+    }
+    return null;
   }
 
   await sleep(delayMs);
   try {
-    const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
-    if (!res.ok) {
-      console.warn(`[SCIFI] HTTP ${res.status} for ${cacheKey}`);
-      return null;
-    }
+    const res = await fetchWithRetry(url, {
+      headers: { 'User-Agent': USER_AGENT },
+      timeoutMs: 25000,
+      retries: 2,
+      baseDelayMs: 600,
+      label: cacheKey,
+    });
     const json = await res.json();
-    fs.writeFileSync(filePath, JSON.stringify(json));
+    writeFileAtomic(filePath, JSON.stringify(json));
     return json;
   } catch (err) {
     console.warn(`[SCIFI] Fetch error for ${cacheKey}: ${err.message}`);
+    // Graceful stale-cache fallback so a transient wiki outage never loses existing local entries
+    if (fs.existsSync(filePath)) {
+      console.warn(`[SCIFI] Using stale cache fallback for ${cacheKey}`);
+      return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+    if (legacyPath && fs.existsSync(legacyPath)) {
+      return JSON.parse(fs.readFileSync(legacyPath, 'utf8'));
+    }
     return null;
   }
 }
@@ -494,12 +552,16 @@ async function fetchAllCategoryMembers(wikiKey, apiBase, categoryTitle, maxPages
   const safe = cacheKey.replace(/[^a-z0-9._-]+/gi, '_').slice(0, 140);
   const filePath = path.join(CACHE_DIR, `${safe}.json`);
 
-  if (!REFRESH && fs.existsSync(filePath)) {
+  if (shouldUseCachedFile(filePath)) {
     return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  }
+  if (OFFLINE) {
+    return [];
   }
 
   const all = [];
   let cmcontinue = null;
+  let fetchedAnyPage = false;
   for (let page = 0; page < maxPages; page++) {
     let url =
       `${apiBase}?action=query&list=categorymembers&cmnamespace=0&cmlimit=500&format=json&cmtitle=` +
@@ -508,9 +570,15 @@ async function fetchAllCategoryMembers(wikiKey, apiBase, categoryTitle, maxPages
 
     await sleep(160);
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': USER_AGENT } });
-      if (!res.ok) break;
+      const res = await fetchWithRetry(url, {
+        headers: { 'User-Agent': USER_AGENT },
+        timeoutMs: 25000,
+        retries: 2,
+        baseDelayMs: 600,
+        label: `${wikiKey}:${categoryTitle}`,
+      });
       const j = await res.json();
+      fetchedAnyPage = true;
       for (const m of j.query?.categorymembers || []) {
         if (m.title && !/^(Category:|List of|Template:|Unnamed )/i.test(m.title)) {
           all.push(m.title);
@@ -524,7 +592,12 @@ async function fetchAllCategoryMembers(wikiKey, apiBase, categoryTitle, maxPages
     }
   }
 
-  fs.writeFileSync(filePath, JSON.stringify(all, null, 2));
+  if (!fetchedAnyPage && fs.existsSync(filePath)) {
+    console.warn(`[SCIFI] Using stale category cache fallback for ${wikiKey} ${categoryTitle}`);
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  }
+
+  writeFileAtomic(filePath, JSON.stringify(all, null, 2));
   return all;
 }
 
@@ -533,11 +606,13 @@ async function fetchBatchWikitext(wikiKey, apiBase, titles, batchSize = 25) {
   const unique = [...new Set(titles)].filter(Boolean);
   for (let i = 0; i < unique.length; i += batchSize) {
     const chunk = unique.slice(i, i + batchSize);
-    const cacheKey = `${wikiKey}_wt_${i}_${chunk.length}_${chunk[0]}`;
+    const hash = crypto.createHash('sha1').update(chunk.join('|')).digest('hex').slice(0, 12);
+    const cacheKey = `${wikiKey}_wt_${hash}_${chunk.length}`;
+    const legacyKey = `${wikiKey}_wt_${i}_${chunk.length}_${chunk[0]}`;
     const url =
       `${apiBase}?action=query&redirects=1&prop=revisions&rvprop=content&rvslots=main&format=json&titles=` +
       encodeURIComponent(chunk.join('|'));
-    const j = await fetchJsonCached(cacheKey, url, 180);
+    const j = await fetchJsonCached(cacheKey, url, 180, legacyKey);
     if (!j?.query?.pages) continue;
     for (const p of Object.values(j.query.pages)) {
       if (p.missing !== undefined) continue;
@@ -673,6 +748,7 @@ const CURATED_HIGHLIGHTS = [
     id: 'hip-104214', // 61 Cygni
     works: [
       { title: 'Chasm City / Galactic North / Redemption Ark', author: 'Alastair Reynolds', year: 2001, universe: 'Revelation Space', world: "Sky's Edge (61 Cygni A — colony founded by the generation ship Santiago)", medium: 'novel', wiki: 'Chasm_City' },
+      { title: 'Andromeda: A Space-Age Tale (Туманность Андромеды)', author: 'Ivan Yefremov', year: 1957, universe: 'Eastern Bloc SF', world: 'Closest Great Ring (Великое Кольцо) interstellar relay partner to Earth', medium: 'novel', wiki: 'Andromeda_(novel)' },
       { title: 'Mission of Gravity', author: 'Hal Clement', year: 1954, universe: 'Classic Hard SF', world: 'Mesklin (rapidly spinning super-massive high-g world)', medium: 'novel', wiki: 'Mission_of_Gravity' },
       { title: 'The Caves of Steel / Robots', author: 'Isaac Asimov', year: 1954, universe: 'Foundation / Robots', world: 'Early Spacer sector reference', medium: 'novel', wiki: '61_Cygni' },
     ],
@@ -741,10 +817,13 @@ const CURATED_HIGHLIGHTS = [
     id: 'hip-71683', // Alpha Centauri / Proxima Centauri
     sfeSlug: 'alpha_centauri',
     works: [
+      { title: 'The Magellanic Cloud (Obłok Magellana)', author: 'Stanisław Lem', year: 1955, universe: 'Stanisław Lem', world: 'Starship Gea (227 crew) — humanity’s first relativistic voyage to Alpha & Proxima Centauri', medium: 'novel', wiki: 'The_Magellanic_Cloud' },
+      { title: 'Planeta tří sluncí / Oceánem světelných roků', author: 'Vladimír Babula', year: 1954, universe: 'Eastern Bloc SF', world: 'Kvarten (Planet of Three Suns) — destination of the Czechoslovak starship Paprsek', medium: 'novel', wiki: 'Vladimír_Babula' },
       { title: 'The Three-Body Problem', author: 'Liu Cixin', year: 2008, universe: 'Three-Body', world: 'Trisolaris (chaotic three-body world)', medium: 'novel', wiki: 'The_Three-Body_Problem_(novel)' },
-      { title: 'Avatar', author: 'James Cameron', year: 2009, universe: 'Avatar', world: 'Pandora (moon of Polyphemus around Alpha Cen A)', medium: 'film', wiki: 'Avatar_(2009_film)' },
+      { title: 'Avatar', author: 'James Cameron', year: 2009, universe: 'Avatar', world: 'Pandora (moon of Polyphemus around Alpha Cen A, reached by ISV Venture Star at 0.70c)', medium: 'film', wiki: 'Avatar_(2009_film)' },
       { title: 'Proxima', author: 'Stephen Baxter', year: 2013, universe: 'Proxima', world: 'Per Ardua (tidally locked Proxima Centauri colony)', medium: 'novel', wiki: 'Proxima_(novel)' },
       { title: 'The Songs of Distant Earth', author: 'Arthur C. Clarke', year: 1986, universe: 'Arthur C. Clarke', world: 'Pasadena / early relativistic colony transit', medium: 'novel', wiki: 'The_Songs_of_Distant_Earth' },
+      { title: 'Known Space (Wunderland)', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Wunderland (first human slowboat colony around Alpha Centauri)', medium: 'novel', wiki: 'Known_Space' },
       { title: 'Downbelow Station', author: 'C. J. Cherryh', year: 1981, universe: 'Alliance-Union', world: 'Alpha Station', medium: 'novel', wiki: 'Downbelow_Station' },
       { title: "Sid Meier's Alpha Centauri", author: 'Brian Reynolds', year: 1999, universe: 'Alpha Centauri', world: 'Chiron ("Planet")', medium: 'game', wiki: "Sid_Meier's_Alpha_Centauri" },
     ],
@@ -755,7 +834,8 @@ const CURATED_HIGHLIGHTS = [
     works: [
       { title: 'Project Hail Mary', author: 'Andy Weir', year: 2021, universe: 'Project Hail Mary', world: 'Tau Ceti (Astrophage-immune star, meeting of Grace & Rocky)', medium: 'novel', wiki: 'Project_Hail_Mary' },
       { title: 'Aurora', author: 'Kim Stanley Robinson', year: 2015, universe: 'Kim Stanley Robinson', world: 'Aurora (moon of Planet E, generation ship destination)', medium: 'novel', wiki: 'Aurora_(novel)' },
-      { title: 'The Dispossessed', author: 'Ursula K. Le Guin', year: 1974, universe: 'Hainish Cycle', world: 'Urras & Anarres (twin inhabited worlds)', medium: 'novel', wiki: 'The_Dispossessed' },
+      { title: 'The Dispossessed', author: 'Ursula K. Le Guin', year: 1974, universe: 'Hainish Cycle', world: 'Urras & Anarres (twin inhabited worlds linked by NAFAL sublight ships)', medium: 'novel', wiki: 'The_Dispossessed' },
+      { title: 'Time for the Stars', author: 'Robert A. Heinlein', year: 1956, universe: 'Classic Hard SF', world: 'Survey destination of the 1g torchship Lewis and Clark', medium: 'novel', wiki: 'Time_for_the_Stars' },
       { title: 'Hyperion Cantos', author: 'Dan Simmons', year: 1989, universe: 'Hyperion Cantos', world: 'Tau Ceti Center (Hegemony capital)', medium: 'novel', wiki: 'Hyperion_(Simmons_novel)' },
       { title: 'Downbelow Station', author: 'C. J. Cherryh', year: 1981, universe: 'Alliance-Union', world: "Pell's World (Downbelow)", medium: 'novel', wiki: 'Downbelow_Station' },
       { title: 'The Robots of Dawn', author: 'Isaac Asimov', year: 1983, universe: 'Foundation / Robots', world: 'Aurora (first Spacer world)', medium: 'novel', wiki: 'The_Robots_of_Dawn' },
@@ -783,6 +863,7 @@ const CURATED_HIGHLIGHTS = [
     id: 'hip-87937', // Barnard's Star
     works: [
       { title: 'Rocheworld', author: 'Robert L. Forward', year: 1984, universe: 'Classic Hard SF', world: 'Rocheworld (double planet reached via laser-pushed lightsail)', medium: 'novel', wiki: 'Rocheworld' },
+      { title: 'Přátelé z Hadonoše (Friends from Ophiuchus)', author: 'Vladimír Babula', year: 1956, universe: 'Eastern Bloc SF', world: 'Ophiuchus interstellar expedition of the Czechoslovak starship Paprsek', medium: 'novel', wiki: 'Vladimír_Babula' },
       { title: 'Hyperion', author: 'Dan Simmons', year: 1989, universe: 'Hyperion Cantos', world: "Barnard's World (Sol Weintraub's home)", medium: 'novel', wiki: 'Hyperion_(Simmons_novel)' },
       { title: 'The Garden of Rama', author: 'Arthur C. Clarke & Gentry Lee', year: 1991, universe: 'Rama', world: 'Rama Node (deep-space hub)', medium: 'novel', wiki: 'The_Garden_of_Rama' },
       { title: "The Hitchhiker's Guide to the Galaxy", author: 'Douglas Adams', year: 1979, universe: "Hitchhiker's Guide", world: 'Interstellar waystation', medium: 'novel', wiki: "The_Hitchhiker's_Guide_to_the_Galaxy" },
@@ -793,17 +874,19 @@ const CURATED_HIGHLIGHTS = [
     id: 'hip-32349', // Sirius
     sfeSlug: 'sirius',
     works: [
+      { title: 'Kallisto / The Kallistonians (Каллисто)', author: 'Georgy Martynov', year: 1957, universe: 'Eastern Bloc SF', world: 'Kallisto (Sirius system — 1g / 0.63c relativistic meson starship visiting Earth)', medium: 'novel', wiki: 'Georgy_Martynov' },
       { title: 'Micromégas', author: 'Voltaire', year: 1752, universe: 'Classic SF', world: 'Sirius giant traveler (early sci-fi milestone)', medium: 'novel', wiki: 'Micromégas' },
       { title: "The Hitchhiker's Guide to the Galaxy", author: 'Douglas Adams', year: 1979, universe: "Hitchhiker's Guide", world: 'Sirius Cybernetics Corporation', medium: 'novel', wiki: 'Sirius_Cybernetics_Corporation' },
       { title: 'Foundation / Galactic Empire', author: 'Isaac Asimov', year: 1951, universe: 'Foundation / Robots', world: 'Sirius Sector', medium: 'novel', wiki: 'Foundation_(Asimov_novel)' },
       { title: 'V', author: 'Kenneth Johnson', year: 1983, universe: 'V', world: 'Sirius IV (homeworld of the Visitors)', medium: 'tv', wiki: 'V_(1983_miniseries)' },
-      { title: 'Known Space', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Jinx (tidally distorted egg-shaped moon)', medium: 'novel', wiki: 'Known_Space' },
+      { title: 'Known Space (Flatlander)', author: 'Larry Niven', year: 1966, universe: 'Known Space', world: 'Jinx & runaway slowboat Lazy Eight II', medium: 'novel', wiki: 'Known_Space' },
     ],
   },
   {
     id: 'hip-91262', // Vega
     sfeSlug: 'vega',
     works: [
+      { title: 'Noon: 22nd Century (Полдень, XXII век)', author: 'Arkady & Boris Strugatsky', year: 1961, universe: 'Noon Universe', world: 'Relativistic photon starship Taimyr launched in 2017 toward Lyra (Vega sector), returning a century later', medium: 'novel', wiki: 'Noon:_22nd_Century' },
       { title: 'Contact', author: 'Carl Sagan', year: 1985, universe: 'Contact', world: 'Vega (origin of the prime-number radio signal)', medium: 'novel', wiki: 'Contact_(novel)' },
       { title: 'Foundation', author: 'Isaac Asimov', year: 1951, universe: 'Foundation / Robots', world: 'Vega Province (wealthiest trade hub)', medium: 'novel', wiki: 'Foundation_(Asimov_novel)' },
       { title: 'Agent of Vega', author: 'James H. Schmitz', year: 1960, universe: 'Classic SF', world: 'Vegan Confederacy', medium: 'novel', wiki: 'Agent_of_Vega' },
@@ -862,6 +945,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-2021', // Beta Hydri
     works: [
+      { title: 'Time for the Stars', author: 'Robert A. Heinlein', year: 1956, universe: 'Classic Hard SF', world: 'Ammonia-ocean world "Inferno" surveyed by the 1g torchship Lewis and Clark', medium: 'novel', wiki: 'Time_for_the_Stars' },
       { title: 'Time Enough for Love', author: 'Robert A. Heinlein', year: 1973, universe: 'Future History', world: 'Secundus & Tertius (Howard Families colonies)', medium: 'novel', wiki: 'Time_Enough_for_Love' },
       { title: 'The Songs of Distant Earth', author: 'Arthur C. Clarke', year: 1986, universe: 'Arthur C. Clarke', world: 'Interstellar seedship target', medium: 'novel', wiki: 'Beta_Hydri' },
     ],
@@ -899,6 +983,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-88601', // 70 Ophiuchi
     works: [
+      { title: 'Andromeda: A Space-Age Tale (Туманность Андромеды)', author: 'Ivan Yefremov', year: 1957, universe: 'Eastern Bloc SF', world: 'Zirda sector (Ophiuchus) — 37th Cosmic Expedition aboard the 5/6c anameson starship Tantra', medium: 'novel', wiki: 'Andromeda_(novel)' },
       { title: 'Dune (Expanded / Encyclopedia)', author: 'Frank Herbert', year: 1965, universe: 'Dune', world: 'Sikun / 70 Ophiuchi A sector', medium: 'novel', wiki: '70_Ophiuchi' },
       { title: 'The Mote in God’s Eye / CoDominium', author: 'Jerry Pournelle', year: 1974, universe: 'CoDominium', world: 'Early interstellar frontier star', medium: 'novel', wiki: '70_Ophiuchi' },
     ],
@@ -1030,6 +1115,7 @@ const CURATED_HIGHLIGHTS = [
   {
     id: 'hip-57757', // Beta Virginis (Zavijava)
     works: [
+      { title: 'Tau Zero', author: 'Poul Anderson', year: 1970, universe: 'Classic Hard SF', world: 'Destination of the runaway 1g Bussard ramjet Leonora Christine (35.6 ly)', medium: 'novel', wiki: 'Tau_Zero' },
       { title: 'Star Trek / Classic Hard SF', author: 'Various', year: 1966, universe: 'Star Trek', world: 'Beta Virginis system (35.6 ly F9V star)', medium: 'tv', wiki: 'Beta_Virginis' },
     ],
   },
@@ -1145,7 +1231,7 @@ async function sweepWikipediaFictionCategories(index, store) {
       totalWorks++;
     }
   }
-  console.log(`[SCIFI] [1/9] Wikipedia Fiction_set_around_* -> ${matchedCats}/${categories.length} categories matched our 3,494 stars (${totalWorks} works).`);
+  console.log(`[SCIFI] [1/9] Wikipedia Fiction_set_around_* -> ${matchedCats}/${categories.length} categories matched our ${index.systemsById.size} stars (${totalWorks} works).`);
 }
 
 /**
@@ -1213,6 +1299,18 @@ const WIKI_SCIFI_ARTICLES = [
   { title: 'Foundation (Asimov novel)', universe: 'Foundation / Robots', author: 'Isaac Asimov', year: 1951, medium: 'novel' },
   { title: 'The Robots of Dawn', universe: 'Foundation / Robots', author: 'Isaac Asimov', year: 1983, medium: 'novel' },
 ];
+
+// Append user-editable Wikipedia articles from scripts/config/scifi_custom.json
+for (const item of CUSTOM_SCIFI.extraWikiArticles || []) {
+  if (!item || item._example || (!item.article && !item.title)) continue;
+  WIKI_SCIFI_ARTICLES.push({
+    title: item.article || item.title,
+    universe: item.universe || null,
+    author: item.author || 'Wikipedia',
+    year: item.year || null,
+    medium: item.medium || 'novel',
+  });
+}
 
 async function sweepWikipediaCoreArticles(index, store) {
   const titles = WIKI_SCIFI_ARTICLES.map((a) => a.title);
@@ -1460,6 +1558,27 @@ async function main() {
     }
   }
 
+  // 0b. Merge user-editable curated works from scripts/config/scifi_custom.json
+  let customCuratedApplied = 0;
+  for (const spec of CUSTOM_SCIFI.extraCuratedWorks || []) {
+    if (!spec || spec._example) continue;
+    const sysId =
+      (spec.systemId && index.systemsById.has(spec.systemId) && spec.systemId) ||
+      index.resolveTitleToSystemId(spec.system || spec.systemName || '');
+    if (!sysId) {
+      console.warn(`[SCIFI] Custom curated entry could not resolve star: ${spec.systemId || spec.system}`);
+      continue;
+    }
+    if (spec.sfeSlug) store.setSfe(sysId, spec.sfeSlug);
+    for (const w of spec.works || []) {
+      store.addNotable(sysId, { ...w, source: w.source || 'Custom Local Entry' });
+      customCuratedApplied++;
+    }
+  }
+  if (customCuratedApplied > 0) {
+    console.log(`[SCIFI] Applied ${customCuratedApplied} custom local curated works from scifi_custom.json.`);
+  }
+
   // 1-2. Wikipedia Fiction Categories & Core Sci-Fi Literature Articles
   await sweepWikipediaFictionCategories(index, store);
   await sweepWikipediaCoreArticles(index, store);
@@ -1601,6 +1720,29 @@ async function main() {
     maxCatPages: 3,
   });
 
+  // 10. Sweep any user-added custom franchise wikis from scripts/config/scifi_custom.json
+  const customWikiSources = [];
+  for (const cfg of CUSTOM_SCIFI.extraFranchiseWikis || []) {
+    if (!cfg || cfg._example || !cfg.key || !cfg.apiBase) continue;
+    await sweepFranchiseWiki(index, store, {
+      key: `custom_${cfg.key}`,
+      label: `[Custom] ${cfg.label || cfg.universe || cfg.key}`,
+      apiBase: cfg.apiBase,
+      wikiBase: cfg.wikiBase || cfg.apiBase.replace(/\/api\.php.*$/, '/wiki/'),
+      universe: cfg.universe || cfg.label || cfg.key,
+      author: cfg.author || 'Various',
+      year: cfg.year || null,
+      medium: cfg.medium || 'novel',
+      systemCategories: cfg.systemCategories || [],
+      planetCategories: cfg.planetCategories || [],
+      maxCatPages: cfg.maxCatPages || 3,
+    });
+    customWikiSources.push({
+      name: cfg.label || cfg.universe || cfg.key,
+      url: cfg.wikiBase || cfg.apiBase,
+    });
+  }
+
   // Finalize & serialize entries
   const entries = {};
   const universeCounts = {};
@@ -1642,9 +1784,11 @@ async function main() {
     .sort((a, b) => b[1] - a[1])
     .map(([name, count]) => ({ name, count }));
 
+  const nowIso = new Date().toISOString();
   const output = {
     meta: {
-      generatedAt: new Date().toISOString().slice(0, 10),
+      generatedAt: nowIso.slice(0, 10),
+      generatedAtIso: nowIso,
       catalogueSystemsSwept: catalog.systems.length,
       uniqueAliasesIndexed: index.aliasToSystemId.size,
       systemsWithFictionCount: Object.keys(entries).length,
@@ -1684,12 +1828,13 @@ async function main() {
           name: 'The Encyclopedia of Science Fiction (SFE)',
           url: 'https://sf-encyclopedia.com/',
         },
+        ...customWikiSources,
       ],
     },
     bySystemId: entries,
   };
 
-  fs.writeFileSync(OUT_PATH, JSON.stringify(output, null, 2));
+  writeJsonAtomic(OUT_PATH, output, true);
   const kb = (fs.statSync(OUT_PATH).size / 1024).toFixed(1);
   console.log(`\n[SCIFI] Wrote ${OUT_PATH} (${kb} KB)`);
   console.log(`[SCIFI] Summary: ${output.meta.systemsWithFictionCount} / ${catalog.systems.length} systems matched, ${totalNotableWorks} structured entries, ${totalWikiWorks} Wikipedia category works.`);

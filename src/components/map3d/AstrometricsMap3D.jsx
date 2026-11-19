@@ -120,6 +120,9 @@ export default function AstrometricsMap3D({
   focusRequest,
   galacticCenterText,
   scifiBySystemId,
+  velocityVectorMode = 'off',
+  velocityHorizonKyr = 20,
+  maxRadiusLy = 135,
 }) {
   const containerRef = useRef(null);
   const stateRef = useRef({
@@ -169,51 +172,13 @@ export default function AstrometricsMap3D({
     // Groups
     const gridGroup = new THREE.Group();
     const starGroup = new THREE.Group();
+    const velocityGroup = new THREE.Group();
     const routeGroup = new THREE.Group();
     const shipGroup = new THREE.Group();
     const lightConeGroup = new THREE.Group();
     const labelGroup = new THREE.Group();
 
-    scene.add(gridGroup, starGroup, routeGroup, shipGroup, lightConeGroup, labelGroup);
-
-    // Build reference Galactic plane rings (10, 20, ..., 120 ly) & 12 radial spokes
-    const ringMat = new THREE.LineBasicMaterial({ color: '#162844', transparent: true, opacity: 0.75 });
-    const ringMajorMat = new THREE.LineBasicMaterial({ color: '#1e426e', transparent: true, opacity: 0.9 });
-    const spokeMat = new THREE.LineBasicMaterial({ color: '#13233b', transparent: true, opacity: 0.5 });
-
-    for (let r = 10; r <= 120; r += 10) {
-      const pts = [];
-      for (let i = 0; i <= 128; i++) {
-        const a = (i / 128) * Math.PI * 2;
-        pts.push(new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r));
-      }
-      gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), r % 50 === 0 ? ringMajorMat : ringMat));
-
-      if (r <= 100 && (r <= 50 || r % 20 === 0)) {
-        const el = document.createElement('div');
-        el.className = 'map3d-ring-label';
-        el.textContent = `${r} ly`;
-        const lbl = new CSS2DObject(el);
-        lbl.center.set(0, 1);
-        lbl.position.set(r, 0, 0);
-        gridGroup.add(lbl);
-      }
-    }
-
-    const spokePts = [];
-    for (let i = 0; i < 12; i++) {
-      const a = (i / 12) * Math.PI * 2;
-      spokePts.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(Math.cos(a) * 120, 0, Math.sin(a) * 120));
-    }
-    gridGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(spokePts), spokeMat));
-
-    const gcEl = document.createElement('div');
-    gcEl.className = 'map3d-ring-label gc-dir';
-    gcEl.textContent = galacticCenterText || '→ Galactic Center';
-    const gcLabel = new CSS2DObject(gcEl);
-    gcLabel.center.set(0, 0.5);
-    gcLabel.position.set(125, 0, 0);
-    gridGroup.add(gcLabel);
+    scene.add(gridGroup, starGroup, velocityGroup, routeGroup, shipGroup, lightConeGroup, labelGroup);
 
     const selectRing = createScreenRing({ color: '#00f0ff', radiusPx: 13 });
     const hoverRing = createScreenRing({ color: '#ffffff', radiusPx: 10, dashed: true });
@@ -346,14 +311,15 @@ export default function AstrometricsMap3D({
       scene,
       camera,
       controls,
+      gridGroup,
       starGroup,
+      velocityGroup,
       routeGroup,
       shipGroup,
       lightConeGroup,
       labelGroup,
       selectRing,
       hoverRing,
-      gcEl,
       focusAnim: null,
       labels: [],
       getHoveredIdx: () => hoveredIdx,
@@ -373,12 +339,77 @@ export default function AstrometricsMap3D({
     };
   }, []);
 
-  // Update Galactic Center text on language switch
+  // Build / scale Galactic plane reference rings, radial spokes, and camera range dynamically to match catalogue radius
   useEffect(() => {
-    if (threeRef.current?.gcEl) {
-      threeRef.current.gcEl.textContent = galacticCenterText || '→ Galactic Center';
+    const ctx = threeRef.current;
+    if (!ctx) return;
+    const { gridGroup, camera, controls } = ctx;
+
+    while (gridGroup.children.length > 0) {
+      const obj = gridGroup.children[0];
+      obj.geometry?.dispose?.();
+      obj.material?.dispose?.();
+      obj.element?.remove?.();
+      gridGroup.remove(obj);
     }
-  }, [galacticCenterText]);
+
+    const outerR = Math.max(120, Math.ceil((Number(maxRadiusLy) || 135) / 20) * 20);
+    camera.far = Math.max(1600, outerR * 12);
+    camera.updateProjectionMatrix();
+    controls.maxDistance = Math.max(650, outerR * 4.5);
+
+    const ringMat = new THREE.LineBasicMaterial({ color: '#162844', transparent: true, opacity: 0.75 });
+    const ringMajorMat = new THREE.LineBasicMaterial({ color: '#1e426e', transparent: true, opacity: 0.9 });
+    const spokeMat = new THREE.LineBasicMaterial({ color: '#13233b', transparent: true, opacity: 0.5 });
+
+    // Adaptive ring spacing: 10 ly steps inside 120 ly, 20 ly up to 240 ly, 50 ly beyond
+    const radii = [];
+    for (let r = 10; r <= Math.min(outerR, 120); r += 10) radii.push(r);
+    for (let r = 140; r <= Math.min(outerR, 240); r += 20) radii.push(r);
+    for (let r = 250; r <= outerR; r += 50) radii.push(r);
+    if (radii[radii.length - 1] < outerR) radii.push(outerR);
+
+    for (const r of radii) {
+      const pts = [];
+      for (let i = 0; i <= 128; i++) {
+        const a = (i / 128) * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r));
+      }
+      const isMajor = r % 50 === 0 || r === outerR;
+      gridGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), isMajor ? ringMajorMat : ringMat));
+
+      const showLabel =
+        r <= 50 ||
+        (r <= 120 && r % 20 === 0) ||
+        (r > 120 && r <= 240 && r % 40 === 0) ||
+        (r > 240 && r % 50 === 0) ||
+        r === outerR;
+      if (showLabel) {
+        const el = document.createElement('div');
+        el.className = 'map3d-ring-label';
+        el.textContent = `${r} ly`;
+        const lbl = new CSS2DObject(el);
+        lbl.center.set(0, 1);
+        lbl.position.set(r, 0, 0);
+        gridGroup.add(lbl);
+      }
+    }
+
+    const spokePts = [];
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      spokePts.push(new THREE.Vector3(0, 0, 0), new THREE.Vector3(Math.cos(a) * outerR, 0, Math.sin(a) * outerR));
+    }
+    gridGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(spokePts), spokeMat));
+
+    const gcEl = document.createElement('div');
+    gcEl.className = 'map3d-ring-label gc-dir';
+    gcEl.textContent = galacticCenterText || '→ Galactic Center';
+    const gcLabel = new CSS2DObject(gcEl);
+    gcLabel.center.set(0, 0.5);
+    gcLabel.position.set(outerR + 6, 0, 0);
+    gridGroup.add(gcLabel);
+  }, [maxRadiusLy, galacticCenterText]);
 
   // Camera focus requests (e.g. "Center Sol" or selecting from search)
   useEffect(() => {
@@ -581,9 +612,11 @@ export default function AstrometricsMap3D({
       starGroup.add(feetPoints);
     }
 
-    // 5. CSS2D Labels
+    // 5. Lazy-mounted CSS2D Labels (creates DOM nodes only for visible labels so 10,000+ star spheres stay 60 FPS)
     const routeSet = new Set((activeVoyage?.stops || []).map((st) => st.systemId));
-    const labels = systems.map((s, i) => {
+    const labels = new Array(systems.length).fill(null);
+    const getOrCreateLabel = (s, i) => {
+      if (labels[i]) return labels[i];
       const el = document.createElement('div');
       el.className = 'map3d-star-label';
       if (s.hasOptimisticHZ) el.classList.add('hz-host');
@@ -597,9 +630,9 @@ export default function AstrometricsMap3D({
       const obj = new CSS2DObject(el);
       obj.center.set(0, 1);
       obj.position.copy(scenePos[i]);
-      labelGroup.add(obj);
+      labels[i] = obj;
       return obj;
-    });
+    };
     ctx.labels = labels;
 
     const refreshLabels = () => {
@@ -629,8 +662,6 @@ export default function AstrometricsMap3D({
       }
 
       systems.forEach((s, i) => {
-        const lbl = labels[i];
-        if (!lbl) return;
         const isSel = s.id === selId;
         const isHov = i === hovIdx;
         const isRoute = routeSet.has(s.id);
@@ -647,8 +678,20 @@ export default function AstrometricsMap3D({
             show = autoAllowedSet ? autoAllowedSet.has(i) : true;
           }
         }
-        lbl.visible = show;
-        lbl.element.classList.toggle('selected', isSel || isRoute);
+
+        if (show) {
+          const lbl = getOrCreateLabel(s, i);
+          if (lbl.parent !== labelGroup) labelGroup.add(lbl);
+          lbl.visible = true;
+          lbl.element.classList.toggle('selected', isSel || isRoute);
+        } else if (labels[i]) {
+          const lbl = labels[i];
+          lbl.visible = false;
+          if (lbl.parent === labelGroup) {
+            lbl.element?.remove?.();
+            labelGroup.remove(lbl);
+          }
+        }
       });
     };
 
@@ -659,6 +702,134 @@ export default function AstrometricsMap3D({
     const selIdx = systems.findIndex((s) => s.id === selectedSystemId);
     selectRing.setPosition(selIdx >= 0 ? scenePos[selIdx] : null);
   }, [systems, epochOffsetYears, colorMode, labelMode, selectedSystemId, activeVoyage, scifiBySystemId]);
+
+  // Render 3D Stellar Velocity Vectors (Exact physical displacement over +velocityHorizonKyr)
+  // Full 3D space velocity (PM + RV) in cyan; tangential-only proper motion in amber;
+  // selected star gets a bright future arrow + dashed past trajectory trail (-velocityHorizonKyr).
+  useEffect(() => {
+    const ctx = threeRef.current;
+    if (!ctx) return;
+    const { velocityGroup } = ctx;
+
+    while (velocityGroup.children.length > 0) {
+      const obj = velocityGroup.children[0];
+      obj.geometry?.dispose?.();
+      obj.material?.dispose?.();
+      velocityGroup.remove(obj);
+    }
+
+    if (!velocityVectorMode || velocityVectorMode === 'off' || !systems?.length) return;
+
+    const horizon = Math.max(1, Number(velocityHorizonKyr) || 20);
+    const positions = [];
+    const colors = [];
+
+    const col3dTail = new THREE.Color('#0c4a6e');
+    const col3dTip = new THREE.Color('#38bdf8');
+    const colTanTail = new THREE.Color('#78350f');
+    const colTanTip = new THREE.Color('#fbbf24');
+    const colSelTail = new THREE.Color('#0ea5e9');
+    const colSelTip = new THREE.Color('#ffffff');
+
+    const p0 = new THREE.Vector3();
+    const dv = new THREE.Vector3();
+    const tip = new THREE.Vector3();
+    const dir = new THREE.Vector3();
+    const refUp = new THREE.Vector3();
+    const perp1 = new THREE.Vector3();
+    const perp2 = new THREE.Vector3();
+    const base = new THREE.Vector3();
+    const barb = new THREE.Vector3();
+
+    const pushSeg = (a, b, ca, cb) => {
+      positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      colors.push(ca.r, ca.g, ca.b, cb.r, cb.g, cb.b);
+    };
+
+    let selectedPastSeg = null;
+    let selectedPastColor = '#38bdf8';
+
+    for (const s of systems) {
+      if (s.id === 'sol' || !s.vel) continue;
+      if (velocityVectorMode === 'full3d' && !s.hasFull3dVelocity) continue;
+
+      const vMag = Math.hypot(s.vel[0], s.vel[1], s.vel[2]);
+      if (vMag < 1e-5) continue;
+
+      const galPos = systemPosAtEpoch(s, epochOffsetYears);
+      toSceneVec(galPos, p0);
+      toSceneVec([s.vel[0] * horizon, s.vel[1] * horizon, s.vel[2] * horizon], dv);
+
+      const len = dv.length();
+      if (len < 0.02) continue;
+
+      tip.copy(p0).add(dv);
+      dir.copy(dv).divideScalar(len);
+
+      // Build an orthonormal pair perpendicular to velocity vector for 3D arrowhead chevrons
+      if (Math.abs(dir.y) > 0.9) refUp.set(1, 0, 0);
+      else refUp.set(0, 1, 0);
+      perp1.crossVectors(dir, refUp).normalize();
+      perp2.crossVectors(dir, perp1).normalize();
+
+      const isSel = s.id === selectedSystemId;
+      const tailCol = isSel ? colSelTail : s.hasFull3dVelocity ? col3dTail : colTanTail;
+      const tipCol = isSel ? colSelTip : s.hasFull3dVelocity ? col3dTip : colTanTip;
+
+      // Shaft from current epoch position -> future position (+horizon kyr)
+      pushSeg(p0, tip, tailCol, tipCol);
+
+      // 4-barb 3D arrowhead so arrow direction is unambiguous from any orbit angle
+      // Never exceed 45% of shaft length so slow-moving stars keep clean proportions
+      const headLen = Math.min(0.75, Math.min(len * 0.45, Math.max(0.18, len * 0.22)));
+      const headW = headLen * 0.42;
+      base.copy(tip).addScaledVector(dir, -headLen);
+
+      barb.copy(base).addScaledVector(perp1, headW);
+      pushSeg(tip, barb, tipCol, tipCol);
+      barb.copy(base).addScaledVector(perp1, -headW);
+      pushSeg(tip, barb, tipCol, tipCol);
+      barb.copy(base).addScaledVector(perp2, headW);
+      pushSeg(tip, barb, tipCol, tipCol);
+      barb.copy(base).addScaledVector(perp2, -headW);
+      pushSeg(tip, barb, tipCol, tipCol);
+
+      if (isSel) {
+        selectedPastSeg = [p0.clone(), p0.clone().sub(dv)];
+        selectedPastColor = s.hasFull3dVelocity ? '#38bdf8' : '#fbbf24';
+      }
+    }
+
+    if (positions.length > 0) {
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+      const mat = new THREE.LineBasicMaterial({
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.78,
+        depthWrite: false,
+      });
+      const lines = new THREE.LineSegments(geom, mat);
+      lines.renderOrder = 2;
+      velocityGroup.add(lines);
+    }
+
+    // Dashed past trajectory (-horizon kyr -> now) for the selected star
+    if (selectedPastSeg) {
+      const pastGeom = new THREE.BufferGeometry().setFromPoints(selectedPastSeg);
+      const pastMat = new THREE.LineDashedMaterial({
+        color: selectedPastColor,
+        transparent: true,
+        opacity: 0.65,
+        dashSize: 0.45,
+        gapSize: 0.35,
+      });
+      const pastLine = new THREE.Line(pastGeom, pastMat);
+      pastLine.computeLineDistances();
+      velocityGroup.add(pastLine);
+    }
+  }, [systems, epochOffsetYears, selectedSystemId, velocityVectorMode, velocityHorizonKyr]);
 
   // Render 3D Route Trajectory (color-coded by burn phase: Accel -> Coast -> Brake) + Animated Ship Markers & Light-Cones
   useEffect(() => {

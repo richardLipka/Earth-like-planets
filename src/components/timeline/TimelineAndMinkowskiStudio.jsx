@@ -191,7 +191,8 @@ export default function TimelineAndMinkowskiStudio({
 
             ctx.fillStyle = '#facc15';
             ctx.textAlign = 'left';
-            ctx.fillText(`⚡ ${ev.title} (${ev.year})`, x0 + 6, y0 - 4);
+            const evLabel = ev.title && typeof ev.title === 'object' ? ev.title[lang] || ev.title.en : ev.title;
+            ctx.fillText(`⚡ ${evLabel} (${ev.year})`, x0 + 6, y0 - 4);
           }
         }
 
@@ -283,7 +284,7 @@ export default function TimelineAndMinkowskiStudio({
     const ro = new ResizeObserver(drawMinkowski);
     ro.observe(canvas);
     return () => ro.disconnect();
-  }, [isOpen, activeTab, shipsWithVoyages, activeShipId, masterClockYear, storyEvents, minYear, maxYear, systemsById, epochOffsetYears, t]);
+  }, [isOpen, activeTab, shipsWithVoyages, activeShipId, masterClockYear, storyEvents, minYear, maxYear, systemsById, epochOffsetYears, lang, t]);
 
   // Generate Markdown summary for novel notes
   const markdownExport = useMemo(() => {
@@ -438,7 +439,7 @@ export default function TimelineAndMinkowskiStudio({
                             title={`${leg.fromSystemName} → ${leg.toSystemName}: Δt=${leg.profile.totalTime.toFixed(2)}y, Δτ=${leg.profile.properTime.toFixed(2)}y`}
                           >
                             <span className="gantt-seg-label">
-                              {leg.fromSystemName} → {leg.toSystemName} (Δτ {formatNum(leg.profile.properTime, 1, lang)}y)
+                              {leg.fromSystemName} → {leg.toSystemName} (Δτ {formatNum(leg.profile.properTime, 1, lang)}{t('unitYrShort')})
                             </span>
                           </div>
                         );
@@ -540,7 +541,9 @@ export default function TimelineAndMinkowskiStudio({
                   return (
                     <div key={ev.id} className="story-event-card">
                       <div className="ev-card-header">
-                        <strong>⚡ {ev.title}</strong>
+                        <strong>
+                          ⚡ {ev.title && typeof ev.title === 'object' ? ev.title[lang] || ev.title.en : ev.title}
+                        </strong>
                         <button
                           type="button"
                           className="wp-remove-btn"
@@ -557,7 +560,9 @@ export default function TimelineAndMinkowskiStudio({
                           {t('reachesShipLabel')} <strong>{activeShip.name}</strong> ({t('yearShort')}{' '}
                           <strong className="highlight-cyan">{formatNum(hit.tHitCoordYear, 2, lang)}</strong> ·{' '}
                           {t('crewAgeShort')}{' '}
-                          <strong className="highlight-emerald">{formatNum(hit.crewAgeAtHit, 1, lang)} yr</strong>)
+                          <strong className="highlight-emerald">
+                            {formatNum(hit.crewAgeAtHit, 1, lang)} {t('unitYrShort')}
+                          </strong>)
                         </div>
                       )}
                     </div>

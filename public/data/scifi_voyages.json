@@ -1,8 +1,10 @@
 {
   "meta": {
     "generatedAt": "2026-11-19",
-    "voyageCount": 10,
-    "totalShipsCount": 21
+    "generatedAtIso": "2026-11-19T17:13:45.907Z",
+    "voyageCount": 20,
+    "customVoyagesCount": 0,
+    "totalShipsCount": 38
   },
   "voyages": [
     {
@@ -11,9 +13,15 @@
       "universe": "Revelation Space",
       "author": "Alastair Reynolds",
       "year": 2002,
-      "books": "Revelation Space · Redemption Ark · Absolution Gap",
+      "books": {
+        "en": "Revelation Space · Redemption Ark · Absolution Gap",
+        "cs": "Odhalený vesmír · Archa vykoupení · Propast rozhřešení"
+      },
       "sourceUrl": "https://revelationspace.fandom.com/wiki/Nevil_Clavain",
-      "sourceLabel": "Revelation Space Wiki — Nevil Clavain & Official Timeline",
+      "sourceLabel": {
+        "en": "Revelation Space Wiki — Nevil Clavain & Official Timeline",
+        "cs": "Revelation Space Wiki — Nevil Clavain a oficiální časová osa"
+      },
       "title": {
         "en": "Nevil Clavain & Nostalgia for Infinity (Inhibitor War)",
         "cs": "Nevil Clavain a Nostalgia for Infinity (Válka s Inhibitory)"
@@ -32,6 +40,7 @@
         {
           "id": "rs-clavain-zodiacal",
           "name": "Nevil Clavain · Zodiacal Light (2.5g)",
+          "nameCs": "Nevil Clavain · Zodiacal Light (2,5g)",
           "color": "#00f0ff",
           "departureYear": 2592,
           "crewStartAge": 85,
@@ -64,6 +73,7 @@
         {
           "id": "rs-volyova-infinity",
           "name": "Volyova & Khouri · Nostalgia for Infinity (1g)",
+          "nameCs": "Voljovová a Khouriová · Nostalgia for Infinity (1g)",
           "color": "#f59e0b",
           "departureYear": 2546,
           "crewStartAge": 36,
@@ -96,6 +106,7 @@
         {
           "id": "rs-quaiche-gnostic",
           "name": "Quaiche · Gnostic Ascension (1g)",
+          "nameCs": "Quaiche · Gnostic Ascension (1g)",
           "color": "#c084fc",
           "departureYear": 2573,
           "crewStartAge": 40,
@@ -121,25 +132,37 @@
       "storyEvents": [
         {
           "id": "rs-ev-1",
-          "title": "Hades / Cerberus Awakening (Delta Pavonis)",
+          "title": {
+            "en": "Hades / Cerberus Awakening (Delta Pavonis)",
+            "cs": "Probuzení Hádu / Kerbera (Delta Pavonis)"
+          },
           "systemId": "hip-99240",
           "year": 2567
         },
         {
           "id": "rs-ev-2",
-          "title": "Clavain Defects from Conjoiners (Gliese 687)",
+          "title": {
+            "en": "Clavain Defects from Conjoiners (Gliese 687)",
+            "cs": "Clavain opouští Spojence (Gliese 687)"
+          },
           "systemId": "hip-86162",
           "year": 2615
         },
         {
           "id": "rs-ev-3",
-          "title": "Evacuation of Resurgam (Delta Pavonis)",
+          "title": {
+            "en": "Evacuation of Resurgam (Delta Pavonis)",
+            "cs": "Evakuace Resurgamu (Delta Pavonis)"
+          },
           "systemId": "hip-99240",
           "year": 2633
         },
         {
           "id": "rs-ev-4",
-          "title": "Inhibitor Assault on Ararat (p Eridani)",
+          "title": {
+            "en": "Inhibitor Assault on Ararat (p Eridani)",
+            "cs": "Útok Inhibitorů na Ararat (p Eridani)"
+          },
           "systemId": "hyg-118084",
           "year": 2675
         }
@@ -148,6 +171,7 @@
         {
           "id": "rs-clavain-zodiacal",
           "name": "Nevil Clavain · Zodiacal Light (2.5g)",
+          "nameCs": "Nevil Clavain · Zodiacal Light (2,5g)",
           "routeNames": [
             "GJ 687",
             "Epsilon Eridani",
@@ -163,6 +187,7 @@
         {
           "id": "rs-volyova-infinity",
           "name": "Volyova & Khouri · Nostalgia for Infinity (1g)",
+          "nameCs": "Voljovová a Khouriová · Nostalgia for Infinity (1g)",
           "routeNames": [
             "Epsilon Eridani",
             "Delta Pavonis",
@@ -178,6 +203,7 @@
         {
           "id": "rs-quaiche-gnostic",
           "name": "Quaiche · Gnostic Ascension (1g)",
+          "nameCs": "Quaiche · Gnostic Ascension (1g)",
           "routeNames": [
             "Guniibuu",
             "107 Piscium"
@@ -196,9 +222,15 @@
       "universe": "Revelation Space",
       "author": "Alastair Reynolds",
       "year": 2001,
-      "books": "Chasm City · Galactic North · Diamond Dogs, Turquoise Days",
+      "books": {
+        "en": "Chasm City · Galactic North · Diamond Dogs, Turquoise Days",
+        "cs": "Odvrácená strana · Galaktický sever · Diamantoví psi, Tyrkysové dny"
+      },
       "sourceUrl": "https://revelationspace.fandom.com/wiki/Timeline",
-      "sourceLabel": "Revelation Space Wiki — Official Reynolds Chronology",
+      "sourceLabel": {
+        "en": "Revelation Space Wiki — Official Reynolds Chronology",
+        "cs": "Revelation Space Wiki — oficiální chronologie A. Reynoldse"
+      },
       "title": {
         "en": "Early Conjoiner Exodus, Chasm City & Galactic North",
         "cs": "Raný exodus Spojenců, Odvrácená strana a Galaktický sever"
@@ -217,6 +249,7 @@
         {
           "id": "rs-early-clavain",
           "name": "Nevil Clavain & Galiana · Nightshade (1g)",
+          "nameCs": "Nevil Clavain a Galiana · Nightshade (1g)",
           "color": "#00f0ff",
           "departureYear": 2205,
           "crewStartAge": 60,
@@ -245,6 +278,7 @@
         {
           "id": "rs-hirondelle",
           "name": "Irravel Veda · Hirondelle (1g)",
+          "nameCs": "Irravel Veda · Hirondelle (1g)",
           "color": "#00ff88",
           "departureYear": 2303,
           "crewStartAge": 34,
@@ -277,6 +311,7 @@
         {
           "id": "rs-mirabel-caledonia",
           "name": "Tanner Mirabel · Caledonia (1g)",
+          "nameCs": "Tanner Mirabel · Caledonia (1g)",
           "color": "#f59e0b",
           "departureYear": 2498,
           "crewStartAge": 35,
@@ -301,6 +336,7 @@
         {
           "id": "rs-turquoise-voice",
           "name": "Voice of Evening · Turquoise Days (1g)",
+          "nameCs": "Hlas večera · Tyrkysové dny (1g)",
           "color": "#c084fc",
           "departureYear": 2518,
           "crewStartAge": 30,
@@ -326,19 +362,28 @@
       "storyEvents": [
         {
           "id": "rse-ev-1",
-          "title": "Discovery of Setterholm’s Worms on Diadem (Ross 248)",
+          "title": {
+            "en": "Discovery of Setterholm’s Worms on Diadem (Ross 248)",
+            "cs": "Objev Setterholmových červů na Diademu (Ross 248)"
+          },
           "systemId": "hyg-119585",
           "year": 2217
         },
         {
           "id": "rse-ev-2",
-          "title": "Fand Hostage Crisis (Lacaille 9352)",
+          "title": {
+            "en": "Fand Hostage Crisis (Lacaille 9352)",
+            "cs": "Krize s rukojmími na Fandu (Lacaille 9352)"
+          },
           "systemId": "hip-114046",
           "year": 2378
         },
         {
           "id": "rse-ev-3",
-          "title": "Tanner Mirabel Arrives in Chasm City (Epsilon Eridani)",
+          "title": {
+            "en": "Tanner Mirabel Arrives in Chasm City (Epsilon Eridani)",
+            "cs": "Tanner Mirabel přilétá do Odvráceného města (Epsilon Eridani)"
+          },
           "systemId": "hip-16537",
           "year": 2517
         }
@@ -347,6 +392,7 @@
         {
           "id": "rs-early-clavain",
           "name": "Nevil Clavain & Galiana · Nightshade (1g)",
+          "nameCs": "Nevil Clavain a Galiana · Nightshade (1g)",
           "routeNames": [
             "Sol",
             "Ross 248",
@@ -361,6 +407,7 @@
         {
           "id": "rs-hirondelle",
           "name": "Irravel Veda · Hirondelle (1g)",
+          "nameCs": "Irravel Veda · Hirondelle (1g)",
           "routeNames": [
             "Epsilon Eridani",
             "Gl 65",
@@ -376,6 +423,7 @@
         {
           "id": "rs-mirabel-caledonia",
           "name": "Tanner Mirabel · Caledonia (1g)",
+          "nameCs": "Tanner Mirabel · Caledonia (1g)",
           "routeNames": [
             "61 Cygni",
             "Epsilon Eridani"
@@ -389,6 +437,7 @@
         {
           "id": "rs-turquoise-voice",
           "name": "Voice of Evening · Turquoise Days (1g)",
+          "nameCs": "Hlas večera · Tyrkysové dny (1g)",
           "routeNames": [
             "Epsilon Eridani",
             "GJ 380"
@@ -402,14 +451,1308 @@
       ]
     },
     {
+      "id": "lem-return-from-the-stars",
+      "category": "eastern-bloc",
+      "universe": "Stanisław Lem",
+      "author": "Stanisław Lem",
+      "year": 1961,
+      "books": {
+        "en": "Return from the Stars (Powrót z gwiazd)",
+        "cs": "Návrat z hvězd (Powrót z gwiazd)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Return_from_the_Stars",
+      "sourceLabel": {
+        "en": "Wikipedia — Return from the Stars",
+        "cs": "Wikipedie — Návrat z hvězd (S. Lem)"
+      },
+      "title": {
+        "en": "Return from the Stars — Hal Bregg’s Prometheus to Fomalhaut",
+        "cs": "Návrat z hvězd — Hal Bregg a loď Prométheus k Fomalhautu"
+      },
+      "subtitle": {
+        "en": "Stanisław Lem’s iconic twin-paradox classic: astronaut Hal Bregg flies aboard Prometheus to Fomalhaut (25.13 ly) and returns to a radically transformed, “betrizated” future Earth.",
+        "cs": "Klasika Stanisława Lema o paradoxu dvojčat: kosmonaut Hal Bregg letí lodí Prométheus k Fomalhautu (25,13 ly) a vrací se na radikálně proměněnou, „betrizovanou“ Zemi budoucnosti."
+      },
+      "physicsNote": {
+        "en": "At real distance 25.13 ly each way with 1.5g / 0.992c cruise, round-trip takes ~52.7 yr Earth vs. ~8.7 yr crew proper time (in Lem’s 1961 novel, an extended multi-target survey yields 127 yr Earth vs. 10 yr crew).",
+        "cs": "Při reálné vzdálenosti 25,13 ly tam a zpět (1,5g / 0,992c) trvá let ~52,7 r. Země vs. ~8,7 r. pro posádku (v Lemově románu z r. 1961 delší průzkum vytváří 127 r. Země vs. 10 r. pro posádku)."
+      },
+      "recommendedClockStart": 2055,
+      "focusSystemId": "hip-113368",
+      "ships": [
+        {
+          "id": "lem-prometheus",
+          "name": "Prometheus · Hal Bregg (1.5g / 0.992c)",
+          "nameCs": "Prométheus · Hal Bregg (1,5g / 0,992c)",
+          "color": "#00f0ff",
+          "departureYear": 2055,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.992,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-113368",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "lem-ev-1",
+          "title": {
+            "en": "Prometheus Departure from Earth (Sol)",
+            "cs": "Start lodi Prométheus ze Země (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2055
+        },
+        {
+          "id": "lem-ev-2",
+          "title": {
+            "en": "Fomalhaut Arrival Telemetry (Fomalhaut)",
+            "cs": "Příletová telemetrie od Fomalhautu"
+          },
+          "systemId": "hip-113368",
+          "year": 2081.4
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "lem-prometheus",
+          "name": "Prometheus · Hal Bregg (1.5g / 0.992c)",
+          "nameCs": "Prométheus · Hal Bregg (1,5g / 0,992c)",
+          "routeNames": [
+            "Sol",
+            "Fomalhaut",
+            "Sol"
+          ],
+          "totalDistanceLy": 50.25,
+          "totalCoordTimeYears": 53.93,
+          "totalProperTimeYears": 12.25,
+          "peakSpeedC": 0.992,
+          "peakGamma": 7.92
+        }
+      ]
+    },
+    {
+      "id": "lem-magellanic-cloud",
+      "category": "eastern-bloc",
+      "universe": "Stanisław Lem",
+      "author": "Stanisław Lem",
+      "year": 1955,
+      "books": {
+        "en": "The Magellanic Cloud (Obłok Magellana)",
+        "cs": "K mrakům Magellanovým (Obłok Magellana)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/The_Magellanic_Cloud",
+      "sourceLabel": {
+        "en": "Wikipedia — The Magellanic Cloud (Stanisław Lem)",
+        "cs": "Wikipedie — K mrakům Magellanovým (S. Lem)"
+      },
+      "title": {
+        "en": "The Magellanic Cloud — Starship Gea to Alpha & Proxima Centauri",
+        "cs": "K mrakům Magellanovým — Hvězdolet Gea k Alfě a Proximě Centauri"
+      },
+      "subtitle": {
+        "en": "Humanity’s first interstellar voyage in the 32nd century: the massive starship Gea (227 crew) accelerates past 0.5c on an eight-year psychological odyssey to Alpha & Proxima Centauri.",
+        "cs": "První mezihvězdná výprava lidstva ve 32. století: obří hvězdolet Gea (227 členů posádky) překonává rychlost 0,5c na osmileté psychologické odyseji k Alfě a Proximě Centauri."
+      },
+      "physicsNote": {
+        "en": "Sublight photon-reaction drive (ve = 1.0c) at 0.5g accel / 0.62c cruise crosses Sol → Alpha Centauri (4.32 ly) in 8.1 Earth yr (6.7 yr crew time) — closely matching Lem’s canonical ~8-year voyage.",
+        "cs": "Podsvětelná fotonová raketa (ve = 1,0c) při 0,5g / 0,62c urazí Sol → Alfa Centauri (4,32 ly) za 8,1 roku Země (6,7 r. palubního času) — v souladu s Lemovým ~8letým letem."
+      },
+      "recommendedClockStart": 3123,
+      "focusSystemId": "hip-71683",
+      "ships": [
+        {
+          "id": "lem-gea",
+          "name": "Gea · 227 Crew (0.5g / 0.62c Photon Drive)",
+          "nameCs": "Gea · 227 členů posádky (0,5g / 0,62c fotonový pohon)",
+          "color": "#38bdf8",
+          "departureYear": 3123,
+          "crewStartAge": 28,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.5,
+            "cruiseC": 0.62,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "lem-mc-1",
+          "title": {
+            "en": "Gea Departs Solar System (32nd Century, Sol)",
+            "cs": "Start hvězdoletu Gea ze Sluneční soustavy (32. století)"
+          },
+          "systemId": "sol",
+          "year": 3123
+        },
+        {
+          "id": "lem-mc-2",
+          "title": {
+            "en": "Signs of Life & White Planet Encounter (Proxima Centauri)",
+            "cs": "Signál života a setkání u Bílé planety (Proxima Centauri)"
+          },
+          "systemId": "hip-71683",
+          "year": 3131
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "lem-gea",
+          "name": "Gea · 227 Crew (0.5g / 0.62c Photon Drive)",
+          "nameCs": "Gea · 227 členů posádky (0,5g / 0,62c fotonový pohon)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri"
+          ],
+          "totalDistanceLy": 4.32,
+          "totalCoordTimeYears": 8.31,
+          "totalProperTimeYears": 6.93,
+          "peakSpeedC": 0.62,
+          "peakGamma": 1.27
+        }
+      ]
+    },
+    {
+      "id": "yefremov-andromeda-nebula",
+      "category": "eastern-bloc",
+      "universe": "Eastern Bloc SF",
+      "universeCs": "Východní blok SF",
+      "author": "Ivan Yefremov",
+      "authorCs": "Ivan Jefremov",
+      "year": 1957,
+      "books": {
+        "en": "Andromeda: A Space-Age Tale (Туманность Андромеды)",
+        "cs": "Mlhovina v Andromedě (Туманность Андромеды)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Andromeda_(novel)",
+      "sourceLabel": {
+        "en": "Wikipedia — Andromeda: A Space-Age Tale (Ivan Yefremov)",
+        "cs": "Wikipedie — Mlhovina v Andromedě (Ivan Jefremov)"
+      },
+      "title": {
+        "en": "Andromeda Nebula — Tantra’s 5/6c Anameson Return & Great Ring",
+        "cs": "Mlhovina v Andromedě — Návrat Tantry (5/6 c) a Velký prstenec"
+      },
+      "subtitle": {
+        "en": "Commander Erg Noor & Niza Krit pilot the 37th Expedition starship Tantra home at 5/6 c from dead planet Zirda (Ophiuchus sector), while Earth communicates across the Great Ring via 61 Cygni.",
+        "cs": "Velitel Erg Noor a Niza Krit vedou 37. hvězdnou expedici lodi Tantra rychlostí 5/6 c od mrtvé planety Zirda (sektor Hadonoše) zpět k Zemi, zatímco Velký prstenec spojuje Zemi s 61 Cygni."
+      },
+      "physicsNote": {
+        "en": "Yefremov explicitly specifies anameson cruise speed v = 5/6 c (0.8333c), giving Lorentz factor γ = 1.809 (time dilation 0.553 ≈ 4 ship yr per 7 Earth yr, as quoted in the novel!). 70 Ophiuchi (16.6 ly) anchors the Ophiuchus sector.",
+        "cs": "Jefremov výslovně uvádí anamezonovou rychlost v = 5/6 c (0,8333c), tedy γ = 1,809 (dilatace 0,553 ≈ 4 roky lodi za 7 let Země — přesně dle románu!). Sektor Hadonoše kotví 70 Ophiuchi (16,6 ly)."
+      },
+      "recommendedClockStart": 3000,
+      "focusSystemId": "hip-88601",
+      "ships": [
+        {
+          "id": "yef-tantra",
+          "name": "Tantra · Erg Noor & Niza Krit (5/6 c Anameson)",
+          "nameCs": "Tantra · Erg Noor a Niza Krit (5/6 c anamezon)",
+          "color": "#00f0ff",
+          "departureYear": 3000,
+          "crewStartAge": 34,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.8333,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-88601",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "yef-great-ring",
+          "name": "Great Ring Expedition · 61 Cygni Link (5/6 c)",
+          "nameCs": "Výprava Velkého prstence · 61 Cygni (5/6 c)",
+          "color": "#f59e0b",
+          "departureYear": 3002,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.8333,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-104214",
+              "stayYears": 2
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "yef-ev-1",
+          "title": {
+            "en": "Tantra Departs Dead Planet Zirda (Ophiuchus)",
+            "cs": "Tantra opouští mrtvou planetu Zirda (Hadonoš)"
+          },
+          "systemId": "hip-88601",
+          "year": 3000
+        },
+        {
+          "id": "yef-ev-2",
+          "title": {
+            "en": "Great Ring Broadcast Relayed via 61 Cygni",
+            "cs": "Vysílání Velkého prstence přes 61 Cygni"
+          },
+          "systemId": "hip-104214",
+          "year": 3010
+        },
+        {
+          "id": "yef-ev-3",
+          "title": {
+            "en": "Tantra Returns to Earth after Iron Star Rescue (Sol)",
+            "cs": "Návrat Tantry na Zemi po záchraně od Železné hvězdy (Sol)"
+          },
+          "systemId": "sol",
+          "year": 3021.3
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "yef-tantra",
+          "name": "Tantra · Erg Noor & Niza Krit (5/6 c Anameson)",
+          "nameCs": "Tantra · Erg Noor a Niza Krit (5/6 c anamezon)",
+          "routeNames": [
+            "70 Ophiuchi",
+            "Sol"
+          ],
+          "totalDistanceLy": 16.58,
+          "totalCoordTimeYears": 20.94,
+          "totalProperTimeYears": 12.28,
+          "peakSpeedC": 0.8333,
+          "peakGamma": 1.81
+        },
+        {
+          "id": "yef-great-ring",
+          "name": "Great Ring Expedition · 61 Cygni Link (5/6 c)",
+          "nameCs": "Výprava Velkého prstence · 61 Cygni (5/6 c)",
+          "routeNames": [
+            "Sol",
+            "61 Cygni",
+            "Sol"
+          ],
+          "totalDistanceLy": 22.74,
+          "totalCoordTimeYears": 31.37,
+          "totalProperTimeYears": 19.65,
+          "peakSpeedC": 0.8333,
+          "peakGamma": 1.81
+        }
+      ]
+    },
+    {
+      "id": "strugatsky-noon-22nd-century",
+      "category": "eastern-bloc",
+      "universe": "Noon Universe",
+      "universeCs": "Svět Poledne",
+      "author": "Arkady & Boris Strugatsky",
+      "authorCs": "Arkadij a Boris Strugačtí",
+      "year": 1961,
+      "books": {
+        "en": "Noon: 22nd Century (Полдень, XXII век)",
+        "cs": "Poledne, 22. století (Полдень, XXII век)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Noon:_22nd_Century",
+      "sourceLabel": {
+        "en": "Wikipedia — Noon: 22nd Century (Strugatsky Brothers)",
+        "cs": "Wikipedie — Poledne, 22. století (bratři Strugačtí)"
+      },
+      "title": {
+        "en": "Noon: 22nd Century — Photon Ship Taimyr & Gorbovsky’s Tariel",
+        "cs": "Poledne, 22. století — Fotonový Tajmyr a Gorbovského Tariel"
+      },
+      "subtitle": {
+        "en": "Launched Nov 7, 2017 toward Lyra (Vega sector) to test the light barrier, the photon ship Taimyr experiences extreme relativistic time dilation — returning survivors Kondratyev & Slavin to a utopian 22nd-century Earth, alongside Leonid Gorbovsky’s Tariel.",
+        "cs": "Fotonový hvězdolet Tajmyr startuje 7. listopadu 2017 směrem k Lyře (sektor Vegy) k testu bariéry rychlosti světla a vrací přeživší Kondratěva a Slavina do 22. století; souběžně létá Gorbovského Tariel."
+      },
+      "physicsNote": {
+        "en": "Taimyr’s photon rocket (ve = 1.0c, 1g / 0.98c) round-trip along the Lyra/Vega axis (50.1 ly) spans ~54 yr Earth vs. ~16 yr crew (the novel adds a near-c space-time anomaly stretching Earth time to a full century: 2017 → 2117).",
+        "cs": "Fotonová raketa Tajmyr (ve = 1,0c, 1g / 0,98c) po ose Lyry/Vegy (50,1 ly) trvá ~54 r. Země vs. ~16 r. posádky (v románu anomálie u bariéry c prodlužuje pozemský čas na celé století: 2017 → 2117)."
+      },
+      "recommendedClockStart": 2017,
+      "focusSystemId": "hip-91262",
+      "ships": [
+        {
+          "id": "str-taimyr",
+          "name": "Taimyr · Kondratyev & Slavin (1g / 0.98c Photon)",
+          "nameCs": "Tajmyr · Kondratěv a Slavin (1g / 0,98c fotonová)",
+          "color": "#00f0ff",
+          "departureYear": 2017.85,
+          "crewStartAge": 29,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.98,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-91262",
+              "stayYears": 0.5
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "str-tariel",
+          "name": "Tariel · Leonid Gorbovsky (1.5g D-Photon)",
+          "nameCs": "Tariel · Leonid Gorbovskij (1,5g D-fotonový)",
+          "color": "#00ff88",
+          "departureYear": 2118,
+          "crewStartAge": 42,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "str-ev-1",
+          "title": {
+            "en": "Taimyr & Unmanned Probe Yermak Launch from Pluto-2 (Sol)",
+            "cs": "Start Tajmyru a bezpilotní sondy Jermak z Pluta-2 (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2017.85
+        },
+        {
+          "id": "str-ev-2",
+          "title": {
+            "en": "First Extrasolar Landing: Planet of Blue Sands (Lyra)",
+            "cs": "První přistání na exoplanetě: Planeta modrých písků (Lyra)"
+          },
+          "systemId": "hip-91262",
+          "year": 2045
+        },
+        {
+          "id": "str-ev-3",
+          "title": {
+            "en": "Kondratyev & Slavin Return to 22nd-Century Earth (Sol)",
+            "cs": "Návrat Kondratěva a Slavina na Zemi 22. století (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2117
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "str-taimyr",
+          "name": "Taimyr · Kondratyev & Slavin (1g / 0.98c Photon)",
+          "nameCs": "Tajmyr · Kondratěv a Slavin (1g / 0,98c fotonová)",
+          "routeNames": [
+            "Sol",
+            "Vega",
+            "Sol"
+          ],
+          "totalDistanceLy": 50.09,
+          "totalCoordTimeYears": 54.78,
+          "totalProperTimeYears": 16.41,
+          "peakSpeedC": 0.98,
+          "peakGamma": 5.03
+        },
+        {
+          "id": "str-tariel",
+          "name": "Tariel · Leonid Gorbovsky (1.5g D-Photon)",
+          "nameCs": "Tariel · Leonid Gorbovskij (1,5g D-fotonový)",
+          "routeNames": [
+            "Sol",
+            "82 G. Eri",
+            "Sol"
+          ],
+          "totalDistanceLy": 39.43,
+          "totalCoordTimeYears": 42.93,
+          "totalProperTimeYears": 9.99,
+          "peakSpeedC": 0.9981,
+          "peakGamma": 16.26
+        }
+      ]
+    },
+    {
+      "id": "martynov-kallisto-sirius",
+      "category": "eastern-bloc",
+      "universe": "Eastern Bloc SF",
+      "universeCs": "Východní blok SF",
+      "author": "Georgy Martynov",
+      "authorCs": "Georgij Martynov",
+      "year": 1957,
+      "books": {
+        "en": "Kallisto · The Kallistonians (Каллисто / Каллистяне)",
+        "cs": "Kallisto · Kallisťané (Каллисто / Каллистяне)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Georgy_Martynov",
+      "sourceLabel": {
+        "en": "Wikipedia — Georgy Martynov (Kallisto Dilogy)",
+        "cs": "Wikipedie — Georgij Martynov (dilogie Kallisto)"
+      },
+      "title": {
+        "en": "Kallisto — 1g Meson Starship Between Sirius & Sol",
+        "cs": "Kallisto — Mezonový hvězdolet (1g) mezi Siriem a Sluncem"
+      },
+      "subtitle": {
+        "en": "A gleaming 30-meter kessind meson starship arrives from the Sirius system to make peaceful first contact with Earth, then carries two Soviet scientists back to Kallisto at >190,000 km/s.",
+        "cs": "Třicetimetrový kulový mezonový hvězdolet ze soustavy Siria přilétá k mírovému prvnímu kontaktu se Zemí a poté odváží dva pozemské vědce zpět na Kallisto rychlostí přes 190 000 km/s."
+      },
+      "physicsNote": {
+        "en": "Directly modeled on Martynov’s explicit numbers: 1g artificial-gravity acceleration up to >190,000 km/s (0.634c) cruise, coasting phase, and 1g deceleration across 8.60 ly (Sirius ↔ Sol: 14.3 yr Earth / 11.4 yr crew each way).",
+        "cs": "Přesně dle Martynovových údajů: zrychlení 1g (umělá tíže) na >190 000 km/s (0,634c), let setrvačností a brzdění 1g přes 8,60 ly (Sirius ↔ Sol: 14,3 r. Země / 11,4 r. posádky jedním směrem)."
+      },
+      "recommendedClockStart": 1960,
+      "focusSystemId": "hip-32349",
+      "ships": [
+        {
+          "id": "mar-kallisto",
+          "name": "Kallisto Meson Sphere (1g / 0.634c)",
+          "nameCs": "Mezonová koule Kallisto (1g / 0,634c)",
+          "color": "#c084fc",
+          "departureYear": 1960,
+          "crewStartAge": 32,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.634,
+            "driveType": "reaction",
+            "exhaustVelC": 0.85
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-32349",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 1
+            },
+            {
+              "systemId": "hip-32349",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "mar-ev-1",
+          "title": {
+            "en": "Kallisto Sphere Launches from Sirius System",
+            "cs": "Start mezonového hvězdoletu ze soustavy Siria"
+          },
+          "systemId": "hip-32349",
+          "year": 1960
+        },
+        {
+          "id": "mar-ev-2",
+          "title": {
+            "en": "Peaceful First Contact Landing on Earth (Sol)",
+            "cs": "Mírové přistání bílého kulového hvězdoletu na Zemi (Sol)"
+          },
+          "systemId": "sol",
+          "year": 1974.3
+        },
+        {
+          "id": "mar-ev-3",
+          "title": {
+            "en": "Earth Delegates Arrive at Planet Kallisto (Sirius)",
+            "cs": "Přílet pozemské výpravy na planetu Kallisto (Sirius)"
+          },
+          "systemId": "hip-32349",
+          "year": 1989.6
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "mar-kallisto",
+          "name": "Kallisto Meson Sphere (1g / 0.634c)",
+          "nameCs": "Mezonová koule Kallisto (1g / 0,634c)",
+          "routeNames": [
+            "Sirius",
+            "Sol",
+            "Sirius"
+          ],
+          "totalDistanceLy": 17.2,
+          "totalCoordTimeYears": 29.52,
+          "totalProperTimeYears": 23.5,
+          "peakSpeedC": 0.634,
+          "peakGamma": 1.29
+        }
+      ]
+    },
+    {
+      "id": "babula-planet-of-three-suns",
+      "category": "eastern-bloc",
+      "universe": "Eastern Bloc SF",
+      "universeCs": "Československá SF",
+      "author": "Vladimír Babula",
+      "year": 1954,
+      "books": {
+        "en": "Signals from Space · Planet of Three Suns · Friends from Ophiuchus",
+        "cs": "Signály z vesmíru · Planeta tří sluncí · Přátelé z Hadonoše (Oceánem světelných roků)"
+      },
+      "sourceUrl": "https://cs.wikipedia.org/wiki/Vladim%C3%ADr_Babula",
+      "sourceLabel": {
+        "en": "Czech Wikipedia — Vladimír Babula Trilogy",
+        "cs": "Česká Wikipedie — trilogie Vladimíra Babuly"
+      },
+      "title": {
+        "en": "Planet of Three Suns — Czechoslovak Starship Paprsek",
+        "cs": "Planeta tří sluncí — Československý hvězdolet Paprsek"
+      },
+      "subtitle": {
+        "en": "Czechoslovakia’s pioneering 1950s hard-SF interstellar trilogy: after receiving radio signals from Alpha Centauri, the Moon-built atomic/photon ship Paprsek voyages to the triple star (Kvarten) and onward to Ophiuchus.",
+        "cs": "Průkopnická československá hard-SF trilogie 50. let: po zachycení radiových signálů z Alfy Centauri vyplouvá z Měsíce atomový/fotonový hvězdolet Paprsek k Planetě tří sluncí (Kvarten) a dále do Hadonoše."
+      },
+      "physicsNote": {
+        "en": "Modeled as a relativistic 1g / 0.75c photon-atomic expedition across real 3D distances: Sol → Alpha Centauri (4.32 ly) → Barnard’s Star in Ophiuchus (6.45 ly) → Sol (5.95 ly), total 16.71 ly.",
+        "cs": "Modelováno jako relativistická 1g / 0,75c fotonová výprava v reálných 3D vzdálenostech: Sol → Alfa Centauri (4,32 ly) → Barnardova hvězda v Hadonoši (6,45 ly) → Sol (5,95 ly), celkem 16,71 ly."
+      },
+      "recommendedClockStart": 2050,
+      "focusSystemId": "hip-71683",
+      "ships": [
+        {
+          "id": "bab-paprsek",
+          "name": "Paprsek (The Beam · 1g / 0.75c Photon)",
+          "nameCs": "Paprsek (1g / 0,75c atomovo-fotonový hvězdolet)",
+          "color": "#fbbf24",
+          "departureYear": 2050,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1,
+            "cruiseC": 0.75,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 1.5
+            },
+            {
+              "systemId": "hip-87937",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bab-ev-1",
+          "title": {
+            "en": "Signals from Space Received from Alpha Centauri (Sol)",
+            "cs": "Zachycení Signálů z vesmíru od Alfy Centauri (Sol)"
+          },
+          "systemId": "hip-71683",
+          "year": 2045.5
+        },
+        {
+          "id": "bab-ev-2",
+          "title": {
+            "en": "Paprsek Arrives at Planet of Three Suns — Kvarten (Alpha Cen)",
+            "cs": "Přílet Paprsku k Planetě tří sluncí — Kvarten (Alfa Centauri)"
+          },
+          "systemId": "hip-71683",
+          "year": 2056.7
+        },
+        {
+          "id": "bab-ev-3",
+          "title": {
+            "en": "Contact in Ophiuchus — Friends from Ophiuchus (Barnard’s Star)",
+            "cs": "Setkání v Hadonoši — Přátelé z Hadonoše (Barnardova hvězda)"
+          },
+          "systemId": "hip-87937",
+          "year": 2067.7
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bab-paprsek",
+          "name": "Paprsek (The Beam · 1g / 0.75c Photon)",
+          "nameCs": "Paprsek (1g / 0,75c atomovo-fotonový hvězdolet)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri",
+            "Barnard's Star",
+            "Sol"
+          ],
+          "totalDistanceLy": 16.71,
+          "totalCoordTimeYears": 27.4,
+          "totalProperTimeYears": 20.27,
+          "peakSpeedC": 0.75,
+          "peakGamma": 1.51
+        }
+      ]
+    },
+    {
+      "id": "anderson-tau-zero",
+      "category": "classic-sf",
+      "universe": "Classic Hard SF",
+      "universeCs": "Klasická hard SF",
+      "author": "Poul Anderson",
+      "year": 1970,
+      "books": {
+        "en": "Tau Zero",
+        "cs": "Tau nula (Tau Zero)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Tau_Zero",
+      "sourceLabel": {
+        "en": "Wikipedia — Tau Zero (Poul Anderson)",
+        "cs": "Wikipedie — Tau nula (Poul Anderson)"
+      },
+      "title": {
+        "en": "Tau Zero — Runaway Bussard Ramjet Leonora Christine",
+        "cs": "Tau nula — Neovladatelný náporový let lodi Leonora Christine"
+      },
+      "subtitle": {
+        "en": "The ultimate special-relativity novel: the Bussard ramjet Leonora Christine (50 colonists) heads for Beta Virginis (Zavijava, 35.65 ly) — but an interstellar dust cloud destroys its decelerator, locking it into unstoppable 1g acceleration past its target as τ → 0!",
+        "cs": "Vrcholný román o speciální relativitě: náporová loď Leonora Christine (50 kolonistů) míří k Beta Virginis (Zavijava, 35,65 ly), ale porucha brzdného systému ji uvězní v nezastavitelném zrychlení 1g a průletu kolem cíle k τ → 0!"
+      },
+      "physicsNote": {
+        "en": "Compare BOTH profiles side-by-side: the damaged Runaway Flyby (1g, no braking) blasts past Beta Virginis at 99.96%c (γ = 37.8, only 4.2 yr crew time!) vs. the Planned 1g Flip (~37.5 yr Earth / ~7.2 yr crew).",
+        "cs": "Porovnejte oba profily vedle sebe: neovladatelný průlet (1g bez brzdění) míjí Beta Virginis rychlostí 99,96%c (γ = 37,8, jen 4,2 r. pro posádku!) oproti plánované 1g otočce (~37,5 r. Země / ~7,2 r. posádka)."
+      },
+      "recommendedClockStart": 2250,
+      "focusSystemId": "hip-57757",
+      "ships": [
+        {
+          "id": "tz-runaway",
+          "name": "Leonora Christine · Runaway Flyby (1g, No Brake!)",
+          "nameCs": "Leonora Christine · Neovladatelný průlet (1g bez brzdění!)",
+          "color": "#fb7185",
+          "departureYear": 2250,
+          "crewStartAge": 31,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 1,
+            "cruiseC": 0.9999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-57757",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "tz-planned",
+          "name": "Leonora Christine · Planned Mission (1g Flip)",
+          "nameCs": "Leonora Christine · Plánovaný let (1g otočka)",
+          "color": "#38bdf8",
+          "departureYear": 2250,
+          "crewStartAge": 31,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1,
+            "cruiseC": 0.999,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-57757",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "tz-ev-1",
+          "title": {
+            "en": "Leonora Christine Launches from Sol toward Beta Virginis",
+            "cs": "Start lodi Leonora Christine od Slunce k Beta Virginis"
+          },
+          "systemId": "sol",
+          "year": 2250
+        },
+        {
+          "id": "tz-ev-2",
+          "title": {
+            "en": "Nebula Strike Destroys Decelerator Mid-Flight (Sol)",
+            "cs": "Srážka s mlhovinou zničí brzdný pohon uprostřed letu"
+          },
+          "systemId": "sol",
+          "year": 2266
+        },
+        {
+          "id": "tz-ev-3",
+          "title": {
+            "en": "Unstoppable 99.96%c Flyby Past Beta Virginis (Zavijava)",
+            "cs": "Nezastavitelný průlet rychlostí 99,96%c kolem Beta Virginis"
+          },
+          "systemId": "hip-57757",
+          "year": 2286.6
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "tz-runaway",
+          "name": "Leonora Christine · Runaway Flyby (1g, No Brake!)",
+          "nameCs": "Leonora Christine · Neovladatelný průlet (1g bez brzdění!)",
+          "routeNames": [
+            "Sol",
+            "Zavijava"
+          ],
+          "totalDistanceLy": 35.65,
+          "totalCoordTimeYears": 36.6,
+          "totalProperTimeYears": 4.19,
+          "peakSpeedC": 0.9996,
+          "peakGamma": 37.8
+        },
+        {
+          "id": "tz-planned",
+          "name": "Leonora Christine · Planned Mission (1g Flip)",
+          "nameCs": "Leonora Christine · Plánovaný let (1g otočka)",
+          "routeNames": [
+            "Sol",
+            "Zavijava"
+          ],
+          "totalDistanceLy": 35.65,
+          "totalCoordTimeYears": 37.53,
+          "totalProperTimeYears": 7.09,
+          "peakSpeedC": 0.9987,
+          "peakGamma": 19.4
+        }
+      ]
+    },
+    {
+      "id": "heinlein-time-for-the-stars",
+      "category": "classic-sf",
+      "universe": "Classic Hard SF",
+      "universeCs": "Klasická hard SF",
+      "author": "Robert A. Heinlein",
+      "year": 1956,
+      "books": {
+        "en": "Time for the Stars",
+        "cs": "Čas pro hvězdy (Time for the Stars)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Time_for_the_Stars",
+      "sourceLabel": {
+        "en": "Wikipedia — Time for the Stars (R. A. Heinlein)",
+        "cs": "Wikipedie — Čas pro hvězdy (R. A. Heinlein)"
+      },
+      "title": {
+        "en": "Time for the Stars — Torchship Lewis and Clark (Twin Paradox)",
+        "cs": "Čas pro hvězdy — Pochodňová loď Lewis and Clark (Paradox dvojčat)"
+      },
+      "subtitle": {
+        "en": "Tom Bartlett boards the 1g Long Range Foundation torchship Lewis and Clark (“Elsie”) to survey Tau Ceti and Beta Hydri (“Inferno”), staying linked by telepathy to his rapidly aging twin brother Pat back on Earth.",
+        "cs": "Tom Bartlett odlétá na 1g pochodňové lodi Lewis and Clark („Elsie“) k průzkumu Tau Ceti a Beta Hydri („Inferno“) v telepatickém spojení se svým rychle stárnoucím dvojčetem Patem na Zemi."
+      },
+      "physicsNote": {
+        "en": "Textbook Twin Paradox showcase: check the Crew Age vs. Earth Twin Age telemetry! Over the 57.7 ly 1g survey loop (Sol → Tau Ceti → Beta Hydri → Sol), Tom ages only 19.7 yr while twin Pat on Earth ages 65.3 yr.",
+        "cs": "Učebnicová ukázka paradoxu dvojčat: sledujte věk posádky oproti dvojčeti na Zemi! Na 57,7 ly okruhu při 1g (Sol → Tau Ceti → Beta Hydri → Sol) zestárne Tom jen o 19,7 roku, zatímco Pat na Zemi o 65,3 roku."
+      },
+      "recommendedClockStart": 2060,
+      "focusSystemId": "hip-8102",
+      "ships": [
+        {
+          "id": "hei-elsie",
+          "name": "LRT Lewis and Clark (“Elsie”) · Tom Bartlett (1g)",
+          "nameCs": "LRT Lewis and Clark („Elsie“) · Tom Bartlett (1g)",
+          "color": "#00f0ff",
+          "departureYear": 2060,
+          "crewStartAge": 18,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 1
+            },
+            {
+              "systemId": "hip-2021",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "hei-ev-1",
+          "title": {
+            "en": "Twelve Torchships Depart Earth — Twins Tom & Pat Separate (Sol)",
+            "cs": "Start dvanácti pochodňových lodí — rozloučení dvojčat Toma a Pata"
+          },
+          "systemId": "sol",
+          "year": 2060
+        },
+        {
+          "id": "hei-ev-2",
+          "title": {
+            "en": "Survey of Tau Ceti — Pat Already Middle-Aged on Earth",
+            "cs": "Průzkum Tau Ceti — dvojče Pat na Zemi je již ve středním věku"
+          },
+          "systemId": "hip-8102",
+          "year": 2073.7
+        },
+        {
+          "id": "hei-ev-3",
+          "title": {
+            "en": "Ammonia-Ocean World “Inferno” Discovered (Beta Hydri)",
+            "cs": "Objev čpavkového světa „Inferno“ (Beta Hydri)"
+          },
+          "systemId": "hip-2021",
+          "year": 2093.6
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "hei-elsie",
+          "name": "LRT Lewis and Clark (“Elsie”) · Tom Bartlett (1g)",
+          "nameCs": "LRT Lewis and Clark („Elsie“) · Tom Bartlett (1g)",
+          "routeNames": [
+            "Sol",
+            "Tau Ceti",
+            "Beta Hydri",
+            "Sol"
+          ],
+          "totalDistanceLy": 57.74,
+          "totalCoordTimeYears": 65.27,
+          "totalProperTimeYears": 19.7,
+          "peakSpeedC": 0.9973,
+          "peakGamma": 13.56
+        }
+      ]
+    },
+    {
+      "id": "leguin-hainish-nafal",
+      "category": "classic-sf",
+      "universe": "Hainish Cycle",
+      "universeCs": "Hainský cyklus",
+      "author": "Ursula K. Le Guin",
+      "year": 1974,
+      "books": {
+        "en": "The Dispossessed · Rocannon’s World",
+        "cs": "Vyděděnec · Rocannonův svět (Hainský cyklus)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Hainish_Cycle",
+      "sourceLabel": {
+        "en": "Wikipedia — Hainish Cycle & NAFAL Starships",
+        "cs": "Wikipedie — Hainský cyklus a podsvětelné lodě NAFAL"
+      },
+      "title": {
+        "en": "Hainish Cycle — NAFAL Sublight Voyages (Tau Ceti & Fomalhaut)",
+        "cs": "Hainský cyklus — Podsvětelné lodě NAFAL (Tau Ceti a Fomalhaut)"
+      },
+      "subtitle": {
+        "en": "In Ursula K. Le Guin’s Ekumen, passenger ships are strictly sublight NAFAL (“Nearly As Fast As Light”) vessels, causing decades of planetary separation while Shevek’s ansible unlocks instantaneous communication.",
+        "cs": "V Ekumeně Ursuly K. Le Guinové létají lodě striktně podsvětelně (NAFAL — „téměř rychlostí světla“), což odděluje světy na desetiletí, zatímco Shevekův ansibl přináší okamžitou komunikaci."
+      },
+      "physicsNote": {
+        "en": "NAFAL relativistic ships (1.5g / 0.99c): Tau Ceti → Sol (11.91 ly) takes 13.1 yr planetary time vs. 3.9 yr shipboard; Sol → Fomalhaut (25.13 ly, Rocannon’s World) takes 26.5 yr planetary time vs. 5.5 yr shipboard.",
+        "cs": "Relativistické lodě NAFAL (1,5g / 0,99c): Tau Ceti → Sol (11,91 ly) trvá 13,1 r. planetárního času vs. 3,9 r. na palubě; Sol → Fomalhaut (25,13 ly, Rocannonův svět) trvá 26,5 r. vs. 5,5 r."
+      },
+      "recommendedClockStart": 2300,
+      "focusSystemId": "hip-8102",
+      "ships": [
+        {
+          "id": "leg-shevek-nafal",
+          "name": "Hainish NAFAL Courier · Shevek’s Ansible Envoy (0.99c)",
+          "nameCs": "Hainská loď NAFAL · Poselství Shevekova ansiblu (0,99c)",
+          "color": "#00f0ff",
+          "departureYear": 2300,
+          "crewStartAge": 38,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-8102",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "leg-rocannon-nafal",
+          "name": "League NAFAL Survey · Rocannon (0.99c)",
+          "nameCs": "Průzkumná loď Ligy NAFAL · Rocannon (0,99c)",
+          "color": "#c084fc",
+          "departureYear": 2300,
+          "crewStartAge": 35,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-113368",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "leg-ev-1",
+          "title": {
+            "en": "Shevek Publishes General Temporal Theory / Ansible (Tau Ceti)",
+            "cs": "Shevek dokončuje Obecnou teorii času a ansibl (Tau Ceti)"
+          },
+          "systemId": "hip-8102",
+          "year": 2300
+        },
+        {
+          "id": "leg-ev-2",
+          "title": {
+            "en": "Rocannon’s Survey Ship Reaches Fomalhaut II",
+            "cs": "Rocannonova průzkumná loď doráží k Fomalhautu II"
+          },
+          "systemId": "hip-113368",
+          "year": 2326.5
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "leg-shevek-nafal",
+          "name": "Hainish NAFAL Courier · Shevek’s Ansible Envoy (0.99c)",
+          "nameCs": "Hainská loď NAFAL · Poselství Shevekova ansiblu (0,99c)",
+          "routeNames": [
+            "Tau Ceti",
+            "Sol"
+          ],
+          "totalDistanceLy": 11.9,
+          "totalCoordTimeYears": 13.15,
+          "totalProperTimeYears": 3.99,
+          "peakSpeedC": 0.99,
+          "peakGamma": 7.09
+        },
+        {
+          "id": "leg-rocannon-nafal",
+          "name": "League NAFAL Survey · Rocannon (0.99c)",
+          "nameCs": "Průzkumná loď Ligy NAFAL · Rocannon (0,99c)",
+          "routeNames": [
+            "Sol",
+            "Fomalhaut"
+          ],
+          "totalDistanceLy": 25.13,
+          "totalCoordTimeYears": 26.5,
+          "totalProperTimeYears": 5.88,
+          "peakSpeedC": 0.99,
+          "peakGamma": 7.09
+        }
+      ]
+    },
+    {
+      "id": "niven-known-space-slowboats",
+      "category": "classic-sf",
+      "universe": "Known Space",
+      "universeCs": "Známý vesmír",
+      "author": "Larry Niven",
+      "year": 1966,
+      "books": {
+        "en": "World of Ptavvs · A Gift from Earth · Flatlander · Man-Kzin Wars",
+        "cs": "Svět Ptavvů · Dar ze Země · Kzinské války (Známý vesmír)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Known_Space",
+      "sourceLabel": {
+        "en": "Wikipedia — Larry Niven’s Known Space Chronology",
+        "cs": "Wikipedie — Chronologie Známého vesmíru Larryho Nivena"
+      },
+      "title": {
+        "en": "Known Space — Slowboat & Bussard Ramscoop Era",
+        "cs": "Známý vesmír — Éra pomalých lodí a Bussardových kolektorů"
+      },
+      "subtitle": {
+        "en": "Before hyperdrive, humanity expanded strictly sublight: slowboat colonists settle Wunderland (Alpha Centauri), Ramscoop #4 maps Plateau (Tau Ceti), Lazy Eight II suffers a runaway flyby past Sirius, and first sublight contact erupts near 61 Ursae Majoris (Kzin).",
+        "cs": "Před hyperpohonem lidstvo expandovalo čistě podsvětelně: kolonisté na Wunderland (Alfa Centauri), sonda Ramscoop #4 k Tau Ceti, neovladatelný let Lazy Eight II kolem Siria a střet u 61 Ursae Majoris (Kzin)."
+      },
+      "physicsNote": {
+        "en": "Showcases 3 distinct sublight regimes simultaneously: 0.11c fusion slowboat (~40 yr to Alpha Centauri), 0.15c runaway flyby (Lazy Eight II), and 0.25g Bussard ramscoop probes to Tau Ceti & 61 UMa.",
+        "cs": "Souběžná ukázka 3 podsvětelných režimů: fúzní pomalá loď 0,11c (~40 let k Alfě Centauri), neovladatelný průlet Lazy Eight II (0,15c) a Bussardův kolektor 0,25g k Tau Ceti a 61 UMa."
+      },
+      "recommendedClockStart": 2110,
+      "focusSystemId": "sol",
+      "ships": [
+        {
+          "id": "ks-wunderland",
+          "name": "Wunderland Colony Slowboat (0.11c Fusion)",
+          "nameCs": "Koloniální pomalá loď Wunderland (0,11c fúze)",
+          "color": "#00ff88",
+          "departureYear": 2110,
+          "crewStartAge": 26,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.05,
+            "cruiseC": 0.11,
+            "driveType": "reaction",
+            "exhaustVelC": 0.12
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "ks-lazy-eight",
+          "name": "Lazy Eight II · Flatlander (0.15c Runaway Flyby)",
+          "nameCs": "Lazy Eight II · Ztracený průlet (0,15c bez brzdění)",
+          "color": "#fb7185",
+          "departureYear": 2115,
+          "crewStartAge": 30,
+          "driveConfig": {
+            "mode": "flyby",
+            "accelG": 0.05,
+            "cruiseC": 0.15,
+            "driveType": "non-reactive",
+            "exhaustVelC": 0.12
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-32349",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "ks-ramscoop-tau",
+          "name": "Ramscoop Robot #4 & Planck (0.25g to Tau Ceti)",
+          "nameCs": "Bussardova sonda #4 a Planck (0,25g k Tau Ceti)",
+          "color": "#00f0ff",
+          "departureYear": 2112,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.25,
+            "cruiseC": 0.45,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 2
+            },
+            {
+              "systemId": "hip-56997",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "ks-ev-1",
+          "title": {
+            "en": "Wunderland Colony Founded (Alpha Centauri)",
+            "cs": "Založení kolonie Wunderland (Alfa Centauri)"
+          },
+          "systemId": "hip-71683",
+          "year": 2151
+        },
+        {
+          "id": "ks-ev-2",
+          "title": {
+            "en": "Ramscoop #4 Maps Mount Lookitthat (Tau Ceti)",
+            "cs": "Sonda Ramscoop #4 mapuje plošinu Plateau (Tau Ceti)"
+          },
+          "systemId": "hip-8102",
+          "year": 2140.5
+        },
+        {
+          "id": "ks-ev-3",
+          "title": {
+            "en": "First Contact Warning Near Kzinhome (61 Ursae Majoris)",
+            "cs": "Varování před prvním kontaktem u Kzinu (61 Ursae Majoris)"
+          },
+          "systemId": "hip-56997",
+          "year": 2215
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "ks-wunderland",
+          "name": "Wunderland Colony Slowboat (0.11c Fusion)",
+          "nameCs": "Koloniální pomalá loď Wunderland (0,11c fúze)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri"
+          ],
+          "totalDistanceLy": 4.32,
+          "totalCoordTimeYears": 41.41,
+          "totalProperTimeYears": 41.17,
+          "peakSpeedC": 0.11,
+          "peakGamma": 1.01
+        },
+        {
+          "id": "ks-lazy-eight",
+          "name": "Lazy Eight II · Flatlander (0.15c Runaway Flyby)",
+          "nameCs": "Lazy Eight II · Ztracený průlet (0,15c bez brzdění)",
+          "routeNames": [
+            "Sol",
+            "Sirius"
+          ],
+          "totalDistanceLy": 8.6,
+          "totalCoordTimeYears": 58.8,
+          "totalProperTimeYears": 58.16,
+          "peakSpeedC": 0.15,
+          "peakGamma": 1.01
+        },
+        {
+          "id": "ks-ramscoop-tau",
+          "name": "Ramscoop Robot #4 & Planck (0.25g to Tau Ceti)",
+          "nameCs": "Bussardova sonda #4 a Planck (0,25g k Tau Ceti)",
+          "routeNames": [
+            "Sol",
+            "Tau Ceti",
+            "61 Ursae Majoris"
+          ],
+          "totalDistanceLy": 53.74,
+          "totalCoordTimeYears": 125.1,
+          "totalProperTimeYears": 112.47,
+          "peakSpeedC": 0.45,
+          "peakGamma": 1.12
+        }
+      ]
+    },
+    {
       "id": "clarke-rama-odyssey",
       "category": "classic-sf",
       "universe": "Rama",
       "author": "Arthur C. Clarke & Gentry Lee",
       "year": 1991,
-      "books": "Rama II · The Garden of Rama · Rama Revealed",
+      "books": {
+        "en": "Rama II · The Garden of Rama · Rama Revealed",
+        "cs": "Návrat Rámy · Zahrada Rámova · Odhalení Rámy"
+      },
       "sourceUrl": "https://en.wikipedia.org/wiki/The_Garden_of_Rama",
-      "sourceLabel": "Wikipedia — The Garden of Rama & Rama Revealed",
+      "sourceLabel": {
+        "en": "Wikipedia — The Garden of Rama & Rama Revealed",
+        "cs": "Wikipedie — Zahrada Rámova a Odhalení Rámy"
+      },
       "title": {
         "en": "Path of Rama II & Rama III (Nicole Wakefield)",
         "cs": "Cesta Rámy II a Rámy III (Nicole Wakefieldová)"
@@ -428,6 +1771,7 @@
         {
           "id": "rama-ii-iii",
           "name": "Rama II → Rama III (Nicole Wakefield)",
+          "nameCs": "Ráma II → Ráma III (Nicole Wakefieldová)",
           "color": "#00f0ff",
           "departureYear": 2200,
           "crewStartAge": 36,
@@ -461,19 +1805,28 @@
       "storyEvents": [
         {
           "id": "rama-ev-1",
-          "title": "Rama II Departs Solar System (Sol)",
+          "title": {
+            "en": "Rama II Departs Solar System (Sol)",
+            "cs": "Ráma II opouští Sluneční soustavu (Sol)"
+          },
           "systemId": "sol",
           "year": 2200
         },
         {
           "id": "rama-ev-2",
-          "title": "Arrival at Sirius Raman Node (Sirius)",
+          "title": {
+            "en": "Arrival at Sirius Raman Node (Sirius)",
+            "cs": "Přílet k Rámovu uzlu u Siria (Sirius)"
+          },
           "systemId": "hip-32349",
           "year": 2212.1
         },
         {
           "id": "rama-ev-3",
-          "title": "Raman Colonist Request Broadcast (Sirius → Sol)",
+          "title": {
+            "en": "Raman Colonist Request Broadcast (Sirius → Sol)",
+            "cs": "Výzva Rámanů o kolonisty (Sirius → Sol)"
+          },
           "systemId": "hip-32349",
           "year": 2213
         }
@@ -482,6 +1835,7 @@
         {
           "id": "rama-ii-iii",
           "name": "Rama II → Rama III (Nicole Wakefield)",
+          "nameCs": "Ráma II → Ráma III (Nicole Wakefieldová)",
           "routeNames": [
             "Sol",
             "Sirius",
@@ -497,684 +1851,21 @@
       ]
     },
     {
-      "id": "project-hail-mary",
-      "category": "modern-sf",
-      "universe": "Project Hail Mary",
-      "author": "Andy Weir",
-      "year": 2021,
-      "books": "Project Hail Mary",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Project_Hail_Mary",
-      "sourceLabel": "Wikipedia — Project Hail Mary",
-      "title": {
-        "en": "Project Hail Mary — Ryland Grace & Rocky (Blip-A)",
-        "cs": "Spasitel (Project Hail Mary) — Ryland Grace a Rocky"
-      },
-      "subtitle": {
-        "en": "Synchronized multi-ship rendezvous at Tau Ceti: Hail Mary’s 1.5g Astrophage torch from Sol, Rocky’s Blip-A from 40 Eridani (Erid), the Beetle cure probes back to Earth, and Grace’s rescue flight to Erid.",
-        "cs": "Synchronizované setkání u Tau Ceti: loď Spasitel (1,5g pohon na astrofágy) od Slunce, Rockyho Blip-A z 40 Eridani, sondy Brouci zpět k Zemi a záchranný let k Eridu."
-      },
-      "physicsNote": {
-        "en": "Exact Astrophage photon-rocket physics (ve = 1.0c): Hail Mary at 1.5g flip covers Sol → Tau Ceti (11.90 ly) in 13.1 yr Earth / 3.86 yr crew proper time — matching the novel’s ~13-yr Earth / ~4-yr ship clocks.",
-        "cs": "Přesná fyzika fotonové rakety (ve = 1,0c): Spasitel při 1,5g otočce urazí Sol → Tau Ceti (11,90 ly) za 13,1 r. Země / 3,86 r. palubního času — přesně jako v románu (~13 r. Země / ~4 r. loď)."
-      },
-      "recommendedClockStart": 2025,
-      "focusSystemId": "hip-8102",
-      "ships": [
-        {
-          "id": "phm-hail-mary",
-          "name": "Hail Mary · Ryland Grace (1.5g Astrophage)",
-          "color": "#00f0ff",
-          "departureYear": 2025,
-          "crewStartAge": 36,
-          "driveConfig": {
-            "mode": "flip",
-            "accelG": 1.5,
-            "cruiseC": 0.99,
-            "driveType": "reaction",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-8102",
-              "stayYears": 0.4
-            },
-            {
-              "systemId": "hip-19849",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "phm-blip-a",
-          "name": "Blip-A · Rocky (2.1g Eridian Torch)",
-          "color": "#f59e0b",
-          "departureYear": 1985,
-          "crewStartAge": 240,
-          "driveConfig": {
-            "mode": "flip",
-            "accelG": 2.1,
-            "cruiseC": 0.99,
-            "driveType": "reaction",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-19849",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-8102",
-              "stayYears": 42.6
-            },
-            {
-              "systemId": "hip-19849",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "phm-beetles",
-          "name": "Beetles · Taumoeba Data Probes (1.5g)",
-          "color": "#00ff88",
-          "departureYear": 2038.5,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "flip",
-            "accelG": 1.5,
-            "cruiseC": 0.99,
-            "driveType": "reaction",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-8102",
-              "stayYears": 0
-            },
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "phm-ev-1",
-          "title": "Hail Mary Launch from Solar System (Sol)",
-          "systemId": "sol",
-          "year": 2025
-        },
-        {
-          "id": "phm-ev-2",
-          "title": "First Contact: Grace Meets Rocky (Tau Ceti)",
-          "systemId": "hip-8102",
-          "year": 2038.2
-        },
-        {
-          "id": "phm-ev-3",
-          "title": "Beetles Arrive with Taumoeba Cure (Sol)",
-          "systemId": "sol",
-          "year": 2051.6
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "phm-hail-mary",
-          "name": "Hail Mary · Ryland Grace (1.5g Astrophage)",
-          "routeNames": [
-            "Sol",
-            "Tau Ceti",
-            "40 Eridani"
-          ],
-          "totalDistanceLy": 21.92,
-          "totalCoordTimeYears": 24.77,
-          "totalProperTimeYears": 7.99,
-          "peakSpeedC": 0.9952,
-          "peakGamma": 10.22
-        },
-        {
-          "id": "phm-blip-a",
-          "name": "Blip-A · Rocky (2.1g Eridian Torch)",
-          "routeNames": [
-            "40 Eridani",
-            "Tau Ceti",
-            "40 Eridani"
-          ],
-          "totalDistanceLy": 20.04,
-          "totalCoordTimeYears": 64.4,
-          "totalProperTimeYears": 48.44,
-          "peakSpeedC": 0.9964,
-          "peakGamma": 11.86
-        },
-        {
-          "id": "phm-beetles",
-          "name": "Beetles · Taumoeba Data Probes (1.5g)",
-          "routeNames": [
-            "Tau Ceti",
-            "Sol"
-          ],
-          "totalDistanceLy": 11.9,
-          "totalCoordTimeYears": 13.13,
-          "totalProperTimeYears": 3.89,
-          "peakSpeedC": 0.9952,
-          "peakGamma": 10.22
-        }
-      ]
-    },
-    {
-      "id": "bobiverse-expansion",
-      "category": "modern-sf",
-      "universe": "Bobiverse",
-      "author": "Dennis E. Taylor",
-      "year": 2016,
-      "books": "We Are Legion (We Are Bob) · For We Are Many",
-      "sourceUrl": "https://bobiverse.fandom.com/wiki/Bob",
-      "sourceLabel": "Bobiverse Wiki — Bob & Star Systems",
-      "title": {
-        "en": "Bobiverse — First Wave Expansion (Bob-1, Milo, Mario & Bill)",
-        "cs": "Bobiverzum — První vlna expanze (Bob-1, Milo, Mario a Bill)"
-      },
-      "subtitle": {
-        "en": "Bob-1 escapes Earth aboard HEAVEN-1 to Epsilon Eridani, replicates, and fans out across Delta Eridani (Deltans), 40 Eridani (Vulcan/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi, and Delta Pavonis (Eden).",
-        "cs": "Bob-1 uniká ze Země na lodi HEAVEN-1 k Epsilon Eridani, replikuje se a vysílá klony k Delta Eridani (Delťané), 40 Eridani (Vulkán/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi a Delta Pavonis."
-      },
-      "physicsNote": {
-        "en": "Reactionless SURGE drives modeled at 1.5g accel with 0.90c cruise cap (non-reactive). Watch all 4 Von Neumann replicants fan out simultaneously across the Eridanus/Indus sector.",
-        "cs": "Nereaktivní pohony SURGE modelované při zrychlení 1,5g a stropu 0,90c. Sledujte současnou expanzi 4 Von Neumannových sond sektorem Eridanu a Indiána."
-      },
-      "recommendedClockStart": 2133,
-      "focusSystemId": "hip-16537",
-      "ships": [
-        {
-          "id": "bob-1",
-          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
-          "color": "#00f0ff",
-          "departureYear": 2133.5,
-          "crewStartAge": 31,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-16537",
-              "stayYears": 1.5
-            },
-            {
-              "systemId": "hip-17378",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-milo",
-          "name": "Milo · Explorer (1.5g SURGE)",
-          "color": "#00ff88",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-19849",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-mario",
-          "name": "Mario · Explorer (1.5g SURGE)",
-          "color": "#f59e0b",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-15510",
-              "stayYears": 1
-            },
-            {
-              "systemId": "hip-2021",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "bob-bill",
-          "name": "Bill · Foundry & Evacuation (1.5g)",
-          "color": "#c084fc",
-          "departureYear": 2147,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.9,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-16537",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-108870",
-              "stayYears": 2
-            },
-            {
-              "systemId": "hip-99240",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "bob-ev-1",
-          "title": "HEAVEN-1 Emergency Launch from Earth (Sol)",
-          "systemId": "sol",
-          "year": 2133.5
-        },
-        {
-          "id": "bob-ev-2",
-          "title": "Battle of Epsilon Eridani vs. Medeiros",
-          "systemId": "hip-16537",
-          "year": 2146
-        },
-        {
-          "id": "bob-ev-3",
-          "title": "Milo Explores Vulcan & Romulus (40 Eridani)",
-          "systemId": "hip-19849",
-          "year": 2154.5
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "bob-1",
-          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
-          "routeNames": [
-            "Sol",
-            "Epsilon Eridani",
-            "Rana"
-          ],
-          "totalDistanceLy": 29.5,
-          "totalCoordTimeYears": 35.9,
-          "totalProperTimeYears": 17.97,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-milo",
-          "name": "Milo · Explorer (1.5g SURGE)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "40 Eridani"
-          ],
-          "totalDistanceLy": 6.25,
-          "totalCoordTimeYears": 7.76,
-          "totalProperTimeYears": 4.12,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-mario",
-          "name": "Mario · Explorer (1.5g SURGE)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "82 G. Eri",
-            "Beta Hydri"
-          ],
-          "totalDistanceLy": 27.59,
-          "totalCoordTimeYears": 33.27,
-          "totalProperTimeYears": 16.55,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        },
-        {
-          "id": "bob-bill",
-          "name": "Bill · Foundry & Evacuation (1.5g)",
-          "routeNames": [
-            "Epsilon Eridani",
-            "Epsilon Indi",
-            "Delta Pavonis"
-          ],
-          "totalDistanceLy": 23.27,
-          "totalCoordTimeYears": 29.48,
-          "totalProperTimeYears": 15.46,
-          "peakSpeedC": 0.9,
-          "peakGamma": 2.29
-        }
-      ]
-    },
-    {
-      "id": "robinson-aurora",
-      "category": "modern-sf",
-      "universe": "Kim Stanley Robinson",
-      "author": "Kim Stanley Robinson",
-      "year": 2015,
-      "books": "Aurora",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Aurora_(novel)",
-      "sourceLabel": "Wikipedia — Aurora (novel)",
-      "title": {
-        "en": "Aurora — Generation Ship “Ship” (Round-Trip to Tau Ceti)",
-        "cs": "Aurora — Generační loď „Ship“ (Tam a zpět k Tau Ceti)"
-      },
-      "subtitle": {
-        "en": "Launched in 2545 at 0.10c by a Solar System laser array, the 24-biome generation ship crosses 11.9 ly to Tau Ceti’s moon Aurora — and after ecological collapse, attempts the desperate return voyage to Earth.",
-        "cs": "Generační loď s 24 biomy vypuštěná r. 2545 rychlostí 0,10c laserovým paprskem letí 11,9 ly k měsíci Aurora u Tau Ceti — a po ekologické krizi se pokouší o návrat zpět k Zemi."
-      },
-      "physicsNote": {
-        "en": "Low-acceleration laser-sail / nuclear cruise profile (0.01g accel to 0.10c cap): ~129 Earth yr each way (~128.4 yr ship time — minimal dilation at 10%c, highlighting multi-generational ecology).",
-        "cs": "Nízkozrychlující laserová plachta / jaderný přelet (0,01g na 0,10c): ~129 let Země jedním směrem (~128,4 r. pro posádku — minimální dilatace při 10%c, generační rozměr mise)."
-      },
-      "recommendedClockStart": 2545,
-      "focusSystemId": "hip-8102",
-      "ships": [
-        {
-          "id": "aurora-ship",
-          "name": "Ship · Freya & Devi (0.10c Generation Ship)",
-          "color": "#00ff88",
-          "departureYear": 2545,
-          "crewStartAge": 20,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 0.01,
-            "cruiseC": 0.1,
-            "driveType": "non-reactive",
-            "exhaustVelC": 0.08
-          },
-          "waypoints": [
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-8102",
-              "stayYears": 5
-            },
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "aur-ev-1",
-          "title": "Generation Ship Launch from Saturn (Sol)",
-          "systemId": "sol",
-          "year": 2545
-        },
-        {
-          "id": "aur-ev-2",
-          "title": "Landing & Prion Discovery on Aurora (Tau Ceti)",
-          "systemId": "hip-8102",
-          "year": 2675
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "aurora-ship",
-          "name": "Ship · Freya & Devi (0.10c Generation Ship)",
-          "routeNames": [
-            "Sol",
-            "Tau Ceti",
-            "Sol"
-          ],
-          "totalDistanceLy": 23.81,
-          "totalCoordTimeYears": 262.52,
-          "totalProperTimeYears": 261.36,
-          "peakSpeedC": 0.1,
-          "peakGamma": 1.01
-        }
-      ]
-    },
-    {
-      "id": "lem-return-from-the-stars",
-      "category": "classic-sf",
-      "universe": "Stanisław Lem",
-      "author": "Stanisław Lem",
-      "year": 1961,
-      "books": "Return from the Stars (Powrót z gwiazd)",
-      "sourceUrl": "https://en.wikipedia.org/wiki/Return_from_the_Stars",
-      "sourceLabel": "Wikipedia — Return from the Stars",
-      "title": {
-        "en": "Return from the Stars — Hal Bregg’s Prometheus to Fomalhaut",
-        "cs": "Návrat z hvězd — Hal Bregg a loď Prométheus k Fomalhautu"
-      },
-      "subtitle": {
-        "en": "Stanisław Lem’s iconic twin-paradox classic: astronaut Hal Bregg flies aboard Prometheus to Fomalhaut (25.13 ly) and returns to a radically transformed future Earth.",
-        "cs": "Klasika Stanisława Lema o paradoxu dvojčat: kosmonaut Hal Bregg letí lodí Prométheus k Fomalhautu (25,13 ly) a vrací se na radikálně proměněnou Zemi budoucnosti."
-      },
-      "physicsNote": {
-        "en": "At real distance 25.13 ly each way with 1.5g / 0.992c cruise, round-trip takes ~52.7 yr Earth vs. ~8.7 yr crew proper time (in Lem’s 1961 novel, an extended multi-target survey yields 127 yr Earth vs. 10 yr crew).",
-        "cs": "Při reálné vzdálenosti 25,13 ly tam a zpět (1,5g / 0,992c) trvá let ~52,7 r. Země vs. ~8,7 r. pro posádku (v Lemově románu z r. 1961 delší průzkum vytváří 127 r. Země vs. 10 r. pro posádku)."
-      },
-      "recommendedClockStart": 2055,
-      "focusSystemId": "hip-113368",
-      "ships": [
-        {
-          "id": "lem-prometheus",
-          "name": "Prometheus · Hal Bregg (1.5g / 0.992c)",
-          "color": "#00f0ff",
-          "departureYear": 2055,
-          "crewStartAge": 30,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 1.5,
-            "cruiseC": 0.992,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            },
-            {
-              "systemId": "hip-113368",
-              "stayYears": 1
-            },
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "lem-ev-1",
-          "title": "Prometheus Departure from Earth (Sol)",
-          "systemId": "sol",
-          "year": 2055
-        },
-        {
-          "id": "lem-ev-2",
-          "title": "Fomalhaut Arrival Telemetry (Fomalhaut)",
-          "systemId": "hip-113368",
-          "year": 2081.4
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "lem-prometheus",
-          "name": "Prometheus · Hal Bregg (1.5g / 0.992c)",
-          "routeNames": [
-            "Sol",
-            "Fomalhaut",
-            "Sol"
-          ],
-          "totalDistanceLy": 50.25,
-          "totalCoordTimeYears": 53.93,
-          "totalProperTimeYears": 12.25,
-          "peakSpeedC": 0.992,
-          "peakGamma": 7.92
-        }
-      ]
-    },
-    {
-      "id": "three-body-trisolaris",
-      "category": "modern-sf",
-      "universe": "Three-Body",
-      "author": "Liu Cixin",
-      "year": 2008,
-      "books": "The Three-Body Problem · The Dark Forest",
-      "sourceUrl": "https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)",
-      "sourceLabel": "Wikipedia — The Three-Body Problem",
-      "title": {
-        "en": "Three-Body — Trisolaran Fleet & 1979/1983 Light-Cone Handshake",
-        "cs": "Problém tří těles — Flotila Trisolaris a světelný kužel 1979/1983"
-      },
-      "subtitle": {
-        "en": "Inspect the exact 8.64-year round-trip light-cone exchange between Ye Wenjie’s Red Coast Base and Alpha Centauri, followed by the near-light Sophon probe and the 430-year Trisolaran First Fleet (0.01c).",
-        "cs": "Prozkoumejte přesnou 8,64letou světelnou výměnu mezi základnou Rudé pobřeží a Alfou Centauri, následovanou sondou Sofon (0,995c) a 430letým letem První flotily Trisolaris (0,01c)."
-      },
-      "physicsNote": {
-        "en": "Open the Minkowski 1+1D tab to watch Ye Wenjie’s 1979 radio signal reach Alpha Centauri in 1983.3 and the pacifist warning (“Do Not Answer!”) reach Earth in 1987.7.",
-        "cs": "Otevřete záložku Minkowski 1+1D a sledujte signál z r. 1979 dorážející k Alfě Centauri v r. 1983,3 a varování („Neodpovídejte!“) zpět na Zemi v r. 1987,7."
-      },
-      "recommendedClockStart": 1979,
-      "focusSystemId": "hip-71683",
-      "ships": [
-        {
-          "id": "tbp-sophon",
-          "name": "Sophon Probe (0.995c Relativistic)",
-          "color": "#00f0ff",
-          "departureYear": 1988,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "constant",
-            "accelG": 0,
-            "cruiseC": 0.995,
-            "driveType": "non-reactive",
-            "exhaustVelC": 1
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-71683",
-              "stayYears": 0
-            },
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            }
-          ]
-        },
-        {
-          "id": "tbp-fleet",
-          "name": "Trisolaran First Fleet (0.01c Antimatter)",
-          "color": "#fb7185",
-          "departureYear": 1988,
-          "crewStartAge": 0,
-          "driveConfig": {
-            "mode": "accel-cruise",
-            "accelG": 0.02,
-            "cruiseC": 0.01,
-            "driveType": "reaction",
-            "exhaustVelC": 0.08
-          },
-          "waypoints": [
-            {
-              "systemId": "hip-71683",
-              "stayYears": 0
-            },
-            {
-              "systemId": "sol",
-              "stayYears": 0
-            }
-          ]
-        }
-      ],
-      "storyEvents": [
-        {
-          "id": "tbp-ev-1",
-          "title": "Ye Wenjie Red Coast Broadcast (Sol)",
-          "systemId": "sol",
-          "year": 1979
-        },
-        {
-          "id": "tbp-ev-2",
-          "title": "Listener 1379 Warning: “Do Not Answer!” (Alpha Cen)",
-          "systemId": "hip-71683",
-          "year": 1983.4
-        },
-        {
-          "id": "tbp-ev-3",
-          "title": "Earth Reply Lock-On Broadcast (Sol)",
-          "systemId": "sol",
-          "year": 1987.8
-        }
-      ],
-      "computedSummary": [
-        {
-          "id": "tbp-sophon",
-          "name": "Sophon Probe (0.995c Relativistic)",
-          "routeNames": [
-            "Alpha Centauri",
-            "Sol"
-          ],
-          "totalDistanceLy": 4.32,
-          "totalCoordTimeYears": 4.34,
-          "totalProperTimeYears": 0.43,
-          "peakSpeedC": 0.995,
-          "peakGamma": 10.01
-        },
-        {
-          "id": "tbp-fleet",
-          "name": "Trisolaran First Fleet (0.01c Antimatter)",
-          "routeNames": [
-            "Alpha Centauri",
-            "Sol"
-          ],
-          "totalDistanceLy": 4.32,
-          "totalCoordTimeYears": 432.45,
-          "totalProperTimeYears": 432.43,
-          "peakSpeedC": 0.01,
-          "peakGamma": 1
-        }
-      ]
-    },
-    {
       "id": "forward-rocheworld",
       "category": "classic-sf",
       "universe": "Classic Hard SF",
+      "universeCs": "Klasická hard SF",
       "author": "Robert L. Forward",
       "year": 1984,
-      "books": "Rocheworld (The Flight of the Dragonfly)",
+      "books": {
+        "en": "Rocheworld (The Flight of the Dragonfly)",
+        "cs": "Rocheworld (Let Vážky)"
+      },
       "sourceUrl": "https://en.wikipedia.org/wiki/Rocheworld",
-      "sourceLabel": "Wikipedia — Rocheworld",
+      "sourceLabel": {
+        "en": "Wikipedia — Rocheworld (Robert L. Forward)",
+        "cs": "Wikipedie — Rocheworld (Robert L. Forward)"
+      },
       "title": {
         "en": "Rocheworld — Laser-Pushed Lightsail Prometheus to Barnard’s Star",
         "cs": "Rocheworld — Laserová plachetnice Prométheus k Barnardově hvězdě"
@@ -1193,6 +1884,7 @@
         {
           "id": "roche-prometheus",
           "name": "Prometheus Lightsail · George & Jill (0.20c)",
+          "nameCs": "Plachetnice Prométheus · George a Jill (0,20c)",
           "color": "#38bdf8",
           "departureYear": 2026,
           "crewStartAge": 32,
@@ -1218,13 +1910,19 @@
       "storyEvents": [
         {
           "id": "rw-ev-1",
-          "title": "Solar Laser Array Ignition (Sol)",
+          "title": {
+            "en": "Solar Laser Array Ignition (Sol)",
+            "cs": "Zážeh slunečního laserového pole (Sol)"
+          },
           "systemId": "sol",
           "year": 2026
         },
         {
           "id": "rw-ev-2",
-          "title": "Deceleration Sail Separation & Arrival (Barnard’s Star)",
+          "title": {
+            "en": "Deceleration Sail Separation & Arrival (Barnard’s Star)",
+            "cs": "Oddělení brzdné plachty a přílet (Barnardova hvězda)"
+          },
           "systemId": "hip-87937",
           "year": 2062
         }
@@ -1233,6 +1931,7 @@
         {
           "id": "roche-prometheus",
           "name": "Prometheus Lightsail · George & Jill (0.20c)",
+          "nameCs": "Plachetnice Prométheus · George a Jill (0,20c)",
           "routeNames": [
             "Sol",
             "Barnard's Star"
@@ -1251,9 +1950,15 @@
       "universe": "Arthur C. Clarke",
       "author": "Arthur C. Clarke",
       "year": 1986,
-      "books": "The Songs of Distant Earth",
+      "books": {
+        "en": "The Songs of Distant Earth",
+        "cs": "Zpěv vzdálené Země (The Songs of Distant Earth)"
+      },
       "sourceUrl": "https://en.wikipedia.org/wiki/The_Songs_of_Distant_Earth",
-      "sourceLabel": "Wikipedia — The Songs of Distant Earth",
+      "sourceLabel": {
+        "en": "Wikipedia — The Songs of Distant Earth",
+        "cs": "Wikipedie — Zpěv vzdálené Země (A. C. Clarke)"
+      },
       "title": {
         "en": "The Songs of Distant Earth — Seedship Magellan (0.20c Ark)",
         "cs": "Zpěv vzdálené Země — Archa Magellan (0,20c)"
@@ -1272,6 +1977,7 @@
         {
           "id": "sde-magellan",
           "name": "Magellan · Loren Lorenson (0.20c Quantum Drive)",
+          "nameCs": "Magellan · Loren Lorenson (0,20c kvantový pohon)",
           "color": "#00f0ff",
           "departureYear": 3600,
           "crewStartAge": 28,
@@ -1305,13 +2011,19 @@
       "storyEvents": [
         {
           "id": "sde-ev-1",
-          "title": "Earth Evacuation — Magellan Launch (Sol)",
+          "title": {
+            "en": "Earth Evacuation — Magellan Launch (Sol)",
+            "cs": "Evakuace Země — start archy Magellan (Sol)"
+          },
           "systemId": "sol",
           "year": 3600
         },
         {
           "id": "sde-ev-2",
-          "title": "Solar Nova Flash Observed Ahead (Sol)",
+          "title": {
+            "en": "Solar Nova Flash Observed Ahead (Sol)",
+            "cs": "Záblesk novy Slunce pozorovaný na trase (Sol)"
+          },
           "systemId": "sol",
           "year": 3620
         }
@@ -1320,6 +2032,7 @@
         {
           "id": "sde-magellan",
           "name": "Magellan · Loren Lorenson (0.20c Quantum Drive)",
+          "nameCs": "Magellan · Loren Lorenson (0,20c kvantový pohon)",
           "routeNames": [
             "Sol",
             "Alpha Centauri",
@@ -1331,6 +2044,815 @@
           "totalProperTimeYears": 207.94,
           "peakSpeedC": 0.2,
           "peakGamma": 1.02
+        }
+      ]
+    },
+    {
+      "id": "project-hail-mary",
+      "category": "modern-sf",
+      "universe": "Project Hail Mary",
+      "universeCs": "Spasitel",
+      "author": "Andy Weir",
+      "year": 2021,
+      "books": {
+        "en": "Project Hail Mary",
+        "cs": "Spasitel (Project Hail Mary)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Project_Hail_Mary",
+      "sourceLabel": {
+        "en": "Wikipedia — Project Hail Mary",
+        "cs": "Wikipedie — Spasitel (Andy Weir)"
+      },
+      "title": {
+        "en": "Project Hail Mary — Ryland Grace & Rocky (Blip-A)",
+        "cs": "Spasitel (Project Hail Mary) — Ryland Grace a Rocky"
+      },
+      "subtitle": {
+        "en": "Synchronized multi-ship rendezvous at Tau Ceti: Hail Mary’s 1.5g Astrophage torch from Sol, Rocky’s Blip-A from 40 Eridani (Erid), the Beetle cure probes back to Earth, and Grace’s rescue flight to Erid.",
+        "cs": "Synchronizované setkání u Tau Ceti: loď Spasitel (1,5g pohon na astrofágy) od Slunce, Rockyho Blip-A z 40 Eridani, sondy Brouci zpět k Zemi a záchranný let k Eridu."
+      },
+      "physicsNote": {
+        "en": "Exact Astrophage photon-rocket physics (ve = 1.0c): Hail Mary at 1.5g flip covers Sol → Tau Ceti (11.90 ly) in 13.1 yr Earth / 3.86 yr crew proper time — matching the novel’s ~13-yr Earth / ~4-yr ship clocks.",
+        "cs": "Přesná fyzika fotonové rakety (ve = 1,0c): Spasitel při 1,5g otočce urazí Sol → Tau Ceti (11,90 ly) za 13,1 r. Země / 3,86 r. palubního času — přesně jako v románu (~13 r. Země / ~4 r. loď)."
+      },
+      "recommendedClockStart": 2025,
+      "focusSystemId": "hip-8102",
+      "ships": [
+        {
+          "id": "phm-hail-mary",
+          "name": "Hail Mary · Ryland Grace (1.5g Astrophage)",
+          "nameCs": "Spasitel (Hail Mary) · Ryland Grace (1,5g)",
+          "color": "#00f0ff",
+          "departureYear": 2025,
+          "crewStartAge": 36,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 0.4
+            },
+            {
+              "systemId": "hip-19849",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "phm-blip-a",
+          "name": "Blip-A · Rocky (2.1g Eridian Torch)",
+          "nameCs": "Blip-A · Rocky (2,1g eridianský pohon)",
+          "color": "#f59e0b",
+          "departureYear": 1985,
+          "crewStartAge": 240,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 2.1,
+            "cruiseC": 0.99,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-19849",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 42.6
+            },
+            {
+              "systemId": "hip-19849",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "phm-beetles",
+          "name": "Beetles · Taumoeba Data Probes (1.5g)",
+          "nameCs": "Brouci · Datové sondy s Taumoebou (1,5g)",
+          "color": "#00ff88",
+          "departureYear": 2038.5,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "flip",
+            "accelG": 1.5,
+            "cruiseC": 0.99,
+            "driveType": "reaction",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-8102",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "phm-ev-1",
+          "title": {
+            "en": "Hail Mary Launch from Solar System (Sol)",
+            "cs": "Start lodi Spasitel ze Sluneční soustavy (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2025
+        },
+        {
+          "id": "phm-ev-2",
+          "title": {
+            "en": "First Contact: Grace Meets Rocky (Tau Ceti)",
+            "cs": "První kontakt: Grace se setkává s Rockym (Tau Ceti)"
+          },
+          "systemId": "hip-8102",
+          "year": 2038.2
+        },
+        {
+          "id": "phm-ev-3",
+          "title": {
+            "en": "Beetles Arrive with Taumoeba Cure (Sol)",
+            "cs": "Přílet sond Brouci s lékem Taumoeba na Zemi (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2051.6
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "phm-hail-mary",
+          "name": "Hail Mary · Ryland Grace (1.5g Astrophage)",
+          "nameCs": "Spasitel (Hail Mary) · Ryland Grace (1,5g)",
+          "routeNames": [
+            "Sol",
+            "Tau Ceti",
+            "40 Eridani"
+          ],
+          "totalDistanceLy": 21.92,
+          "totalCoordTimeYears": 24.77,
+          "totalProperTimeYears": 7.99,
+          "peakSpeedC": 0.9952,
+          "peakGamma": 10.22
+        },
+        {
+          "id": "phm-blip-a",
+          "name": "Blip-A · Rocky (2.1g Eridian Torch)",
+          "nameCs": "Blip-A · Rocky (2,1g eridianský pohon)",
+          "routeNames": [
+            "40 Eridani",
+            "Tau Ceti",
+            "40 Eridani"
+          ],
+          "totalDistanceLy": 20.04,
+          "totalCoordTimeYears": 64.4,
+          "totalProperTimeYears": 48.44,
+          "peakSpeedC": 0.9964,
+          "peakGamma": 11.86
+        },
+        {
+          "id": "phm-beetles",
+          "name": "Beetles · Taumoeba Data Probes (1.5g)",
+          "nameCs": "Brouci · Datové sondy s Taumoebou (1,5g)",
+          "routeNames": [
+            "Tau Ceti",
+            "Sol"
+          ],
+          "totalDistanceLy": 11.9,
+          "totalCoordTimeYears": 13.13,
+          "totalProperTimeYears": 3.89,
+          "peakSpeedC": 0.9952,
+          "peakGamma": 10.22
+        }
+      ]
+    },
+    {
+      "id": "cameron-avatar-venture-star",
+      "category": "modern-sf",
+      "universe": "Avatar",
+      "author": "James Cameron & Charles Pellegrino",
+      "year": 2009,
+      "books": {
+        "en": "Avatar · Activist Survival Guide (ISV Venture Star)",
+        "cs": "Avatar — Hvězdolet ISV Venture Star (Alfa Centauri / Pandora)"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Avatar_(2009_film)",
+      "sourceLabel": {
+        "en": "Wikipedia — Avatar & ISV Venture Star Hard-SF Specs",
+        "cs": "Wikipedie — Avatar a fyzika lodi ISV Venture Star"
+      },
+      "title": {
+        "en": "Avatar — ISV Venture Star Shuttle (Sol ↔ Alpha Centauri)",
+        "cs": "Avatar — Hvězdolet ISV Venture Star (Sol ↔ Alfa Centauri)"
+      },
+      "subtitle": {
+        "en": "Designed with physicist Charles Pellegrino: RDA’s hybrid laser-sail / antimatter starship ISV Venture Star accelerates at 1.5g to 0.70c, carrying Jake Sully from Earth (2148) to Pandora around Alpha Centauri A (2154).",
+        "cs": "Navrženo s fyzikem Charlesem Pellegrinem: hybridní laserovo-antihmotový hvězdolet ISV Venture Star zrychluje 1,5g na 0,70c a dopravuje Jakea Sullyho ze Země (2148) na Pandoru u Alfy Centauri A (2154)."
+      },
+      "physicsNote": {
+        "en": "Exact canon kinematics: 1.5g accel → 0.70c cruise → 1.5g antimatter brake over 4.32 ly yields 6.72 yr Earth time / 5.01 yr crew time (matching the film’s 6.75 yr Earth / ~5.7 yr cryo transit from 2148 to 2154!).",
+        "cs": "Přesná kanonická kinematika: 1,5g zrychlení → 0,70c přelet → 1,5g brzdění antihmotou na 4,32 ly dává 6,72 r. Země / 5,01 r. palubního času (shoda s 6,75 r. letem 2148 → 2154 ve filmu!)."
+      },
+      "recommendedClockStart": 2148,
+      "focusSystemId": "hip-71683",
+      "ships": [
+        {
+          "id": "ava-venture-star",
+          "name": "ISV Venture Star · Jake Sully (1.5g / 0.70c)",
+          "nameCs": "ISV Venture Star · Jake Sully (1,5g / 0,70c)",
+          "color": "#00f0ff",
+          "departureYear": 2148,
+          "crewStartAge": 22,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.7,
+            "driveType": "reaction",
+            "exhaustVelC": 0.95
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 1
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "ava-manifest",
+          "name": "ISV Manifest Destiny · RDA Return (1.5g / 0.70c)",
+          "nameCs": "ISV Manifest Destiny · Zpáteční linka RDA (1,5g / 0,70c)",
+          "color": "#f59e0b",
+          "departureYear": 2149,
+          "crewStartAge": 34,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.7,
+            "driveType": "reaction",
+            "exhaustVelC": 0.95
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 1
+            },
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "ava-ev-1",
+          "title": {
+            "en": "ISV Venture Star Laser-Pushed Departure (Sol)",
+            "cs": "Laserem urychlený start ISV Venture Star ze Země (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2148
+        },
+        {
+          "id": "ava-ev-2",
+          "title": {
+            "en": "Jake Sully Arrives at Pandora (Alpha Centauri A)",
+            "cs": "Jake Sully přilétá na Pandoru (Alfa Centauri A)"
+          },
+          "systemId": "hip-71683",
+          "year": 2154.7
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "ava-venture-star",
+          "name": "ISV Venture Star · Jake Sully (1.5g / 0.70c)",
+          "nameCs": "ISV Venture Star · Jake Sully (1,5g / 0,70c)",
+          "routeNames": [
+            "Sol",
+            "Alpha Centauri",
+            "Sol"
+          ],
+          "totalDistanceLy": 8.64,
+          "totalCoordTimeYears": 14.4,
+          "totalProperTimeYears": 11,
+          "peakSpeedC": 0.7,
+          "peakGamma": 1.4
+        },
+        {
+          "id": "ava-manifest",
+          "name": "ISV Manifest Destiny · RDA Return (1.5g / 0.70c)",
+          "nameCs": "ISV Manifest Destiny · Zpáteční linka RDA (1,5g / 0,70c)",
+          "routeNames": [
+            "Alpha Centauri",
+            "Sol",
+            "Alpha Centauri"
+          ],
+          "totalDistanceLy": 8.64,
+          "totalCoordTimeYears": 14.4,
+          "totalProperTimeYears": 11,
+          "peakSpeedC": 0.7,
+          "peakGamma": 1.4
+        }
+      ]
+    },
+    {
+      "id": "bobiverse-expansion",
+      "category": "modern-sf",
+      "universe": "Bobiverse",
+      "universeCs": "Bobiverzum",
+      "author": "Dennis E. Taylor",
+      "year": 2016,
+      "books": {
+        "en": "We Are Legion (We Are Bob) · For We Are Many",
+        "cs": "My jsme legie (My jsme Bob) · Protože nás je mnoho"
+      },
+      "sourceUrl": "https://bobiverse.fandom.com/wiki/Bob",
+      "sourceLabel": {
+        "en": "Bobiverse Wiki — Bob & Star Systems",
+        "cs": "Bobiverse Wiki — Bob a hvězdné soustavy"
+      },
+      "title": {
+        "en": "Bobiverse — First Wave Expansion (Bob-1, Milo, Mario & Bill)",
+        "cs": "Bobiverzum — První vlna expanze (Bob-1, Milo, Mario a Bill)"
+      },
+      "subtitle": {
+        "en": "Bob-1 escapes Earth aboard HEAVEN-1 to Epsilon Eridani, replicates, and fans out across Delta Eridani (Deltans), 40 Eridani (Vulcan/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi, and Delta Pavonis (Eden).",
+        "cs": "Bob-1 uniká ze Země na lodi HEAVEN-1 k Epsilon Eridani, replikuje se a vysílá klony k Delta Eridani (Delťané), 40 Eridani (Vulkán/Romulus), 82 G. Eridani (Poseidon), Epsilon Indi a Delta Pavonis."
+      },
+      "physicsNote": {
+        "en": "Reactionless SURGE drives modeled at 1.5g accel with 0.90c cruise cap (non-reactive). Watch all 4 Von Neumann replicants fan out simultaneously across the Eridanus/Indus sector.",
+        "cs": "Nereaktivní pohony SURGE modelované při zrychlení 1,5g a stropu 0,90c. Sledujte současnou expanzi 4 Von Neumannových sond sektorem Eridanu a Indiána."
+      },
+      "recommendedClockStart": 2133,
+      "focusSystemId": "hip-16537",
+      "ships": [
+        {
+          "id": "bob-1",
+          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
+          "nameCs": "Bob-1 · HEAVEN-1 (1,5g SURGE)",
+          "color": "#00f0ff",
+          "departureYear": 2133.5,
+          "crewStartAge": 31,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.9,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-16537",
+              "stayYears": 1.5
+            },
+            {
+              "systemId": "hip-17378",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob-milo",
+          "name": "Milo · Explorer (1.5g SURGE)",
+          "nameCs": "Milo · Průzkumník (1,5g SURGE)",
+          "color": "#00ff88",
+          "departureYear": 2147,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.9,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-19849",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob-mario",
+          "name": "Mario · Explorer (1.5g SURGE)",
+          "nameCs": "Mario · Průzkumník (1,5g SURGE)",
+          "color": "#f59e0b",
+          "departureYear": 2147,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.9,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-15510",
+              "stayYears": 1
+            },
+            {
+              "systemId": "hip-2021",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "bob-bill",
+          "name": "Bill · Foundry & Evacuation (1.5g)",
+          "nameCs": "Bill · Základna a evakuace (1,5g)",
+          "color": "#c084fc",
+          "departureYear": 2147,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 1.5,
+            "cruiseC": 0.9,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-16537",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-108870",
+              "stayYears": 2
+            },
+            {
+              "systemId": "hip-99240",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "bob-ev-1",
+          "title": {
+            "en": "HEAVEN-1 Emergency Launch from Earth (Sol)",
+            "cs": "Nouzový start HEAVEN-1 ze Země (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2133.5
+        },
+        {
+          "id": "bob-ev-2",
+          "title": {
+            "en": "Battle of Epsilon Eridani vs. Medeiros",
+            "cs": "Bitva u Epsilon Eridani proti Medeirosovi"
+          },
+          "systemId": "hip-16537",
+          "year": 2146
+        },
+        {
+          "id": "bob-ev-3",
+          "title": {
+            "en": "Milo Explores Vulcan & Romulus (40 Eridani)",
+            "cs": "Milo zkoumá Vulkán a Romulus (40 Eridani)"
+          },
+          "systemId": "hip-19849",
+          "year": 2154.5
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "bob-1",
+          "name": "Bob-1 · HEAVEN-1 (1.5g SURGE)",
+          "nameCs": "Bob-1 · HEAVEN-1 (1,5g SURGE)",
+          "routeNames": [
+            "Sol",
+            "Epsilon Eridani",
+            "Rana"
+          ],
+          "totalDistanceLy": 29.5,
+          "totalCoordTimeYears": 35.9,
+          "totalProperTimeYears": 17.97,
+          "peakSpeedC": 0.9,
+          "peakGamma": 2.29
+        },
+        {
+          "id": "bob-milo",
+          "name": "Milo · Explorer (1.5g SURGE)",
+          "nameCs": "Milo · Průzkumník (1,5g SURGE)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "40 Eridani"
+          ],
+          "totalDistanceLy": 6.25,
+          "totalCoordTimeYears": 7.76,
+          "totalProperTimeYears": 4.12,
+          "peakSpeedC": 0.9,
+          "peakGamma": 2.29
+        },
+        {
+          "id": "bob-mario",
+          "name": "Mario · Explorer (1.5g SURGE)",
+          "nameCs": "Mario · Průzkumník (1,5g SURGE)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "82 G. Eri",
+            "Beta Hydri"
+          ],
+          "totalDistanceLy": 27.59,
+          "totalCoordTimeYears": 33.27,
+          "totalProperTimeYears": 16.55,
+          "peakSpeedC": 0.9,
+          "peakGamma": 2.29
+        },
+        {
+          "id": "bob-bill",
+          "name": "Bill · Foundry & Evacuation (1.5g)",
+          "nameCs": "Bill · Základna a evakuace (1,5g)",
+          "routeNames": [
+            "Epsilon Eridani",
+            "Epsilon Indi",
+            "Delta Pavonis"
+          ],
+          "totalDistanceLy": 23.27,
+          "totalCoordTimeYears": 29.48,
+          "totalProperTimeYears": 15.46,
+          "peakSpeedC": 0.9,
+          "peakGamma": 2.29
+        }
+      ]
+    },
+    {
+      "id": "robinson-aurora",
+      "category": "modern-sf",
+      "universe": "Kim Stanley Robinson",
+      "author": "Kim Stanley Robinson",
+      "year": 2015,
+      "books": {
+        "en": "Aurora",
+        "cs": "Aurora"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/Aurora_(novel)",
+      "sourceLabel": {
+        "en": "Wikipedia — Aurora (novel)",
+        "cs": "Wikipedie — Aurora (K. S. Robinson)"
+      },
+      "title": {
+        "en": "Aurora — Generation Ship “Ship” (Round-Trip to Tau Ceti)",
+        "cs": "Aurora — Generační loď „Ship“ (Tam a zpět k Tau Ceti)"
+      },
+      "subtitle": {
+        "en": "Launched in 2545 at 0.10c by a Solar System laser array, the 24-biome generation ship crosses 11.9 ly to Tau Ceti’s moon Aurora — and after ecological collapse, attempts the desperate return voyage to Earth.",
+        "cs": "Generační loď s 24 biomy vypuštěná r. 2545 rychlostí 0,10c laserovým paprskem letí 11,9 ly k měsíci Aurora u Tau Ceti — a po ekologické krizi se pokouší o návrat zpět k Zemi."
+      },
+      "physicsNote": {
+        "en": "Low-acceleration laser-sail / nuclear cruise profile (0.01g accel to 0.10c cap): ~129 Earth yr each way (~128.4 yr ship time — minimal dilation at 10%c, highlighting multi-generational ecology).",
+        "cs": "Nízkozrychlující laserová plachta / jaderný přelet (0,01g na 0,10c): ~129 let Země jedním směrem (~128,4 r. pro posádku — minimální dilatace při 10%c, generační rozměr mise)."
+      },
+      "recommendedClockStart": 2545,
+      "focusSystemId": "hip-8102",
+      "ships": [
+        {
+          "id": "aurora-ship",
+          "name": "Ship · Freya & Devi (0.10c Generation Ship)",
+          "nameCs": "Loď „Ship“ · Freya a Devi (0,10c generační loď)",
+          "color": "#00ff88",
+          "departureYear": 2545,
+          "crewStartAge": 20,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.01,
+            "cruiseC": 0.1,
+            "driveType": "non-reactive",
+            "exhaustVelC": 0.08
+          },
+          "waypoints": [
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            },
+            {
+              "systemId": "hip-8102",
+              "stayYears": 5
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "aur-ev-1",
+          "title": {
+            "en": "Generation Ship Launch from Saturn (Sol)",
+            "cs": "Start generační lodi od Saturnu (Sol)"
+          },
+          "systemId": "sol",
+          "year": 2545
+        },
+        {
+          "id": "aur-ev-2",
+          "title": {
+            "en": "Landing & Prion Discovery on Aurora (Tau Ceti)",
+            "cs": "Přistání a objev prionů na měsíci Aurora (Tau Ceti)"
+          },
+          "systemId": "hip-8102",
+          "year": 2675
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "aurora-ship",
+          "name": "Ship · Freya & Devi (0.10c Generation Ship)",
+          "nameCs": "Loď „Ship“ · Freya a Devi (0,10c generační loď)",
+          "routeNames": [
+            "Sol",
+            "Tau Ceti",
+            "Sol"
+          ],
+          "totalDistanceLy": 23.81,
+          "totalCoordTimeYears": 262.52,
+          "totalProperTimeYears": 261.36,
+          "peakSpeedC": 0.1,
+          "peakGamma": 1.01
+        }
+      ]
+    },
+    {
+      "id": "three-body-trisolaris",
+      "category": "modern-sf",
+      "universe": "Three-Body",
+      "universeCs": "Problém tří těles",
+      "author": "Liu Cixin",
+      "authorCs": "Liou Cch’-sin",
+      "year": 2008,
+      "books": {
+        "en": "The Three-Body Problem · The Dark Forest",
+        "cs": "Problém tří těles · Temný les"
+      },
+      "sourceUrl": "https://en.wikipedia.org/wiki/The_Three-Body_Problem_(novel)",
+      "sourceLabel": {
+        "en": "Wikipedia — The Three-Body Problem",
+        "cs": "Wikipedie — Problém tří těles (Liou Cch’-sin)"
+      },
+      "title": {
+        "en": "Three-Body — Trisolaran Fleet & 1979/1983 Light-Cone Handshake",
+        "cs": "Problém tří těles — Flotila Trisolaris a světelný kužel 1979/1983"
+      },
+      "subtitle": {
+        "en": "Inspect the exact 8.64-year round-trip light-cone exchange between Ye Wenjie’s Red Coast Base and Alpha Centauri, followed by the near-light Sophon probe and the 430-year Trisolaran First Fleet (0.01c).",
+        "cs": "Prozkoumejte přesnou 8,64letou světelnou výměnu mezi základnou Rudé pobřeží a Alfou Centauri, následovanou sondou Sofon (0,995c) a 430letým letem První flotily Trisolaris (0,01c)."
+      },
+      "physicsNote": {
+        "en": "Open the Minkowski 1+1D tab to watch Ye Wenjie’s 1979 radio signal reach Alpha Centauri in 1983.3 and the pacifist warning (“Do Not Answer!”) reach Earth in 1987.7.",
+        "cs": "Otevřete záložku Minkowski 1+1D a sledujte signál z r. 1979 dorážející k Alfě Centauri v r. 1983,3 a varování („Neodpovídejte!“) zpět na Zemi v r. 1987,7."
+      },
+      "recommendedClockStart": 1979,
+      "focusSystemId": "hip-71683",
+      "ships": [
+        {
+          "id": "tbp-sophon",
+          "name": "Sophon Probe (0.995c Relativistic)",
+          "nameCs": "Sonda Sofon (0,995c relativistická)",
+          "color": "#00f0ff",
+          "departureYear": 1988,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "constant",
+            "accelG": 0,
+            "cruiseC": 0.995,
+            "driveType": "non-reactive",
+            "exhaustVelC": 1
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        },
+        {
+          "id": "tbp-fleet",
+          "name": "Trisolaran First Fleet (0.01c Antimatter)",
+          "nameCs": "První flotila Trisolaris (0,01c antihmota)",
+          "color": "#fb7185",
+          "departureYear": 1988,
+          "crewStartAge": 0,
+          "driveConfig": {
+            "mode": "accel-cruise",
+            "accelG": 0.02,
+            "cruiseC": 0.01,
+            "driveType": "reaction",
+            "exhaustVelC": 0.08
+          },
+          "waypoints": [
+            {
+              "systemId": "hip-71683",
+              "stayYears": 0
+            },
+            {
+              "systemId": "sol",
+              "stayYears": 0
+            }
+          ]
+        }
+      ],
+      "storyEvents": [
+        {
+          "id": "tbp-ev-1",
+          "title": {
+            "en": "Ye Wenjie Red Coast Broadcast (Sol)",
+            "cs": "Vysílání Jie Wen-ťie ze základny Rudé pobřeží (Sol)"
+          },
+          "systemId": "sol",
+          "year": 1979
+        },
+        {
+          "id": "tbp-ev-2",
+          "title": {
+            "en": "Listener 1379 Warning: “Do Not Answer!” (Alpha Cen)",
+            "cs": "Varování posluchače 1379: „Neodpovídejte!“ (Alfa Centauri)"
+          },
+          "systemId": "hip-71683",
+          "year": 1983.4
+        },
+        {
+          "id": "tbp-ev-3",
+          "title": {
+            "en": "Earth Reply Lock-On Broadcast (Sol)",
+            "cs": "Odpověď ze Země prozrazuje souřadnice (Sol)"
+          },
+          "systemId": "sol",
+          "year": 1987.8
+        }
+      ],
+      "computedSummary": [
+        {
+          "id": "tbp-sophon",
+          "name": "Sophon Probe (0.995c Relativistic)",
+          "nameCs": "Sonda Sofon (0,995c relativistická)",
+          "routeNames": [
+            "Alpha Centauri",
+            "Sol"
+          ],
+          "totalDistanceLy": 4.32,
+          "totalCoordTimeYears": 4.34,
+          "totalProperTimeYears": 0.43,
+          "peakSpeedC": 0.995,
+          "peakGamma": 10.01
+        },
+        {
+          "id": "tbp-fleet",
+          "name": "Trisolaran First Fleet (0.01c Antimatter)",
+          "nameCs": "První flotila Trisolaris (0,01c antihmota)",
+          "routeNames": [
+            "Alpha Centauri",
+            "Sol"
+          ],
+          "totalDistanceLy": 4.32,
+          "totalCoordTimeYears": 432.45,
+          "totalProperTimeYears": 432.43,
+          "peakSpeedC": 0.01,
+          "peakGamma": 1
         }
       ]
     }
