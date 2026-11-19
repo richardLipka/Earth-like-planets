@@ -6,6 +6,8 @@ import RouteComputerPanel from './components/hud/RouteComputerPanel.jsx';
 import TimelineAndMinkowskiStudio from './components/timeline/TimelineAndMinkowskiStudio.jsx';
 import DataSourcesModal from './components/hud/DataSourcesModal.jsx';
 import SciFiVoyagesModal from './components/hud/SciFiVoyagesModal.jsx';
+import RadioBubblePanel from './components/hud/RadioBubblePanel.jsx';
+import RelativisticBridgeView from './components/hud/RelativisticBridgeView.jsx';
 import Footer from './components/hud/Footer.jsx';
 import { planMultiStopVoyage } from './engine/voyagePlanner.js';
 import { computeFlightProfile } from './engine/relativity.js';
@@ -29,6 +31,8 @@ import {
   ChevronDown,
   BookMarked,
   MoveUpRight,
+  Radio,
+  Eye,
   X,
 } from 'lucide-react';
 
@@ -117,6 +121,10 @@ export default function App() {
   const [colorMode, setColorMode] = useState('spectral'); // 'spectral' | 'exoplanet'
   const [velocityVectorMode, setVelocityVectorMode] = useState('off'); // 'off' | 'full3d' | 'all'
   const [velocityHorizonKyr, setVelocityHorizonKyr] = useState(20); // 10 | 20 | 50 kyr projection
+  const [radioBubbleEnabled, setRadioBubbleEnabled] = useState(false);
+  const [radioSelectedLayerId, setRadioSelectedLayerId] = useState('layer-50');
+  const [radioShowMetiBeams, setRadioShowMetiBeams] = useState(true);
+  const [isBridgeViewOpen, setIsBridgeViewOpen] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const filtersRef = useRef(null);
 
@@ -220,6 +228,15 @@ export default function App() {
   const activeShipWithVoyage = useMemo(
     () => shipsWithVoyages.find((s) => s.id === activeShipId) || shipsWithVoyages[0],
     [shipsWithVoyages, activeShipId]
+  );
+
+  const radioBubbleConfig = useMemo(
+    () => ({
+      enabled: radioBubbleEnabled,
+      selectedLayerId: radioSelectedLayerId,
+      showMetiBeams: radioShowMetiBeams,
+    }),
+    [radioBubbleEnabled, radioSelectedLayerId, radioShowMetiBeams]
   );
 
   const catalogDefaultRadius = catalog?.meta?.maxRadiusLy || 105;
@@ -1052,6 +1069,7 @@ export default function App() {
         {isLeftDockOpen && (
           <RouteComputerPanel
             ships={ships}
+            shipsWithVoyages={shipsWithVoyages}
             activeShipId={activeShipId}
             onSelectShip={setActiveShipId}
             onAddShip={handleAddShip}
@@ -1062,11 +1080,14 @@ export default function App() {
             selectedSystem={selectedSystem}
             systemsById={systemsById}
             epochOffsetYears={epochOffsetYears}
+            masterClockYear={masterClockYear}
             lightConeConfig={lightConeConfig}
             onUpdateLightConeConfig={setLightConeConfig}
             onSelectSystem={(id) => handleSelectSystem(id, true)}
             activeVoyagePreset={activeVoyagePreset}
             onOpenVoyageLibrary={() => setIsVoyagesModalOpen(true)}
+            isBridgeViewOpen={isBridgeViewOpen}
+            onToggleBridgeView={() => setIsBridgeViewOpen((v) => !v)}
             onClose={() => setIsLeftDockOpen(false)}
           />
         )}
@@ -1094,11 +1115,35 @@ export default function App() {
               velocityVectorMode={velocityVectorMode}
               velocityHorizonKyr={velocityHorizonKyr}
               maxRadiusLy={catalogMaxSliderRadius}
-              velocityVectorMode={velocityVectorMode}
-              velocityHorizonKyr={velocityHorizonKyr}
-              maxRadiusLy={catalogMaxSliderRadius}
+              radioBubbleConfig={radioBubbleConfig}
+              systemsById={systemsById}
+              lang={lang}
             />
           )}
+
+          {/* Optional Floating Earth Radio & METI Shell Explorer */}
+          <RadioBubblePanel
+            isOpen={radioBubbleEnabled}
+            onClose={() => setRadioBubbleEnabled(false)}
+            selectedLayerId={radioSelectedLayerId}
+            onSelectLayerId={setRadioSelectedLayerId}
+            showMetiBeams={radioShowMetiBeams}
+            onToggleMetiBeams={setRadioShowMetiBeams}
+            allSystems={catalog?.systems || []}
+            systemsById={systemsById}
+            onSelectSystem={handleSelectSystem}
+          />
+
+          {/* Optional Floating Relativistic Cockpit Viewport ("Bridge View") */}
+          <RelativisticBridgeView
+            isOpen={isBridgeViewOpen}
+            onClose={() => setIsBridgeViewOpen(false)}
+            allSystems={catalog?.systems || []}
+            activeShip={activeShipWithVoyage}
+            activeVoyage={activeShipWithVoyage?.voyage}
+            masterClockYear={masterClockYear}
+            epochOffsetYears={epochOffsetYears}
+          />
 
           {/* Floating Map Telemetry & 1-Click Workspace Mode Presets (shared flex row -> zero overlap!) */}
           <div className="map3d-top-overlay-row">
@@ -1235,6 +1280,26 @@ export default function App() {
                   </div>
                 </>
               )}
+
+              <button
+                type="button"
+                className={`map-pill-btn ${radioBubbleEnabled ? 'active-pill emerald-pill' : ''}`}
+                onClick={() => setRadioBubbleEnabled((v) => !v)}
+                title={t('radioBtnTooltip')}
+              >
+                <Radio size={13} />
+                <span>{t('btnRadioBubble')}</span>
+              </button>
+
+              <button
+                type="button"
+                className={`map-pill-btn ${isBridgeViewOpen ? 'active-pill' : ''}`}
+                onClick={() => setIsBridgeViewOpen((v) => !v)}
+                title={t('bridgeBtnTooltip')}
+              >
+                <Eye size={13} />
+                <span>{t('btnBridgeView')}</span>
+              </button>
             </div>
 
             <div className="map-hint-banner">{t('mapHint')}</div>

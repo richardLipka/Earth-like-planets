@@ -11,7 +11,19 @@ import {
   G_LY_PER_YR2,
 } from '../src/engine/relativity.js';
 import { planMultiStopVoyage, evaluateVoyageAtCoordYear } from '../src/engine/voyagePlanner.js';
-import { solveSignalToShip, computeShipTransmission } from '../src/engine/commLightCone.js';
+import {
+  solveSignalToShip,
+  computeShipTransmission,
+  solveShipToShipSignal,
+  computeShipRendezvous,
+} from '../src/engine/commLightCone.js';
+import {
+  aberrateCosTheta,
+  starDopplerFactor,
+  blackbodyTempToRgb,
+  computeCmbForwardGlow,
+} from '../src/engine/relativisticOptics.js';
+import { RADIO_SHELL_LAYERS, METI_BEAMS } from '../src/data/radioBroadcastLayers.js';
 import { systemPosAtEpoch, distanceBetweenSystems } from '../src/engine/stellarMotion.js';
 import { getSystemSourceLinks, getSkyCutoutSources } from '../src/utils/catalogLinks.js';
 import { translations } from '../src/i18n/translations.js';
@@ -467,6 +479,97 @@ describe('Catalogue Integrity, Multi-Star Matching & Link Generation', () => {
         expect(ev.title?.en).toBeTruthy();
         expect(ev.title?.cs).toBeTruthy();
       }
+    }
+  });
+
+  it('solves exact Moving Ship A -> Moving Ship B light-cone interception, 3D Doppler & Rendezvous', () => {
+    const sysMap = new Map([
+      ['a', { id: 'a', name: 'Star A', pos: [0, 0, 0], vel: [0, 0, 0] }],
+      ['b', { id: 'b', name: 'Star B', pos: [20, 0, 0], vel: [0, 0, 0] }],
+      ['c', { id: 'c', name: 'Star C', pos: [0, 10, 0], vel: [0, 0, 0] }],
+      ['d', { id: 'd', name: 'Star D', pos: [20, 10, 0], vel: [0, 0, 0] }],
+    ]);
+
+    // Two ships moving in parallel formation at identical 0.6c:
+    // Ship A: (0,0,0) -> (20,0,0); Ship B: (0,10,0) -> (20,10,0)
+    // Because v_A === v_B, exact combined Doppler f_B / f_A must equal 1.000000!
+    const shipA = planMultiStopVoyage({
+      waypoints: [{ systemId: 'a', stayYears: 0 }, { systemId: 'b', stayYears: 0 }],
+      systemsById: sysMap,
+      departureYear: 2200,
+      crewStartAge: 30,
+      driveConfig: { mode: 'constant', accelG: 1, cruiseC: 0.6 },
+    });
+    const shipB = planMultiStopVoyage({
+      waypoints: [{ systemId: 'c', stayYears: 0 }, { systemId: 'd', stayYears: 0 }],
+      systemsById: sysMap,
+      departureYear: 2200,
+      crewStartAge: 30,
+      driveConfig: { mode: 'constant', accelG: 1, cruiseC: 0.6 },
+    });
+
+    const sig = solveShipToShipSignal(shipA, shipB, 2205.0, 'Ship A', 'Ship B', true);
+    expect(sig).not.toBeNull();
+    // Exact light-cone invariant: |r_B(tHit) - r_A(tEmit)| === tHit - tEmit
+    const dx = sig.hitPos[0] - sig.senderPos[0];
+    const dy = sig.hitPos[1] - sig.senderPos[1];
+    const dz = sig.hitPos[2] - sig.senderPos[2];
+    expect(Math.hypot(dx, dy, dz)).toBeCloseTo(sig.lightTravelYears, 6);
+    // Co-moving formation must experience ZERO net Doppler shift (f_B / f_A = 1.0)!
+    expect(sig.dopplerFactor).toBeCloseTo(1.0, 5);
+    expect(sig.shiftType).toBe('none');
+    expect(sig.reply).not.toBeNull();
+    expect(sig.reply.tReplyCoordYear).toBeGreaterThan(sig.tHitCoordYear);
+
+    // Head-on approaching ships: Ship A goes A->B (+X at 0.6c), Ship Opp goes B->A (-X at 0.6c)
+    // Crossing happens at x=10, t = 2200 + 10/0.6 = 2216.667!
+    const shipOpp = planMultiStopVoyage({
+      waypoints: [{ systemId: 'b', stayYears: 0 }, { systemId: 'a', stayYears: 0 }],
+      systemsById: sysMap,
+      departureYear: 2200,
+      crewStartAge: 30,
+      driveConfig: { mode: 'constant', accelG: 1, cruiseC: 0.6 },
+    });
+    const headOn = solveShipToShipSignal(shipA, shipOpp, 2202.0, 'A', 'Opp', false);
+    // Combined relativistic head-on Doppler for two 0.6c ships:
+    // v_rel = (0.6 + 0.6)/(1 + 0.36) = 1.2/1.36 = 15/17 -> D = sqrt((1+15/17)/(1-15/17)) = sqrt(32/2) = 4.000!
+    expect(headOn.dopplerFactor).toBeCloseTo(4.0, 4);
+    expect(headOn.shiftType).toBe('blueshift');
+
+    const rdv = computeShipRendezvous(shipA, shipOpp);
+    expect(rdv.minDistLy).toBeLessThan(1e-3);
+    expect(rdv.tClosestCoordYear).toBeCloseTo(2200 + 10 / 0.6, 2);
+  });
+
+  it('computes exact relativistic aberration, blackbody Doppler shift, CMB bow glow, and valid METI targets', () => {
+    // 1. Abeam star (cos(theta) = 0, 90°) must aberrate forward to cos(theta') = beta!
+    const ab = aberrateCosTheta(0, 0.8);
+    expect(ab.cosThetaApparent).toBeCloseTo(0.8, 10);
+    expect((ab.thetaApparentRad * 180) / Math.PI).toBeCloseTo(36.87, 2);
+
+    // 2. Exact head-on & tail-on Doppler at beta = 0.6 (gamma = 1.25): D_bow = 2.0, D_aft = 0.5
+    expect(starDopplerFactor(1.0, 0.6)).toBeCloseTo(2.0, 8);
+    expect(starDopplerFactor(-1.0, 0.6)).toBeCloseTo(0.5, 8);
+    // Transverse rest-frame (cosTheta = 0): D = gamma = 1.25
+    expect(starDopplerFactor(0.0, 0.6)).toBeCloseTo(1.25, 8);
+
+    // 3. Blackbody bands & CMB bow temperature
+    expect(blackbodyTempToRgb(1000).band).toBe('ir');
+    expect(blackbodyTempToRgb(5778).band).toBe('visible');
+    expect(blackbodyTempToRgb(35000).band).toBe('uv');
+    const cmb = computeCmbForwardGlow(0.6);
+    expect(cmb.bowTempK).toBeCloseTo(2.7255 * 2.0, 4);
+
+    // 4. All historical Radio shells & METI beam targets map to real catalogued stars & have EN/CS text
+    const sysIds = new Set(catalog.systems.map((s) => s.id));
+    expect(RADIO_SHELL_LAYERS.length).toBeGreaterThanOrEqual(5);
+    for (const layer of RADIO_SHELL_LAYERS) {
+      expect(layer.title?.en && layer.title?.cs).toBeTruthy();
+      expect(layer.broadcasts.length).toBeGreaterThan(0);
+    }
+    for (const beam of METI_BEAMS) {
+      expect(sysIds.has(beam.targetSystemId), `Invalid METI target ${beam.targetSystemId}`).toBe(true);
+      expect(beam.name?.en && beam.name?.cs).toBeTruthy();
     }
   });
 });

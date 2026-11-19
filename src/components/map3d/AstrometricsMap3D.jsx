@@ -5,6 +5,11 @@ import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer
 import { systemPosAtEpoch } from '../../engine/stellarMotion.js';
 import { evaluateVoyageAtCoordYear } from '../../engine/voyagePlanner.js';
 import { SPECTRAL_COLORS } from '../../utils/format.js';
+import {
+  RADIO_REFERENCE_YEAR,
+  RADIO_SHELL_LAYERS,
+  METI_BEAMS,
+} from '../../data/radioBroadcastLayers.js';
 
 /**
  * Galactic [x, y, z] -> Three.js Y-up scene [x, z, -y]
@@ -123,6 +128,9 @@ export default function AstrometricsMap3D({
   velocityVectorMode = 'off',
   velocityHorizonKyr = 20,
   maxRadiusLy = 135,
+  radioBubbleConfig = null,
+  systemsById = null,
+  lang = 'en',
 }) {
   const containerRef = useRef(null);
   const stateRef = useRef({
@@ -176,9 +184,19 @@ export default function AstrometricsMap3D({
     const routeGroup = new THREE.Group();
     const shipGroup = new THREE.Group();
     const lightConeGroup = new THREE.Group();
+    const radioBubbleGroup = new THREE.Group();
     const labelGroup = new THREE.Group();
 
-    scene.add(gridGroup, starGroup, velocityGroup, routeGroup, shipGroup, lightConeGroup, labelGroup);
+    scene.add(
+      gridGroup,
+      starGroup,
+      velocityGroup,
+      routeGroup,
+      shipGroup,
+      lightConeGroup,
+      radioBubbleGroup,
+      labelGroup
+    );
 
     const selectRing = createScreenRing({ color: '#00f0ff', radiusPx: 13 });
     const hoverRing = createScreenRing({ color: '#ffffff', radiusPx: 10, dashed: true });
@@ -317,6 +335,7 @@ export default function AstrometricsMap3D({
       routeGroup,
       shipGroup,
       lightConeGroup,
+      radioBubbleGroup,
       labelGroup,
       selectRing,
       hoverRing,
@@ -978,8 +997,187 @@ export default function AstrometricsMap3D({
       );
       eqRing.position.copy(centerScene);
       lightConeGroup.add(eqRing);
+
+      // Optional Inter-Ship Signal Interception Beam (originPos -> targetPos)
+      if (lightConeConfig.targetPos) {
+        const targetScene = toSceneVec(lightConeConfig.targetPos);
+        const beamGeom = new THREE.BufferGeometry().setFromPoints([centerScene, targetScene]);
+        const beamLine = new THREE.Line(
+          beamGeom,
+          new THREE.LineBasicMaterial({
+            color: lightConeConfig.beamColor || '#facc15',
+            transparent: true,
+            opacity: 0.92,
+          })
+        );
+        lightConeGroup.add(beamLine);
+
+        const hitPt = createPointCloud({
+          positions: new Float32Array([targetScene.x, targetScene.y, targetScene.z]),
+          colors: new Float32Array([0.98, 0.8, 0.08]),
+          sizes: new Float32Array([11.0]),
+          shape: 3,
+        });
+        lightConeGroup.add(hitPt);
+      }
     }
   }, [activeVoyage, allShipsWithVoyages, masterClockYear, lightConeConfig]);
+
+  // Render Earth's Expanding Radio & TV Broadcast Shells + Directed METI Beams
+  useEffect(() => {
+    const ctx = threeRef.current;
+    if (!ctx) return;
+    const { radioBubbleGroup } = ctx;
+
+    while (radioBubbleGroup.children.length > 0) {
+      const o = radioBubbleGroup.children[0];
+      o.geometry?.dispose?.();
+      o.material?.dispose?.();
+      o.element?.remove?.();
+      radioBubbleGroup.remove(o);
+    }
+
+    if (!radioBubbleConfig || !radioBubbleConfig.enabled) return;
+
+    const selectedId = radioBubbleConfig.selectedLayerId || 'layer-100';
+
+    // 1. Concentric Spherical Radio Broadcast Horizons centered on Sol [0, 0, 0]
+    RADIO_SHELL_LAYERS.forEach((layer) => {
+      const r = layer.radiusLy;
+      const isSelected = layer.id === selectedId;
+      const isTwoWay = layer.isTwoWayHorizon;
+      const color = new THREE.Color(layer.color);
+
+      // Translucent sphere surface for the selected layer (plus subtle outer 100 ly & 50 ly reference spheres)
+      if (isSelected || layer.radiusLy === 100 || isTwoWay) {
+        const sphGeom = new THREE.SphereGeometry(r, 40, 24);
+        const sphMat = new THREE.MeshBasicMaterial({
+          color,
+          transparent: true,
+          opacity: isSelected ? 0.095 : isTwoWay ? 0.038 : 0.025,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        });
+        radioBubbleGroup.add(new THREE.Mesh(sphGeom, sphMat));
+      }
+
+      // Equatorial ring in Galactic Plane (XZ in Three.js)
+      const eqPts = [];
+      for (let i = 0; i <= 96; i++) {
+        const a = (i / 96) * Math.PI * 2;
+        eqPts.push(new THREE.Vector3(Math.cos(a) * r, 0, Math.sin(a) * r));
+      }
+      const eqMat = isTwoWay
+        ? new THREE.LineDashedMaterial({
+            color,
+            dashSize: 2.2,
+            gapSize: 1.2,
+            transparent: true,
+            opacity: isSelected ? 0.95 : 0.72,
+          })
+        : new THREE.LineBasicMaterial({
+            color,
+            transparent: true,
+            opacity: isSelected ? 0.92 : 0.28,
+          });
+      const eqLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(eqPts), eqMat);
+      if (isTwoWay) eqLine.computeLineDistances();
+      radioBubbleGroup.add(eqLine);
+
+      // Vertical meridian rings on the selected layer & 2-way reply horizon to emphasize 3D sphere volume
+      if (isSelected || isTwoWay) {
+        const merPts1 = [];
+        const merPts2 = [];
+        for (let i = 0; i <= 72; i++) {
+          const a = (i / 72) * Math.PI * 2;
+          merPts1.push(new THREE.Vector3(Math.cos(a) * r, Math.sin(a) * r, 0));
+          merPts2.push(new THREE.Vector3(0, Math.sin(a) * r, Math.cos(a) * r));
+        }
+        const mMat = new THREE.LineBasicMaterial({
+          color,
+          transparent: true,
+          opacity: isSelected ? 0.42 : 0.16,
+        });
+        radioBubbleGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(merPts1), mMat));
+        radioBubbleGroup.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints(merPts2), mMat.clone()));
+      }
+
+      // Floating CSS2D badge on the active shell (and 50 ly 2-way horizon)
+      if (isSelected || isTwoWay) {
+        const el = document.createElement('div');
+        el.className = `map3d-radio-label${isSelected ? ' active' : ''}`;
+        el.style.borderColor = layer.color;
+        el.style.color = layer.color;
+        el.textContent = `📡 ${layer.badge?.[lang] || layer.badge?.en}`;
+        const lbl = new CSS2DObject(el);
+        const angle = isTwoWay && !isSelected ? Math.PI * 0.72 : Math.PI * 0.22;
+        lbl.position.set(Math.cos(angle) * r, 0, Math.sin(angle) * r);
+        radioBubbleGroup.add(lbl);
+      }
+    });
+
+    // 2. Real Directed Interstellar METI Beams (Sónar Calling GJ 273b, AMFE GJ 581, Cosmic Call 1 & 2)
+    if (radioBubbleConfig.showMetiBeams && systemsById) {
+      const origin = new THREE.Vector3(0, 0, 0);
+      METI_BEAMS.forEach((beam) => {
+        const targetSys = systemsById.get(beam.targetSystemId);
+        if (!targetSys) return;
+        const targetVec = toSceneVec(systemPosAtEpoch(targetSys, epochOffsetYears));
+        const distLy = targetVec.length();
+        if (distLy < 0.1) return;
+
+        const elapsedLy = Math.max(0.5, Math.min(distLy, RADIO_REFERENCE_YEAR - beam.transmitYear));
+        const frac = elapsedLy / distLy;
+        const waveVec = targetVec.clone().multiplyScalar(frac);
+        const beamCol = new THREE.Color(beam.color);
+
+        // Bright solid active beam from Sol -> current 2026 wavefront
+        const activeGeom = new THREE.BufferGeometry().setFromPoints([origin, waveVec]);
+        const activeLine = new THREE.Line(
+          activeGeom,
+          new THREE.LineBasicMaterial({ color: beamCol, transparent: true, opacity: 0.95 })
+        );
+        radioBubbleGroup.add(activeLine);
+
+        // Faint dashed remaining flight line from wavefront -> target star
+        if (frac < 0.995) {
+          const remGeom = new THREE.BufferGeometry().setFromPoints([waveVec, targetVec]);
+          const remLine = new THREE.Line(
+            remGeom,
+            new THREE.LineDashedMaterial({
+              color: beamCol,
+              dashSize: 0.9,
+              gapSize: 0.65,
+              transparent: true,
+              opacity: 0.45,
+            })
+          );
+          remLine.computeLineDistances();
+          radioBubbleGroup.add(remLine);
+        }
+
+        // Glowing diamond marker right at the 2026 photon wavefront!
+        const pulse = createPointCloud({
+          positions: new Float32Array([waveVec.x, waveVec.y, waveVec.z]),
+          colors: new Float32Array([beamCol.r, beamCol.g, beamCol.b]),
+          sizes: new Float32Array([10.5]),
+          shape: 2,
+        });
+        radioBubbleGroup.add(pulse);
+
+        // Concise wavefront CSS2D label
+        const lblEl = document.createElement('div');
+        lblEl.className = 'map3d-meti-label';
+        lblEl.style.borderColor = beam.color;
+        const arriveYr = Math.round(beam.transmitYear + distLy);
+        lblEl.textContent = `⚡ ${targetSys.name} (${elapsedLy.toFixed(1)}/${distLy.toFixed(1)} ly · ${arriveYr})`;
+        const lblObj = new CSS2DObject(lblEl);
+        lblObj.position.copy(waveVec);
+        lblObj.center.set(0.5, 1.35);
+        radioBubbleGroup.add(lblObj);
+      });
+    }
+  }, [radioBubbleConfig, systemsById, epochOffsetYears, lang]);
 
   return <div ref={containerRef} className="astrometrics-map3d-viewport" />;
 }

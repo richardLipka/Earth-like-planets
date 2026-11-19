@@ -806,6 +806,13 @@ body,
   box-shadow: 0 0 10px rgba(0, 240, 255, 0.28);
 }
 
+.map-pill-btn.active-pill.emerald-pill {
+  background: rgba(0, 255, 136, 0.2);
+  border-color: var(--bio-emerald);
+  color: #ecfdf5;
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.28);
+}
+
 .map-pill-btn.vector-horizon-pill {
   border-color: rgba(56, 189, 248, 0.55);
   color: #7dd3fc;
@@ -882,13 +889,13 @@ body,
   min-width: 0;
 }
 
-@container mapstage (max-width: 1040px) {
+@container mapstage (max-width: 1240px) {
   .map-hint-banner {
     display: none;
   }
 }
 
-@container mapstage (max-width: 1240px) {
+@container mapstage (max-width: 1440px) {
   .map3d-bottom-controls-bar.vectors-active .map-hint-banner {
     display: none;
   }
@@ -1170,18 +1177,43 @@ body,
 /* Ship Roster & Route Controls */
 .ship-roster-bar {
   display: flex;
+  flex-direction: column;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border-dim);
+  background: rgba(4, 9, 20, 0.85);
+  gap: 6px;
+}
+
+.ship-roster-top {
+  display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 12px;
-  border-bottom: 1px solid var(--border-dim);
-  background: rgba(4, 9, 20, 0.8);
   gap: 6px;
+  min-width: 0;
+}
+
+.ship-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ship-roster-select {
+  flex: 1;
+  min-width: 0;
+  font-size: 11px;
+  padding: 4px 6px;
 }
 
 .ship-pills {
   display: flex;
-  gap: 5px;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 76px;
+  overflow-y: auto;
+  padding-right: 2px;
 }
 
 .ship-pill-btn {
@@ -1190,22 +1222,31 @@ body,
   border-left-width: 3px;
   color: var(--text-muted);
   font-family: var(--font-mono);
-  font-size: 10.5px;
-  padding: 3px 8px;
+  font-size: 10px;
+  padding: 2px 7px;
   border-radius: 3px;
   cursor: pointer;
   white-space: nowrap;
+  max-width: 152px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ship-pill-btn:hover {
+  color: #ffffff;
+  border-color: rgba(0, 240, 255, 0.45);
 }
 
 .ship-pill-btn.active {
   color: #ffffff;
-  background: rgba(0, 240, 255, 0.16);
+  background: rgba(0, 240, 255, 0.18);
   border-color: var(--holo-cyan);
 }
 
 .ship-roster-actions {
   display: flex;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .mini-hud-btn,
@@ -2928,6 +2969,523 @@ a.scifi-work-title:hover {
   font-family: var(--font-mono);
   font-size: 10.5px;
 }
+
+/* 3-Tab Toggle (Comm Panel: Star->Ship | Ship->Star | Ship<->Ship) */
+.three-col-toggle {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.three-col-toggle .toggle-btn {
+  padding: 5px 4px;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rendezvous-card {
+  margin-top: 4px;
+  border-color: rgba(0, 255, 136, 0.35);
+  background: rgba(4, 24, 24, 0.72);
+}
+
+.comm-sub-head {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--bio-emerald);
+  margin-bottom: 3px;
+}
+
+/* Floating 3D Map Panels (Earth Radio Bubble & Relativistic Bridge View) */
+.map-floating-panel {
+  position: absolute;
+  top: 48px;
+  z-index: 18;
+  background: rgba(6, 13, 28, 0.94);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 240, 255, 0.42);
+  border-radius: 6px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100% - 104px);
+  overflow: hidden;
+}
+
+.radio-bubble-panel {
+  left: 10px;
+  width: min(335px, calc(100% - 20px));
+  border-color: rgba(0, 255, 136, 0.45);
+}
+
+.bridge-view-panel {
+  right: 10px;
+  width: min(312px, calc(100% - 20px));
+}
+
+.mfp-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--border-dim);
+  background: rgba(10, 20, 42, 0.85);
+  gap: 6px;
+}
+
+.mfp-title-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.mfp-title {
+  font-family: var(--font-display);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mfp-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border-dim);
+  background: rgba(4, 9, 20, 0.75);
+}
+
+.mfp-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 4px 6px;
+  background: rgba(15, 28, 54, 0.75);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  cursor: pointer;
+}
+
+.mfp-tab-btn.active {
+  background: rgba(0, 255, 136, 0.16);
+  border-color: var(--bio-emerald);
+  color: #ffffff;
+}
+
+.mfp-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radio-shell-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.radio-shell-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 7px;
+  background: rgba(12, 22, 44, 0.85);
+  border: 1px solid var(--border-dim);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.radio-shell-chip.active {
+  background: rgba(0, 240, 255, 0.16);
+  color: #ffffff;
+}
+
+.radio-shell-chip.two-way {
+  color: #a7f3d0;
+}
+
+.radio-chip-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.radio-layer-card {
+  background: rgba(8, 17, 36, 0.85);
+  border: 1px solid var(--border-dim);
+  border-left-width: 3px;
+  border-radius: 4px;
+  padding: 7px 9px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.radio-layer-head {
+  font-size: 11px;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.radio-layer-desc {
+  margin: 0;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  line-height: 1.38;
+}
+
+.radio-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+  margin-top: 2px;
+}
+
+.radio-kpi {
+  background: rgba(4, 9, 22, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 4px;
+  padding: 4px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-kpi span {
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.radio-kpi strong {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.radio-kpi.cyan strong {
+  color: var(--holo-cyan);
+}
+
+.radio-kpi.emerald strong {
+  color: var(--bio-emerald);
+}
+
+.radio-sub-heading {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--holo-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.radio-broadcasts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.radio-broadcast-item {
+  background: rgba(5, 11, 26, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.14);
+  border-radius: 4px;
+  padding: 5px 7px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.rb-item-top {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-size: 10.5px;
+  color: #ffffff;
+}
+
+.rb-item-top strong {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.25;
+}
+
+.rb-type-badge {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  background: rgba(56, 189, 248, 0.2);
+  color: #7dd3fc;
+}
+
+.rb-type-badge.tv {
+  background: rgba(192, 132, 252, 0.22);
+  color: #e9d5ff;
+}
+
+.rb-type-badge.space {
+  background: rgba(245, 158, 11, 0.22);
+  color: #fde68a;
+}
+
+.rb-type-badge.meti {
+  background: rgba(0, 255, 136, 0.2);
+  color: #a7f3d0;
+}
+
+.rb-dist {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--holo-cyan);
+  flex-shrink: 0;
+}
+
+.rb-item-desc {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.32;
+}
+
+.radio-hz-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.radio-hz-star-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.35);
+  border-radius: 3px;
+  color: #d1fae5;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  cursor: pointer;
+}
+
+.radio-hz-star-btn:hover {
+  background: rgba(0, 255, 136, 0.24);
+  color: #ffffff;
+}
+
+.radio-hz-star-btn em {
+  font-style: normal;
+  color: var(--bio-emerald);
+}
+
+.meti-beams-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.meti-beam-card {
+  background: rgba(5, 12, 28, 0.88);
+  border: 1px solid var(--border-dim);
+  border-left-width: 3px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meti-beam-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 11px;
+  color: #ffffff;
+}
+
+.meti-beam-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #bae6fd;
+}
+
+.meti-progress-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.meti-progress-fill {
+  height: 100%;
+  border-radius: 3px;
+}
+
+.meti-beam-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.meti-beam-note {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.32;
+}
+
+/* 3D CSS2D Radio Shell & METI Beam Labels */
+.map3d-radio-label {
+  padding: 2px 6px;
+  background: rgba(4, 10, 24, 0.88);
+  border: 1px solid var(--holo-cyan);
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.map3d-radio-label.active {
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.35);
+}
+
+.map3d-meti-label {
+  padding: 2px 6px;
+  background: rgba(4, 12, 26, 0.9);
+  border: 1px solid #00ff88;
+  border-radius: 3px;
+  color: #ecfdf5;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Relativistic Bridge View Cockpit Panel */
+.bridge-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.bridge-body {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow-y: auto;
+}
+
+.bridge-ship-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-main);
+}
+
+.bridge-ship-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.bridge-canvas-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #030712;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 5px;
+  padding: 2px;
+}
+
+.bridge-canvas {
+  width: 286px;
+  height: 220px;
+  display: block;
+}
+
+.bridge-speed-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.bridge-mode-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+}
+
+.bridge-mode-row .preset-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.bridge-telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.bridge-kv {
+  background: rgba(4, 9, 22, 0.82);
+  border: 1px solid rgba(0, 240, 255, 0.14);
+  border-radius: 4px;
+  padding: 4px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+
+.bridge-kv span {
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.bridge-kv strong {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: #ffffff;
+}
+
 
 
 

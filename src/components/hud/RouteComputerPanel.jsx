@@ -1,7 +1,12 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useLanguage } from '../../i18n/LanguageContext.jsx';
 import { formatNum, formatDurationYears } from '../../utils/format.js';
-import { solveSignalToShip, computeShipTransmission } from '../../engine/commLightCone.js';
+import {
+  solveSignalToShip,
+  computeShipTransmission,
+  solveShipToShipSignal,
+  computeShipRendezvous,
+} from '../../engine/commLightCone.js';
 import { LY_PER_PARSEC } from '../../engine/relativity.js';
 import { systemPosAtEpoch } from '../../engine/stellarMotion.js';
 import {
@@ -17,11 +22,13 @@ import {
   Activity,
   Copy,
   BookMarked,
+  Eye,
   X,
 } from 'lucide-react';
 
 export default function RouteComputerPanel({
   ships,
+  shipsWithVoyages = [],
   activeShipId,
   onSelectShip,
   onAddShip,
@@ -32,19 +39,24 @@ export default function RouteComputerPanel({
   selectedSystem,
   systemsById,
   epochOffsetYears,
+  masterClockYear,
   lightConeConfig,
   onUpdateLightConeConfig,
   onSelectSystem,
   activeVoyagePreset,
   onOpenVoyageLibrary,
+  isBridgeViewOpen,
+  onToggleBridgeView,
   onClose,
 }) {
   const { lang, t } = useLanguage();
   const [panelTab, setPanelTab] = useState('plan'); // 'plan' | 'telemetry' | 'comm'
-  const [commTab, setCommTab] = useState('to-ship'); // 'to-ship' | 'from-ship'
+  const [commTab, setCommTab] = useState('to-ship'); // 'to-ship' | 'from-ship' | 'ship-to-ship'
   const [emitterSystemId, setEmitterSystemId] = useState('sol');
   const [emitYearOffset, setEmitYearOffset] = useState(2.0);
   const [shipTxYearOffset, setShipTxYearOffset] = useState(2.5);
+  const [peerShipId, setPeerShipId] = useState('');
+  const [interShipOffset, setInterShipOffset] = useState(1.0);
 
   const activeShip = useMemo(
     () => ships.find((s) => s.id === activeShipId) || ships[0],
@@ -73,6 +85,38 @@ export default function RouteComputerPanel({
     return computeShipTransmission(activeVoyage, shipTxCoordYear, solWithEpoch ? [solWithEpoch] : []);
   }, [activeVoyage, systemsById, shipTxCoordYear, epochOffsetYears]);
 
+  // Peer ships available for Inter-Ship Messaging & Rendezvous
+  const otherShipsWithVoyages = useMemo(
+    () => (shipsWithVoyages || []).filter((s) => s.id !== activeShip?.id),
+    [shipsWithVoyages, activeShip?.id]
+  );
+
+  const selectedPeer = useMemo(() => {
+    if (otherShipsWithVoyages.length === 0) return null;
+    return otherShipsWithVoyages.find((s) => s.id === peerShipId) || otherShipsWithVoyages[0];
+  }, [otherShipsWithVoyages, peerShipId]);
+
+  const interShipEmitYear = safeDepartureYear + Number(interShipOffset || 0);
+
+  // Moving Ship A -> Moving Ship B Light-Cone Interception + 2-Way Reply
+  const interShipResult = useMemo(() => {
+    if (!activeVoyage || !selectedPeer?.voyage) return null;
+    return solveShipToShipSignal(
+      activeVoyage,
+      selectedPeer.voyage,
+      interShipEmitYear,
+      activeShip?.name || 'Ship A',
+      selectedPeer.name || 'Ship B',
+      true
+    );
+  }, [activeVoyage, selectedPeer, interShipEmitYear, activeShip?.name]);
+
+  // Closest Approach / Rendezvous between Ship A and Ship B
+  const rendezvousResult = useMemo(() => {
+    if (!activeVoyage || !selectedPeer?.voyage) return null;
+    return computeShipRendezvous(activeVoyage, selectedPeer.voyage);
+  }, [activeVoyage, selectedPeer]);
+
   // Peak Doppler from highest-speed leg
   const peakLeg = useMemo(() => {
     if (!activeVoyage || !activeVoyage.legs || activeVoyage.legs.length === 0) return null;
@@ -85,6 +129,34 @@ export default function RouteComputerPanel({
   // Keep 3D Light-Cone Sphere reactively synced when emitter, emit time, route, or epoch changes
   useEffect(() => {
     if (!lightConeConfig?.enabled) return;
+    if (lightConeConfig.mode === 'ship-to-ship') {
+      if (!interShipResult) return;
+      const nextOrigin = interShipResult.senderPos;
+      const nextTarget = interShipResult.hitPos;
+      const nextRadius = Math.max(0.5, interShipResult.lightTravelYears);
+      const sameOrigin =
+        lightConeConfig.originPos &&
+        Math.abs(lightConeConfig.originPos[0] - nextOrigin[0]) < 1e-4 &&
+        Math.abs(lightConeConfig.originPos[1] - nextOrigin[1]) < 1e-4 &&
+        Math.abs(lightConeConfig.originPos[2] - nextOrigin[2]) < 1e-4;
+      const sameTarget =
+        lightConeConfig.targetPos &&
+        Math.abs(lightConeConfig.targetPos[0] - nextTarget[0]) < 1e-4 &&
+        Math.abs(lightConeConfig.targetPos[1] - nextTarget[1]) < 1e-4 &&
+        Math.abs(lightConeConfig.targetPos[2] - nextTarget[2]) < 1e-4;
+      if (sameOrigin && sameTarget && Math.abs((lightConeConfig.radiusLy || 0) - nextRadius) < 1e-3) return;
+      onUpdateLightConeConfig({
+        enabled: true,
+        mode: 'ship-to-ship',
+        originPos: nextOrigin,
+        targetPos: nextTarget,
+        emitYear: interShipResult.tEmitCoordYear,
+        radiusLy: nextRadius,
+        color: '#facc15',
+        beamColor: '#facc15',
+      });
+      return;
+    }
     if (!interceptResult) return;
     const emitterSys = systemsById.get(emitterSystemId) || systemsById.get('sol');
     const nextOrigin = emitterSys ? systemPosAtEpoch(emitterSys, epochOffsetYears) : [0, 0, 0];
@@ -97,14 +169,18 @@ export default function RouteComputerPanel({
     if (sameOrigin && Math.abs((lightConeConfig.radiusLy || 0) - nextRadius) < 1e-3) return;
     onUpdateLightConeConfig({
       enabled: true,
+      mode: 'star-to-ship',
       originPos: nextOrigin,
+      targetPos: null,
       emitYear: interceptResult.tEmitCoordYear,
       radiusLy: nextRadius,
       color: '#00f0ff',
     });
   }, [
     lightConeConfig?.enabled,
+    lightConeConfig?.mode,
     interceptResult,
+    interShipResult,
     emitterSystemId,
     systemsById,
     epochOffsetYears,
@@ -170,44 +246,72 @@ export default function RouteComputerPanel({
         )}
       </div>
 
-      {/* Multi-Ship Selector Tabs */}
+      {/* Multi-Ship Accessible Roster (Dropdown + Wrapping Quick-Switch Chips for 2–8+ Ships) */}
       <div className="ship-roster-bar">
-        <div className="ship-pills">
-          {ships.map((sh) => (
-            <button
-              key={sh.id}
-              type="button"
-              className={`ship-pill-btn ${sh.id === activeShip.id ? 'active' : ''}`}
-              style={{ borderLeftColor: sh.color }}
-              onClick={() => onSelectShip(sh.id)}
+        <div className="ship-roster-top">
+          <div className="ship-select-wrap">
+            <span
+              className="ship-color-dot"
+              style={{ backgroundColor: activeShip.color || '#00f0ff' }}
+            />
+            <select
+              className="hud-select ship-roster-select"
+              value={activeShip.id}
+              onChange={(e) => onSelectShip(e.target.value)}
+              title={activeShip.name}
             >
-              <span>{sh.name}</span>
+              {ships.map((sh, idx) => (
+                <option key={sh.id} value={sh.id}>
+                  {ships.length > 1 ? `[${idx + 1}/${ships.length}] ` : ''}
+                  {sh.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="ship-roster-actions">
+            {onOpenVoyageLibrary && (
+              <button
+                type="button"
+                className="mini-hud-btn scifi-mini-btn"
+                onClick={onOpenVoyageLibrary}
+                title={t('btnVoyageLibraryFull')}
+              >
+                <BookMarked size={12} />
+              </button>
+            )}
+            <button type="button" className="mini-hud-btn" onClick={onAddShip} title={t('btnAddShip')}>
+              <Plus size={12} />
             </button>
-          ))}
+            <button type="button" className="mini-hud-btn" onClick={onDuplicateShip} title={t('btnDuplicateShip')}>
+              <Copy size={12} />
+            </button>
+            {ships.length > 1 && (
+              <button type="button" className="mini-hud-btn warn" onClick={onDeleteShip} title={t('btnDeleteShip')}>
+                <Trash2 size={12} />
+              </button>
+            )}
+          </div>
         </div>
-        <div className="ship-roster-actions">
-          {onOpenVoyageLibrary && (
-            <button
-              type="button"
-              className="mini-hud-btn scifi-mini-btn"
-              onClick={onOpenVoyageLibrary}
-              title={t('btnVoyageLibraryFull')}
-            >
-              <BookMarked size={12} />
-            </button>
-          )}
-          <button type="button" className="mini-hud-btn" onClick={onAddShip} title={t('btnAddShip')}>
-            <Plus size={12} />
-          </button>
-          <button type="button" className="mini-hud-btn" onClick={onDuplicateShip} title={t('btnDuplicateShip')}>
-            <Copy size={12} />
-          </button>
-          {ships.length > 1 && (
-            <button type="button" className="mini-hud-btn warn" onClick={onDeleteShip} title={t('btnDeleteShip')}>
-              <Trash2 size={12} />
-            </button>
-          )}
-        </div>
+
+        {ships.length > 1 && (
+          <div className="ship-pills">
+            {ships.map((sh) => {
+              const shortLabel = sh.name.includes(' · ') ? sh.name.split(' · ')[0] : sh.name;
+              return (
+                <button
+                  key={sh.id}
+                  type="button"
+                  className={`ship-pill-btn ${sh.id === activeShip.id ? 'active' : ''}`}
+                  style={{ borderLeftColor: sh.color }}
+                  onClick={() => onSelectShip(sh.id)}
+                  title={sh.name}
+                >
+                  <span>{shortLabel}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       {/* Active Canonical Sci-Fi Scenario Banner (when loaded from Voyage Library) */}
@@ -712,6 +816,17 @@ export default function RouteComputerPanel({
                         </div>
                       )}
                     </div>
+
+                    {onToggleBridgeView && (
+                      <button
+                        type="button"
+                        className={`hud-btn full-width ${isBridgeViewOpen ? 'primary-btn' : 'secondary-btn'}`}
+                        onClick={onToggleBridgeView}
+                      >
+                        <Eye size={13} />
+                        <span>{t('btnBridgeView')}</span>
+                      </button>
+                    )}
                   </div>
                 )}
               </>
@@ -730,7 +845,7 @@ export default function RouteComputerPanel({
                   <span>{t('commSectionTitle')}</span>
                 </div>
 
-                <div className="two-col-toggle">
+                <div className="three-col-toggle">
                   <button
                     type="button"
                     className={`toggle-btn ${commTab === 'to-ship' ? 'active' : ''}`}
@@ -744,6 +859,13 @@ export default function RouteComputerPanel({
                     onClick={() => setCommTab('from-ship')}
                   >
                     {t('commTabFromShip')}
+                  </button>
+                  <button
+                    type="button"
+                    className={`toggle-btn ${commTab === 'ship-to-ship' ? 'active' : ''}`}
+                    onClick={() => setCommTab('ship-to-ship')}
+                  >
+                    {t('commTabShipToShip')}
                   </button>
                 </div>
 
@@ -822,12 +944,14 @@ export default function RouteComputerPanel({
                         <label className="lightcone-checkbox">
                           <input
                             type="checkbox"
-                            checked={Boolean(lightConeConfig?.enabled)}
+                            checked={Boolean(lightConeConfig?.enabled && lightConeConfig?.mode !== 'ship-to-ship')}
                             onChange={(e) => {
                               const emitterSys = systemsById.get(emitterSystemId) || systemsById.get('sol');
                               onUpdateLightConeConfig({
                                 enabled: e.target.checked,
+                                mode: 'star-to-ship',
                                 originPos: emitterSys ? systemPosAtEpoch(emitterSys, epochOffsetYears) : [0, 0, 0],
+                                targetPos: null,
                                 emitYear: interceptResult.tEmitCoordYear,
                                 radiusLy: Math.max(0.5, interceptResult.lightTravelYears),
                                 color: '#00f0ff',
@@ -839,7 +963,7 @@ export default function RouteComputerPanel({
                       </div>
                     )}
                   </div>
-                ) : (
+                ) : commTab === 'from-ship' ? (
                   <div className="comm-calculator-box">
                     <div className="form-field">
                       <label>
@@ -885,6 +1009,139 @@ export default function RouteComputerPanel({
                           </div>
                         ))}
                       </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="comm-calculator-box">
+                    {otherShipsWithVoyages.length === 0 ? (
+                      <div className="no-route-hint-box">{t('commNeedTwoShips')}</div>
+                    ) : (
+                      <>
+                        <div className="form-field">
+                          <label>{t('commTargetShipLabel')}</label>
+                          <select
+                            className="hud-select"
+                            value={selectedPeer?.id || ''}
+                            onChange={(e) => setPeerShipId(e.target.value)}
+                          >
+                            {otherShipsWithVoyages.map((peer) => (
+                              <option key={peer.id} value={peer.id}>
+                                {peer.name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div className="form-row-2">
+                          <div className="form-field">
+                            <label>{t('commEmitYear')} (+Δt)</label>
+                            <input
+                              type="number"
+                              step="0.5"
+                              className="hud-input"
+                              value={interShipOffset}
+                              onChange={(e) => setInterShipOffset(e.target.value)}
+                            />
+                          </div>
+                          <div className="form-field">
+                            <label>{t('masterClockLabel')}</label>
+                            <button
+                              type="button"
+                              className="hud-btn secondary-btn full-width"
+                              onClick={() => {
+                                if (Number.isFinite(masterClockYear)) {
+                                  setInterShipOffset(Number((masterClockYear - safeDepartureYear).toFixed(2)));
+                                }
+                              }}
+                            >
+                              {t('commSyncClockBtn')}
+                            </button>
+                          </div>
+                        </div>
+
+                        {interShipResult && (
+                          <div className="comm-result-card">
+                            <div className="comm-res-row">
+                              <span>{t('commTxFromA')}:</span>
+                              <strong>
+                                {formatNum(interShipResult.tEmitCoordYear, 2, lang)} (τ={formatNum(interShipResult.senderProperTimeYears, 1, lang)}{t('unitYrShort')})
+                              </strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commRxAtB')}:</span>
+                              <strong className="highlight-cyan">
+                                {formatNum(interShipResult.tHitCoordYear, 2, lang)}
+                              </strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commLightTransit')}:</span>
+                              <strong>{formatDurationYears(interShipResult.lightTravelYears, lang)}</strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commReceiverTauAge')}:</span>
+                              <strong className="highlight-emerald">
+                                τ={formatNum(interShipResult.receiverProperTimeYears, 1, lang)}{t('unitYrShort')} · {formatNum(interShipResult.receiverCrewAgeAtHit, 1, lang)}{t('unitYrShort')}
+                              </strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commCombinedDoppler')}:</span>
+                              <strong className="highlight-amber">
+                                ×{formatNum(interShipResult.dopplerFactor, 3, lang)} ({interShipResult.shiftType})
+                              </strong>
+                            </div>
+                            {interShipResult.reply && (
+                              <div className="comm-res-row">
+                                <span>{t('commRoundTripReply')}:</span>
+                                <strong>
+                                  {formatNum(interShipResult.reply.tReplyCoordYear, 2, lang)} (Δτ={formatNum(interShipResult.reply.senderProperWaitYears, 1, lang)}{t('unitYrShort')})
+                                </strong>
+                              </div>
+                            )}
+
+                            <label className="lightcone-checkbox">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(lightConeConfig?.enabled && lightConeConfig?.mode === 'ship-to-ship')}
+                                onChange={(e) => {
+                                  onUpdateLightConeConfig({
+                                    enabled: e.target.checked,
+                                    mode: 'ship-to-ship',
+                                    originPos: interShipResult.senderPos,
+                                    targetPos: interShipResult.hitPos,
+                                    emitYear: interShipResult.tEmitCoordYear,
+                                    radiusLy: Math.max(0.5, interShipResult.lightTravelYears),
+                                    color: '#facc15',
+                                    beamColor: '#facc15',
+                                  });
+                                }}
+                              />
+                              <span>{t('commShow3dShipBeam')}</span>
+                            </label>
+                          </div>
+                        )}
+
+                        {rendezvousResult && (
+                          <div className="comm-result-card rendezvous-card">
+                            <div className="comm-sub-head">{t('commRendezvousTitle')}</div>
+                            <div className="comm-res-row">
+                              <span>{t('commClosestDist')}:</span>
+                              <strong className="highlight-emerald">
+                                {formatNum(rendezvousResult.minDistLy, 2, lang)} ly
+                              </strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commClosestYear')}:</span>
+                              <strong className="highlight-cyan">
+                                {formatNum(rendezvousResult.tClosestCoordYear, 2, lang)}
+                              </strong>
+                            </div>
+                            <div className="comm-res-row">
+                              <span>{t('commRelSpeedAtClosest')}:</span>
+                              <strong>{formatNum(rendezvousResult.relCoordSpeedC * 100, 1, lang)}%c</strong>
+                            </div>
+                          </div>
+                        )}
+                      </>
                     )}
                   </div>
                 )}

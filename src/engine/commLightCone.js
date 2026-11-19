@@ -238,3 +238,235 @@ export function solveSignalToShip(voyage, emitterPos, emitterName, tEmit) {
     hitPos: hitState.pos,
   };
 }
+
+/**
+ * Compute exact combined 3D Special-Relativistic Doppler factor between a moving
+ * emitter ship (A) and a moving receiver ship (B) along photon direction unit vector n_hat:
+ *
+ *   f_B / f_A = [gamma_B * (1 - v_B . n_hat)] / [gamma_A * (1 - v_A . n_hat)]
+ *
+ * Reduces exactly to:
+ *  - Stationary A -> Moving B:  gamma_B * (1 - v_B . n_hat)
+ *  - Moving A -> Stationary B:  1 / [gamma_A * (1 - v_A . n_hat)]
+ *  - Co-moving A & B (v_A = v_B): 1.000000 exactly.
+ */
+function computeShipToShipDoppler(senderState, receiverState) {
+  const vA = senderState.speedC || 0;
+  const gA = senderState.gamma || 1;
+  const vB = receiverState.speedC || 0;
+  const gB = receiverState.gamma || 1;
+
+  if (vA === 0 && vB === 0) {
+    return { dopplerFactor: 1.0, shiftType: 'none' };
+  }
+
+  const dx = receiverState.pos[0] - senderState.pos[0];
+  const dy = receiverState.pos[1] - senderState.pos[1];
+  const dz = receiverState.pos[2] - senderState.pos[2];
+  const dist = Math.hypot(dx, dy, dz);
+  if (dist < 1e-9) {
+    const ratio = gB / gA;
+    return { dopplerFactor: ratio, shiftType: classifyShift(ratio) };
+  }
+
+  const velA = senderState.velVec || [0, 0, 0];
+  const velB = receiverState.velVec || [0, 0, 0];
+  // Photon propagation unit vector n_hat = (r_B - r_A) / dist
+  const betaALos = Math.max(-vA, Math.min(vA, (velA[0] * dx + velA[1] * dy + velA[2] * dz) / dist));
+  const betaBLos = Math.max(-vB, Math.min(vB, (velB[0] * dx + velB[1] * dy + velB[2] * dz) / dist));
+
+  // Cancellation-free evaluation of 1 / [gamma_A * (1 - betaA_los)] and gamma_B * (1 - betaB_los)
+  const emitToGal =
+    vA === 0
+      ? 1.0
+      : Math.abs(betaALos - vA) < 1e-12
+        ? gA * (1 + vA)
+        : Math.abs(betaALos + vA) < 1e-12
+          ? 1 / (gA * (1 + vA))
+          : 1 / (gA * Math.max(1e-15, 1 - betaALos));
+
+  const galToRx =
+    vB === 0
+      ? 1.0
+      : Math.abs(betaBLos - vB) < 1e-12
+        ? 1 / (gB * (1 + vB))
+        : Math.abs(betaBLos + vB) < 1e-12
+          ? gB * (1 + vB)
+          : gB * Math.max(1e-15, 1 - betaBLos);
+
+  const dopplerFactor = emitToGal * galToRx;
+  return {
+    dopplerFactor,
+    shiftType: classifyShift(dopplerFactor),
+  };
+}
+
+/**
+ * Inter-Ship Light-Cone Messaging Solver (Moving Ship A -> Moving Ship B + 2-Way Reply):
+ *
+ * Given Sender Ship A transmitting at coordinate year `tEmit`, finds:
+ *  - Exact coordinate year `tHit` when the light sphere intercepts Receiver Ship B
+ *  - Receiver B's proper time, biological age, 3D position, and flight status at reception
+ *  - Exact combined 3D relativistic Doppler factor f_B / f_A
+ *  - Immediate 2-way reply reception back at Ship A (`tReplyCoordYear`, `roundTripCoordYears`,
+ *    `senderProperWaitYears`, `senderAgeAtReply`)
+ */
+export function solveShipToShipSignal(
+  senderVoyage,
+  receiverVoyage,
+  tEmit,
+  senderName = 'Ship A',
+  receiverName = 'Ship B',
+  includeReply = true
+) {
+  if (
+    !senderVoyage ||
+    !senderVoyage.legs ||
+    senderVoyage.legs.length === 0 ||
+    !receiverVoyage ||
+    !receiverVoyage.legs ||
+    receiverVoyage.legs.length === 0
+  ) {
+    return null;
+  }
+
+  const senderState = evaluateVoyageAtCoordYear(senderVoyage, tEmit);
+  if (!senderState) return null;
+
+  const hit = solveSignalToShip(receiverVoyage, senderState.pos, senderName, tEmit);
+  if (!hit) return null;
+
+  const receiverStateAtHit = evaluateVoyageAtCoordYear(receiverVoyage, hit.tHitCoordYear);
+  const { dopplerFactor, shiftType } = computeShipToShipDoppler(senderState, receiverStateAtHit);
+
+  let reply = null;
+  if (includeReply) {
+    const backHit = solveSignalToShip(senderVoyage, receiverStateAtHit.pos, receiverName, hit.tHitCoordYear);
+    if (backHit) {
+      const senderStateAtReply = evaluateVoyageAtCoordYear(senderVoyage, backHit.tHitCoordYear);
+      const backDoppler = computeShipToShipDoppler(receiverStateAtHit, senderStateAtReply);
+      reply = {
+        tReplyCoordYear: backHit.tHitCoordYear,
+        returnLightTravelYears: backHit.lightTravelYears,
+        roundTripCoordYears: backHit.tHitCoordYear - tEmit,
+        senderProperWaitYears: senderStateAtReply.properTimeYears - senderState.properTimeYears,
+        senderAgeAtReply: senderStateAtReply.crewAge,
+        replyPos: backHit.hitPos,
+        dopplerFactor: backDoppler.dopplerFactor,
+        shiftType: backDoppler.shiftType,
+      };
+    }
+  }
+
+  return {
+    senderName,
+    receiverName,
+    tEmitCoordYear: tEmit,
+    senderPos: senderState.pos,
+    senderProperTimeYears: senderState.properTimeYears,
+    senderCrewAge: senderState.crewAge,
+    senderStatus: senderState.status,
+    senderSpeedC: senderState.speedC,
+    tHitCoordYear: hit.tHitCoordYear,
+    lightTravelYears: hit.lightTravelYears,
+    hitPos: hit.hitPos,
+    receiverProperTimeYears: receiverStateAtHit.properTimeYears,
+    receiverCrewAgeAtHit: receiverStateAtHit.crewAge,
+    receiverStatusAtHit: receiverStateAtHit.status,
+    receiverPhaseAtHit: receiverStateAtHit.phase,
+    receiverSpeedAtHitC: receiverStateAtHit.speedC,
+    dopplerFactor,
+    shiftType,
+    reply,
+  };
+}
+
+/**
+ * Closest Approach / Rendezvous Solver between two moving starships (Ship A & Ship B)
+ * across their combined mission timeline using dense sampling + golden-section refinement.
+ */
+export function computeShipRendezvous(voyageA, voyageB) {
+  if (
+    !voyageA ||
+    !voyageA.legs ||
+    voyageA.legs.length === 0 ||
+    !voyageB ||
+    !voyageB.legs ||
+    voyageB.legs.length === 0
+  ) {
+    return null;
+  }
+
+  const tMin = Math.min(voyageA.departureYear, voyageB.departureYear);
+  const tMax = Math.max(voyageA.arrivalYear, voyageB.arrivalYear);
+  const span = Math.max(0.5, tMax - tMin);
+
+  const distAt = (t) => {
+    const a = evaluateVoyageAtCoordYear(voyageA, t);
+    const b = evaluateVoyageAtCoordYear(voyageB, t);
+    return distance3D(a.pos, b.pos);
+  };
+
+  const N = 240;
+  let bestT = tMin;
+  let bestD = Infinity;
+  let bestIdx = 0;
+  const dt = span / N;
+
+  for (let i = 0; i <= N; i++) {
+    const t = tMin + i * dt;
+    const d = distAt(t);
+    if (d < bestD) {
+      bestD = d;
+      bestT = t;
+      bestIdx = i;
+    }
+  }
+
+  // Golden-section search in [tLeft, tRight] around best sample
+  let lo = tMin + Math.max(0, bestIdx - 1) * dt;
+  let hi = tMin + Math.min(N, bestIdx + 1) * dt;
+  const phi = (Math.sqrt(5) - 1) / 2;
+  let c = hi - phi * (hi - lo);
+  let d = lo + phi * (hi - lo);
+  let fc = distAt(c);
+  let fd = distAt(d);
+
+  for (let iter = 0; iter < 36; iter++) {
+    if (fc < fd) {
+      hi = d;
+      d = c;
+      fd = fc;
+      c = hi - phi * (hi - lo);
+      fc = distAt(c);
+    } else {
+      lo = c;
+      c = d;
+      fc = fd;
+      d = lo + phi * (hi - lo);
+      fd = distAt(d);
+    }
+  }
+
+  const tClosest = 0.5 * (lo + hi);
+  const stA = evaluateVoyageAtCoordYear(voyageA, tClosest);
+  const stB = evaluateVoyageAtCoordYear(voyageB, tClosest);
+  const minDistLy = distance3D(stA.pos, stB.pos);
+
+  // Relative 3D closing/passing speed (in coordinate rest frame)
+  const vA = stA.velVec || [0, 0, 0];
+  const vB = stB.velVec || [0, 0, 0];
+  const relCoordSpeedC = Math.hypot(vA[0] - vB[0], vA[1] - vB[1], vA[2] - vB[2]);
+
+  return {
+    tClosestCoordYear: tClosest,
+    minDistLy,
+    posA: stA.pos,
+    posB: stB.pos,
+    statusA: stA.status,
+    statusB: stB.status,
+    tauA: stA.properTimeYears,
+    tauB: stB.properTimeYears,
+    relCoordSpeedC,
+  };
+}
